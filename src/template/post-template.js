@@ -16,6 +16,7 @@ const PostTemplate = ({ data, pageContext }) => {
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
 
+  // TODO: fix og image in figma
   const socialImage = getShareImage({
     title: title,
     tagline: description,
