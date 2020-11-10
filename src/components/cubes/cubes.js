@@ -16,7 +16,7 @@ import T from "./../../assets/letters/Letter_T.png";
 import E from "./../../assets/letters/Letter_E.png";
 
 /**
- * A set of 3D cubes which spell out "Trivia Game"
+ * A set of 3D cubes which spell out "Digital Garden"
  */
 const Cubes = () => {
   return (

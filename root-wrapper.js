@@ -33,7 +33,7 @@ const components = {
     return (
       <Layout>
           {children}
-    </Layout>
+      </Layout>
     )
   },
 }
