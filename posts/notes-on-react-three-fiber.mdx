@@ -1,0 +1,170 @@
+---
+title: Notes on react-three-fiber
+category: 3D
+description: Some notes on using react-three-fiber
+---
+
+This is a collection of notes im putting together to better understand how to work with 3D stuff in React. Im writing it as to myself, as that's who it is for, but if others find it useful then that's cool too. But it's not written as a tutorial or anything. Fair warning!
+
+## Setup
+
+Install:
+
+```bash
+yarn add react-three-fiber three
+
+```
+
+Set whole page to fill 100% width and height
+
+```css
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+```
+
+## What is all this stuff
+
+The Canvas component renders threejs elements, not DOM elements. It takes the whole height and width of it container, so that is why, if you want to do a whole page 3D rendering of something then you need to set the containers (in our case the actual body, as we are only doing one page) width and height to 100%.
+
+We cant directly use HTML elements within the Canvas though there is a way to do that which I will go over later.
+
+Because the Canvas component renders threejs elements we can use stuff like mesh, sphereGeometry and meshStandardMaterial amongst many others. It provides all these via its context to any children rendered within it, translating the threejs API into React components that can be used as normal so we can also pass props to these elements/components too.
+
+#### mesh, geometry and material
+
+A mesh is like the base skeleton an object is made from, like a wire frame or modal.
+
+The geometry is the shape the mesh will take and the material is what will cover the mesh, how it will look. You can use different types of materials which change the way you can interact with the object and how it behaves.
+
+There are lots of different geometry and materials that can be used directly in Canvas like a HTML element. Such as meshStandardMaterial or sphereGeometry.
+
+The attach prop on the geometry and material above attaches the element to its parent, in this case the mesh as the set value. So the sphereGeometry is attached to th4e mesh as the geometry and the meshStandardMaterial is attached to the mesh as the material.
+
+Constructor arguments are passed with the args prop. The sphereGeometry takes a number of constructor args, the first three of which are the radius, width and height. See the [SphereGeometry docs on threejs](https://threejs.org/docs/index.html#api/en/geometries/SphereGeometry) for more information. As an example, the constructor args for the sphere are:
+
+- radius — sphere radius. Default is 1.
+- widthSegments — number of horizontal segments. Minimum value is 3, and the default is 8.
+- heightSegments — number of vertical segments. Minimum value is 2, and the default is 6.
+- phiStart — specify horizontal starting angle. Default is 0.
+- phiLength — specify horizontal sweep angle size. Default is Math.PI \* 2.
+- thetaStart — specify vertical starting angle. Default is 0.
+- thetaLength — specify vertical sweep angle size. Default is Math.PI.
+
+#### lights
+
+If no sources of lights are provided then the object will be black. Which makes sense as without light we wouldn't be able to see ti in real life. A list of the light sources taken from a [smashing magazine article](https://www.smashingmagazine.com/2013/09/introduction-to-polygonal-modeling-and-three-js/):
+
+- Point. Possibly the most commonly used, the point light works much like a light bulb and affects all objects in the same way as long as they are within its predefined range. These can mimic the light cast by a ceiling light.
+- Spot. The spot light is similar to the point light but is focused, illuminating only the objects within its cone of light and its range. Because it doesn’t illuminate everything equally as the point light does, objects will cast a shadow and have a “dark” side.
+- Ambient. This adds a light source that affects all objects in the scene equally. Ambient lights, like sunlight, are used as a general light source. This allows objects in shadow to be viewable, because anything hidden from direct rays would otherwise be completely dark. Because of the general nature of ambient light, the source position does not change how the light affects the scene.
+- Hemisphere. This light source works much like a pool-table light, in that it is positioned directly above the scene and the light disperses from that point only.
+- Directional. The directional light is also fairly similar to the point and spot lights, in that it affects everything within its cone. The big difference is that the directional light does not have a range. It can be placed far away from the objects because the light persists infinitely.
+- Area. Emanating directly from an object in the scene with specific properties, area light is extremely useful for mimicking fixtures like overhanging florescent light and LCD backlight. When forming an area light, you must declare its shape (usually rectangular or circular) and dimension in order to determine the area that the light will cover.
+
+### Spheres with different materials.
+
+The first ball uses the drei helper component Sphere and a wobble material.
+
+<ThreeBallWobble />
+
+The second uses the traditional react-three-fiber mesh and threejs elements.
+
+<ThreeBall />
+
+The third uses a drei Sphere with a distort material attached. A couple of lights are added to give both color to the objects and a sense of space.
+
+<ThreeBallDistort />
+
+### The code for all three
+
+```jsx
+<Canvas>
+  <mesh
+    visible // object gets render if true
+    userData={{ test: 'hello' }} // An object that can be used to store custom data about the Object3d
+    position={[0, 0, 1]} // The position on the canvas of the object [x,y,x]
+    rotation={[0, 0, 0]} // The rotation of the object
+    castShadow // Sets whether or not the object cats a shadow
+    // There are many more props.....
+  >
+    {/* A spherical shape*/}
+    <sphereGeometry attach="geometry" args={[1, 16, 16]} />
+    {/* A standard mesh material*/}
+    <meshStandardMaterial
+      attach="material" // How the element should attach itself to its parent
+      color="#7222D3" // The color of the material
+      transparent // Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects. When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.
+      roughness={0.1} // The roughness of the material - Defaults to 1
+      metalness={0.1} // The metalness of the material - Defaults to 0
+    />
+  </mesh>
+  {/*An ambient light that creates a soft light against the object */}
+  <ambientLight intensity={0.5} />
+  {/*An directional light which aims form the given position */}
+  <directionalLight position={[10, 10, 5]} intensity={1} />
+  {/*An point light, basically the same as directional. This one points from under */}
+  <pointLight position={[0, -10, 5]} intensity={1} />
+  {/* We can use the drei Sphere which has a simple API. This sphere has a wobble material attached to it */}
+  <Sphere visible position={[-3, 0, 1]} args={[1, 16, 16]}>
+    <MeshWobbleMaterial
+      attach="material"
+      color="#EB1E99"
+      factor={1} // Strength, 0 disables the effect (default=1)
+      speed={2} // Speed (default=1)
+      roughness={0}
+    />
+  </Sphere>
+  {/* This sphere has a distort material attached to it */}
+  <Sphere visible position={[3, 0, 1]} args={[1, 16, 16]}>
+    <MeshDistortMaterial
+      color="#00A38D"
+      attach="material"
+      distort={0.5} // Strength, 0 disables the effect (default=1)
+      speed={2} // Speed (default=1)
+      roughness={0}
+    />
+  </Sphere>
+</Canvas>
+```
+
+## drei
+
+Drei (three in german) is a super helpful package that contains loads of helpers and abstractions for react-three-fiber. One thing that I noticed was that using drei with Nextjs (as this site does) will throw an error when trying to import stuff - cannot use import statement outside a module. This is because Nextjs uses common js modules on server side rendering. We can use withTM from next-transpile-modules in the next.config file to transpile the common js stuff in drei. We also need to dynamically import the component using the drei components and disable server side rendering. See [this issue](https://github.com/pmndrs/drei/issues/2) and [this PR](https://github.com/vercel/next.js/pull/14864).
+
+### If you are using Nextjs....
+
+```js
+import dynamic from 'next/dynamic';
+const ThreeBall = dynamic(
+  () => import('./../../src/components/post/three-ball'),
+  { ssr: false },
+);
+```
+
+### next.config.js
+
+```js
+const withTM = require('next-transpile-modules')([
+  'three',
+  'drei',
+  'postprocessing',
+]);
+
+module.exports = withTM();
+```
+
+## The main players
+
+The Renderer in react-three-fiber(R3F) is the HTML canvas element which gets added dynamically to the DOM unless specifically added via an id or className. 
+
+The scene is the stage where everything plays out. The meshes encompass lights, groups, 3D positions and cameras. A scene can be thought of as a theater scene where the mesh or groups of meshes are the act that will play out, the lights give the mesh and its geometry and materials a purpose on the scene, they light them from angles and provide context to why they are there. The cameras and positions allow us to view them all from different angles. 

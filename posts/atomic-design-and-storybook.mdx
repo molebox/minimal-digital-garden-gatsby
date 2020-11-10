@@ -1,0 +1,62 @@
+---
+title: Atomic design and Storybook
+category: atomic design
+description: Initial thought on Atomic design and Storybook
+---
+
+Im currently drawing up a proposal at my work to introduce [Storybook](https://storybook.js.org/) into our webui workflow. At the moment we have a huge TypeScript project with lots of components that have been built upon over time, with each iteration adding more props and more complexity. There are minimal base level components from which to use and re-use to build other components. Instead, special use cases have defined what components are created depending on the feature currently being worked on.
+
+This is not very sustainable way of working, and it already feels that its becoming unwieldy. Part of my proposal for tidying up our workflow is a project folder restructure as well as an improvement in iteration and design of new components according to feature requests. This is where Storybook comes in. A (very) brief overview of what Storybook is - Storybook (SB) is a UI tool that enables developers to develop components in isolation from the actual app. Using SB can help with the workflow between product/marketing - designer and developer.
+
+At the moment we don't have a designer, but we do have the remnants of our last designers work and the design system he was trying to implement. This went as far as colour schemas, spacing and padding for certain elements, ideas about how to produce layouts, a small custom icon set and notes on typography. While this was a good start, it was never finished and part of the reason for that was the workflow between idea - design and development.
+
+The last designer used a tool called Sketch to implement his ideas for the design system, Sketch is a design tool that only works on Mac. Unfortunately for us, everyone at my work uses Windows machines. This meant that any designs that were made in Sketch were exported to InVision (another design tool) to be shared with the developers and later written up on the company wiki. This muddled way of working was not only time consuming, but also meant that the designer was working in isolation throughout the creative process until he deemed the designs ready for viewing, whereby a meeting would be called with marketing and the designs poured over with critique given and the designer re-implementing the designs. This all happened away from the developer. This process was also happening at a stage of development where the webui repo had already amassed a large sum of components mostly tailor made for a specific purpose, meaning that introducing these changes meant refactoring or creating new components that better fit the new design ideals.
+
+### Storybook in a nutshell
+
+- Each component has a story created
+- This is a file that follows the naming convention of component.stories.tsx/jsx/js/ts
+- These stories outline the component and its actions according to the props it takes
+- Each action is a story on the component
+- The SB UI displays the component stories in an interactive UI where the user can play with the component and see how it looks and works
+
+### Atomic design
+
+At a high level [Atomic Design](https://bradfrost.com/blog/post/atomic-web-design/) can be described like so:
+
+- **Atoms**: The smallest implementation of the component. This could be a simple HTML element such as an input with some base styles.
+- **Molecules**: These are groups of atoms bound together to form a whole. For example a form label and an input as one component.
+- **Organisms**: Now that we have our molecules we can combine them to form organisms, in the case of our example the form as a whole would be the organism. Made up of molecule components (which themselves are the atoms label and input) they group together to form a section of the UI.
+- **Templates**: The organisms are placed together to form a semblance of a a design from which the marketing team had envisioned. These templates can be used throughout the app. For example, a base layout that consists of a page header (organism), main content section (another template or organism) and footer (organism)
+- **Pages**: The specific page of the design, taken from template to page via replacing placeholder images/text/data. This is where most of the reviews will take place and it enables the team to see the components in the context of being used.
+
+My original thoughts were to categorize the folder structure of the app using the keys atom, molecules, organisms and templates. Like so:
+
+- components
+  - atoms
+    - label
+      - label.tsx
+      - label.less
+      - label.stories.tsx
+    - input
+      - input.tsx
+      - input.less
+      - input.stories.tsx
+  - molecules
+    - formLabel
+      - formLabel.tsx
+      - formLabel.less
+      - formLabel.stories.tsx
+  - organisms
+    - form
+      - form.tsx
+      - form.less
+      - form.stories.tsx
+
+This is a rudimentary example of how we could structure the components and their related stories and styles. Using this method we have categorized each component to be built upon until we have the final result. The atoms label and input are combined to form a molecule (the formLabel) this molecule is combined with other unseen components to form the form, which in turn has a place on the page. **Each atomic level has its own interactive docs on the SB UI**.
+
+After speaking to some people though, I was dissuaded from this due to potential confusion further down the line when looking for components to use. Instead, refactoring the current structure to have each component housed in a folder with its test, style and story files seemed like a good compromise. Of course there is one other element to this that I have forgotten to mention, that of the feature folder. Where a new feature is embarked upon a new folder would be created to house all the shiny new components that were to be used on said feature. This way of thinking would have to stay, and it could even be used to the advantage of the team as we move forward to a new, cleaner way of structuring our repo. Before going through the whole repo and refactoring and breaking out the larger components into smaller ones, perhaps the best thing to do would be to take that as it comes, do it when you can, but concentrate on moving forward having the components housed properly. Then as we move forward, refactoring and moving them.
+
+It would be in SB that I would section the components down to their atomic levels. And after putting some thought into it, this makes sense to me. Our repo folders should keep a relatively flat structure to avoid unnecessary deep nesting, where as the SB UI can (and indeed should?) reveal the relationships between components via it's folder structure and organization.
+
+**I will update this post as I go, more to come....**

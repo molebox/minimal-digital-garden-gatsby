@@ -1,0 +1,46 @@
+---
+title: Date object snippet
+category: JavaScript
+description: Some handy little code snippets for the JavaScript Date object
+---
+
+### Getting the locale date
+
+The toLocaleDateString method on the date object lets you pass in the locale of choice and returns a string formatted date with forward slash separators.
+
+```js
+let today = new Date().toLocaleDateString('en-gb');
+
+// today => 24/09/2020
+```
+
+### Replacing the slash
+
+To replace the forward slash with a dash is as easy as manipulating the string with a replace regex.
+
+```js
+let today = new Date().toLocaleDateString('en-gb').replace(/\//g, '-');
+
+// today => 24-09-2020
+```
+
+### Written representation
+
+To get the written representation of the date in the chosen locale toLocaleDateString accepts a second options param where you can specify
+
+- weekday
+- year
+- month
+- day
+
+```js
+const options = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+let today = new Date().toLocaleDateString('en-gb', options);
+
+// today => Thursday, 24 September 2020
+```

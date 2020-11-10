@@ -1,0 +1,571 @@
+---
+title: Create a landing page with Next and MDX
+category: Tutorial
+description: A tutorial series covering making a landing page with Next and MDX
+---
+
+I recently received [Colby Fayocks](https://twitter.com/colbyfayock) [50reactprojects](https://50reactprojects.com/) and thought it would be a fun idea to run through some of the example projects as tutorials, while putting a little spin on them. So we begin with project 1 of the 50 (well, why not!), the marketing website. Colby does a great job of listing out the requirements of the project and some of the tech you could use to get it made.
+
+<Prerequisites
+  audience="This tutorial assumes some prior knowledge of modern frontend development but will safely guide you through the whole setup and development process."
+  stackKnowledge={['React', 'JavaScript']}
+/>
+
+For a sneek peek at what we will build head on over to [next-mdx-landing-page.vercel.app/](https://next-mdx-landing-page.vercel.app/). The full source code can be viewed at [github.com/molebox/next-mdx-landing-page](https://github.com/molebox/next-mdx-landing-page).
+
+## The brief
+
+The marketing team for the company you work for just launched a new product. They need a detailed marketing plan that includes a website and landing page dedicated to driving people to learn about the product and ultimately purchase it.
+
+Well that sounds clear and concise. We are to create a landing page and website that will entice the user to purchase the product. For our example we'll skip the website creation and concentrate on creating a killer landing page. For our stack we will keep it modern and use [NextJS](https://nextjs.org/) and [MDX](https://mdxjs.com/). We will style our site with the wonderful [Chakra-UI](https://next.chakra-ui.com/docs/getting-started).
+
+We will also go over how to create a page from a design and dive into a little CSS grid. Oh you lucky lot!
+
+## Install the stuff
+
+We'll use [create-next-app](https://nextjs.org/docs/getting-started) to bootstrap our project and get the basics installed. Run the following command and input the projects name. I'll choose next-mdx-landing-page, because Im feeling super imaginative but feel free to go wild and name it anything you like.
+
+```bash
+yarn create next-app
+```
+
+Next we are going to install two more packages to handle MDX.
+
+```bash
+yarn add @next/mdx @mdx-js/loader
+```
+
+Once they have been installed open the project in your editor of choice, Im using VSCode. You'll see that an api folder was installed along with an example serverless function. We will not be using that so you can go ahead and delete the whole api folder. In fact, you can also remove the styles folder and all of its content, the index.js file under the pages folder and the favicon.ico and vercel.svg inside of the public folder.
+
+So to recap, remove the following from the project:
+
+- api folder and contents
+- styles folder and contents
+- index.js file inside pages folder
+- favicon and vercel images inside public
+
+## Enabling MDX
+
+We'll keep the public folder incase we want to store some images later on. Now our app is going to need just one page, a landing page. That page is going to be an MDX file. So go ahead and create a new index.mdx inside the pages folder. Then open up \_app.js, this is the root of our site, it's from here that we will wrap the app and provide our MDX file its components. For now lets wrap the base component with the MDXProvider.
+
+```jsx
+import { MDXProvider } from '@mdx-js/react';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <MDXProvider>
+      <Component {...pageProps} />
+    </MDXProvider>
+  );
+}
+
+export default MyApp;
+```
+
+There is no need to import React as it's globally available to us. Open up the index.mdx file and write the traditional "MDX is amazing". Now for Next to be able to pick up our MDX file located in the pages directory we will have to configure it to do so. At the projects root create a new file called next.config.js. In here we will require MDX and set the page extensions to look for MDX files in the pages directory.
+
+```js
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+});
+module.exports = withMDX({
+  pageExtensions: ['js', 'jsx', 'md', 'mdx'],
+});
+```
+
+Now we can run `yarn dev`, Next will spin up a dev server for us on port 3000, and if everything went well we should see the contents of our index.mdx file - MDX is amazing!
+
+## Get some styling in there
+
+Cool beans, our project works and our app loads an MDX file. But it's nothing to look at at the moment. Let's add Chakra-UI. We'll be using v1.0 so be sure to consult the documentation for that version (which at the time of writing is the latest) if you run into any troubles with Chakra.
+
+As a brief overview of the installation differences, < v1.0 you had to install
+
+- @chakra-ui/core
+- @emotion/core
+- @emotion/core
+- emotion-theming
+
+This has now been consolidated down to one package, which is great. Run the following to install Chakra. The version that installs with this tutorial is 1.0.0-rc.3.
+
+```bash
+yarn add @chakra-ui/core@next
+```
+
+Once Chakra is installed wrap the app with the ChakraProvider just like the MDXProvider in \_app.js. This will enable us to later use the components we set to the markdown elements within our MDX file.
+
+```jsx
+import { MDXProvider } from '@mdx-js/react';
+import { ChakraProvider } from '@chakra-ui/core';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <ChakraProvider resetCSS>
+      <MDXProvider>
+        <Component {...pageProps} />
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+
+export default MyApp;
+```
+
+Now that we have Chakra hooked up let's add a base theme. Out of the box Chakra comes with some great defaults for colors inspired by Tailwind CSS, but as a way of learning how to do it we can add our own colors. I like to explore [coolors.co](https://coolors.co/) when trying to find inspiration for website color palette. In the top right click explore and find a palette that you like. Once you have decided on your palette click the 3 dots and open in generator. Once there you can click view shades on each color and choose some different shades, getting lighter from the original color (so 4 steps upward until you have 5 shades including the original) These will come in handy when adding depth to elements.
+
+Create a theme.js file at the projects root. This will enable us to house our sites styles in one place and easily import and use them in our Chakra components.
+
+```js
+// 1. Import the theme and merge util
+import { theme as ChakraTheme } from '@chakra-ui/core';
+import { merge } from '@chakra-ui/utils';
+
+// 2. Extend the theme to include custom colors, fonts, etc.
+export const theme = merge(ChakraTheme, {
+  styles: {
+    global: {
+      'html, body': {
+        fontFamily: 'Roboto',
+      },
+    },
+  },
+  fontSizes: {
+    xs: '12px',
+    sm: '14px',
+    md: '16px',
+    lg: '18px',
+    xl: '20px',
+    '2xl': '24px',
+    '3xl': '28px',
+    '4xl': '36px',
+    '5xl': '48px',
+    '6xl': '100px',
+    '7xl': '150px',
+    '8xl': '175px',
+    '9xl': '200px',
+    huge: '250px',
+  },
+  colors: {
+    brand: {
+      900: '#1a365d',
+      800: '#153e75',
+      700: '#2a69ac',
+    },
+  },
+});
+```
+
+For the sites font, I went with [Roboto](https://fonts.google.com/specimen/Roboto?preview.text=bad%20religion&preview.text_type=custom&sidebar.open=true&selection.family=Roboto:wght@500;900) from Google fonts. Feel free to change this. Using the Chakra global styles object we can easily set the font for the whole site in the html and body tag. If we were to have two fonts, say for our headers and body, then another approach could be to use the fonts object key in the theme and set our different fonts. Then these would be accessed via the fontFamily key on the Chakra components.
+
+```jsx
+// Set the fonts
+  fonts: {
+    heading: 'Roboto',
+    body: 'Open Sans'
+  }
+
+// Usage
+    <Text fonFamily="heading">
+      Hiya!
+    </Text>
+```
+
+Which ever way we choose to use our fonts we must first set them so that our site can use them. The easiest way to do this is by simply adding a link tag into the sites html head. You could do this on every page (assuming you had many pages in your site) but next gives us a nice solution which enables us to override one file and insert our link there. In our pages directory create a new file called \_document.js. This is a custom document used to augment the sites html and body tags. From here we can insert a script or link into the head and it will be applied to every page in our site. In our case we are going to insert our link tag from Google fonts.
+
+```jsx
+import Document, { Head, Main, NextScript } from 'next/document';
+import React from 'react';
+
+class MyDocument extends Document {
+  render() {
+    return (
+      <html lang="en">
+        <Head>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@500;900&display=swap"
+            rel="stylesheet"
+          />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </html>
+    );
+  }
+}
+
+export default MyDocument;
+```
+
+Going back to our \_app.js file we can now import and pass in our new theme file so that Chakra knows that it exists.
+
+```jsx
+import { MDXProvider } from '@mdx-js/react';
+import { ChakraProvider } from '@chakra-ui/core';
+import { theme } from './../theme';
+
+function MyApp({ Component, pageProps }) {
+  return (
+    <ChakraProvider theme={theme} resetCSS>
+      <MDXProvider>
+        <Component {...pageProps} />
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+
+export default MyApp;
+```
+
+<LearntSoFar
+  pointsCovered={[
+    'Setup a fresh NextJS project with MDX!',
+    'Added a new font',
+    'Setup Chakra-UI and a custom theme',
+  ]}
+/>
+
+## MDX Components
+
+MDX is just markdown that can render React components. That means that as well as using typical markdown syntax such as the pounds for titles and dashes for lists we can map custom components to these default markdown elements, enabling us to personalise our file while at the same time writing it in standard markdown syntax. Lets add use some of the Chakra components and map them to our markdown elements and pass them into the MDXProvider.
+
+```jsx
+//  Creating the components mapping
+const components = {
+  h1: (props) => (
+    <Text fontSize="2xl" mb={3}>
+      {props.children}
+    </Text>
+  ),
+  h2: (props) => (
+    <Text fontSize="xl" my={3}>
+      {props.children}
+    </Text>
+  ),
+  h3: (props) => (
+    <Text fontSize="md" my={3}>
+      {props.children}
+    </Text>
+  ),
+  ul: (props) => <UnorderedList my={2}>{props.children}</UnorderedList>,
+  li: (props) => <ListItem>{props.children}</ListItem>,
+  p: (props) => <Text my={2}>{props.children}</Text>,
+  Header,
+  HeaderText,
+  Section,
+  Layout,
+};
+
+// Passing in the components
+function MyApp({ Component, pageProps }) {
+  return (
+    <ChakraProvider theme={theme} resetCSS>
+      <MDXProvider components={components}>
+        <Component {...pageProps} />
+      </MDXProvider>
+    </ChakraProvider>
+  );
+}
+```
+
+As you can see from the above object, we map the Chakra component to an object key that represents a markdown (well, a html element that is mapped in markdown to certain symbols) element. Now when we write markdown the h1, h2, h3, p, ul and li will map to those from Chakra and in turn conform to our theme. One more special thing to note here is that we can pass in custom React components (Like the Header, HeaderText and Section. Don't worry, we'll create those in a sec) and they will be available to us in the MDX file without having to import them. This is where some of the power of MDX comes into play. We can create anything we want, be it a chart to display data or a simple box to display text in a certain format. Take this simple example, a component I wrote to display the Prerequisites for my tutorial pieces (You would have encountered it as you entered this page).
+
+```jsx
+import { Flex, Text, UnorderedList, ListItem, Box } from '@chakra-ui/core';
+import React from 'react';
+import { RoughNotation } from 'react-rough-notation';
+
+const Prerequisites = ({ audience, stackKnowledge }) => {
+  return (
+    <Flex
+      direction="column"
+      bg="brand.text"
+      border="solid 2px"
+      borderColor="brand.crayola.500"
+      borderRadius="5px"
+      p={4}
+      justify="space-evenly"
+      minH="250px"
+      maxW="650px"
+      m="2em auto"
+    >
+      <Box>
+        <Box w="max-content">
+          <RoughNotation type="highlight" color="#FEE440" show={true}>
+            <Text fontFamily="heading" fontSize="xl">
+              Prerequisites
+            </Text>
+          </RoughNotation>
+        </Box>
+
+        <Text color="brand.crayola.100" mt={2}>
+          {audience}
+        </Text>
+      </Box>
+      <Box>
+        <Box w="max-content">
+          <RoughNotation type="highlight" color="#FEE440" show={true}>
+            <Text fontFamily="heading" fontSize="md">
+              Helpful to know
+            </Text>
+          </RoughNotation>
+        </Box>
+
+        <UnorderedList mt={2} color="brand.crayola.100">
+          {stackKnowledge.map((stack) => (
+            <ListItem>{stack}</ListItem>
+          ))}
+        </UnorderedList>
+      </Box>
+    </Flex>
+  );
+};
+
+export default Prerequisites;
+```
+
+Which is then used in this MDX file like below. Of course, this is a very simple component and one I will continue to work on but it gives you an idea for what is possible with MDX.
+
+```jsx
+<Prerequisites
+  audience="This tutorial assumes some prior knowledge of modern frontend development but will safely guide you through the whole setup and development process."
+  stackKnowledge={['React', 'JavaScript']}
+/>
+```
+
+## Layouts
+
+Our landing page has got to draw the attention of the general public, our clients products fate is in our hands! For this kind of task, with no layout brief supplied I like to dive into the world of posters. Posters are a great resource for getting layout ideas. Posters are designed to provide as much information as possible to the viewer while still be pleasing on the eye so they engage the viewer long enough for them to soak up the message. One such site which is filled with awesome designs is [swissted.com](https://www.swissted.com).
+
+Now lets for a moment assume that our clients company name is Bad Design. I know, I know, but bear with me. This will play quite nicely with our choice of design, not to mention its a bit tongue in cheek! Taking the [Bad Religion](https://www.swissted.com/products/bad-religion-at-eagles-lodge-1990) poster we can replace the words Bad Religion with Bad Design. This poster also gives us a nice chance to play around with CSS grid implementations and how we would do that in an MDX file!
+
+<img
+  src="/bad-religion-poster.png"
+  alt="An orange and black poster with the text bad religion"
+/>
+
+You'll notice that the colors are very simple, we have an orange, a white and a black. If we add our clients info at the top of the page the same as the poster we can logically say they our grid will have 3 columns and 5 rows. This should be a fairly straight forward layout to recreate, we'll use the Grid component exported from Chakra which comes with some nice shorthand props. I took the liberty of using an [Eye Dropper](https://chrome.google.com/webstore/detail/eye-dropper/hmdcmlfkchdmnmnmheododdhjedfccka?hl=sv) tool (A chrome extension) to grab the exact orange, black and white shades. Lets add those to our theme.js file.
+
+```js
+// Imports...
+
+export const theme = merge(ChakraTheme, {
+  // Other stuff
+
+  colors: {
+    brand: {
+      orange: '#f14011',
+      black: '#000000',
+      grey: '#dee0d4',
+    },
+  },
+});
+```
+
+Sweet, now that we have our colors lets get started with our components. Inside the components folder add 4 new components.
+
+- header.js
+- header-text.js
+- layout.js
+- section.js
+
+These will form the basis for our landing page. We will be splitting up our components and making them an generic as possible so that we can reuse them if we choose to add more pages to the site further down the line. Starting with the layout, and keeping one eye on our design, lets create our grid.
+
+```jsx
+import { Grid } from '@chakra-ui/core';
+import React from 'react';
+
+const Layout = ({ children }) => {
+  return (
+    <Grid
+      templateColumns="repeat(3, 1fr)"
+      templateRows="10% 25% 20% 35% 1fr"
+      gap={4}
+      bg="brand.grey"
+      h="100vh"
+      w="100%"
+      border="solid 10px"
+      borderColor="brand.grey"
+      maxW="1000px"
+      m="0 auto"
+    >
+      {children}
+    </Grid>
+  );
+};
+```
+
+We take advantage of the Chakra Grid component and pass in any children, these will amount to the columns and rows. Our page will be responsive so and look like a poster. We have used percentages for the rows as this gives us some flexibility when the viewport changes size. Our 3 columns are set to take up all available space. We set a grid gap and the background color to our grey/white, that way the gaps appear to actually be the background of the page. By giving the grid a max width of 1000px we are keeping to the poster format and our classic margin trick of vertical 0, horizontal auto centers the whole thing.
+
+Moving on to our header component then.
+
+```jsx
+import { Flex } from '@chakra-ui/core';
+import React from 'react';
+
+const Header = ({ children }) => {
+  return (
+    <Flex
+      bg="brand.black"
+      color="brand.grey"
+      as="header"
+      justify="space-evenly"
+      alignItems="flex-end"
+      p={3}
+      w="100%"
+      gridRow="1"
+      gridColumn="1 / -1"
+    >
+      {children}
+    </Flex>
+  );
+};
+
+export default Header;
+```
+
+This will be the black strip that runs along the top of the page and houses 3 pieces of text. Chakras Flex component is basically just a div with some nice flex like defaults, for example, if we don't specify it will default to flex-direction="row". Another nice touch that should be utilized when using Chakra is the as prop. With this we can keep our components and in turn our HTML semantic. Our header is in fact a header so we set it as so. The grid row is quite obvious. The grid column however may look a little strange but really its quite simple. We are saying that this component should start at column 1 and end at the last columns edge. Much like if we were to grab the last element form an array, -1 tells grid that we want the end.
+
+Our header component accepts children, those children will be our next component, the HeaderText.
+
+```jsx
+import { Text } from '@chakra-ui/core';
+import React from 'react';
+
+const HeaderText = ({ children }) => {
+  return (
+    <Text
+      textTransform="uppercase"
+      color="brand.grey"
+      fontSize={['md', '1xl', '2xl']}
+    >
+      {children}
+    </Text>
+  );
+};
+
+export default HeaderText;
+```
+
+This component does exactly what it says on the tin. That is, it just displays its children in a Chakra Text component. Here we utilize the responsive array syntax so that depending on the viewports size, our text will shrink or grow. We can specify these breakpoints in our theme file using the breakpoints key like so:
+
+```js
+breakpoints: ['30em', '48em', '62em', '80em'];
+```
+
+But this is unnecessary for our use case and we can just accept the defaults. (Which happen to be the above) In the responsive array syntax, if we skip an index or pass in null then it will be ignored. In our case we make a broad assumption that for mobile we'll use md, tablet 1xl and desktop 2xl.
+
+Our last component is what will section up our content and set our elements in place for the grid to work its magic.
+
+```jsx
+import { Flex, Text } from '@chakra-ui/core';
+import React from 'react';
+
+const Section = ({ children, ...rest }) => {
+  return (
+    <Flex
+      as="section"
+      bg="brand.orange"
+      color="brand.black"
+      w="100%"
+      h="100%"
+      p={2}
+      {...rest}
+    >
+      <Text my={2} alignSelf="flex-end">
+        {children}
+      </Text>
+    </Flex>
+  );
+};
+
+export default Section;
+```
+
+Here we are creating a flexible section, setting its background color to the posters orange, passing in children which in turn are passed to a Text component and then spreading the rest of the props that may or may not be added later on. In fact we will use the rest to tell this component where in the grid it should go.
+
+## The Poster
+
+So now that we have all of our pieces lets put them together and see how simple it can be to re-create that poster! Head on over to the index.mdx file you created at the beginning of this tutorial and add the following:
+
+```jsx
+<Layout>
+<Header>
+
+<HeaderText>Bad</HeaderText>
+<HeaderText>By</HeaderText>
+<HeaderText>Design</HeaderText>
+
+</Header>
+
+<Section
+  gridRow="2 / 4"
+  gridColumn="1 / 3"
+  fontSize={['6xl', '8xl', 'huge']}
+  fontWeight="900"
+>
+  bad
+</Section>
+
+<Section gridRow="2 / 4" gridColumn="3"></Section>
+
+<Section
+  gridRow="4"
+  gridColumn="1 / -1"
+  fontSize={['6xl', '5xl', 'huge']}
+  fontWeight="900"
+>
+  design
+</Section>
+
+<Section
+  gridRow="5"
+  gridColumn="1 / -1"
+  alignItems="flex-start"
+  fontSize={["2xl", "3xl", "4xl"]}
+  color="brand.grey"
+  mt="-20px"
+>
+  coming soon
+</Section>
+</Layout>
+
+
+<Section bg="brand.grey" mt={6} maxW="1000px" m="0 auto">
+
+
+And here is some normal markdown text. This is using the styling that we mapped in the components object which was passed into the MDXProvider.
+
+# And here is an h1
+
+## An h2
+
+### An h3
+
+And a list of stuff
+
+- MDX is great
+- Yeah, it's pretty cool
+
+BTW in case you are wondering, we have used our section here as we have a layout component which sets its max width to 1000px and we made our section component so that we could use it outside of out main layout by spreading the rest of the props.
+
+But we don't have to use a component in MDX......
+
+</Section>
+
+
+We could just write here, but seeing as we don't have a global layout for this file, this text wont conform to the max width set by our layout component.
+```
+
+<LearntSoFar
+  pointsCovered={[
+    'CSS Grid! And end of column syntax',
+    'Responsive array syntax',
+    'Using React components in markdown!',
+  ]}
+/>
+
+Its not a perfect match to the poster but I believe that our client would be mightily impressed with our work!
+
+This post is a work in progress and I may add more parts to it as and when I find the time. Im sure our client would like to display some images of their super amazing new product after all, but we will leave that for another day. Thanks for reading, I'll post on Twitter if and when I add more content to this!

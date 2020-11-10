@@ -1,0 +1,99 @@
+---
+title: Add texture to a cube
+category: 3D
+description: Add texture to a cube in three js using react-three-fiber
+---
+
+Our finished piece can be viewed here: [A cube with texture](https://codesandbox.io/s/a-cube-with-texture-fzsj5)
+
+I was going to assume that you have your canvas added and your css resets setup but I know how it is to google something and fined information missing, so let's just cover basic setup real quick.
+
+## Setup
+
+Use a codesandbox (for ease), choose the react preset and install the following:
+
+```bash
+three
+react-three-fiber
+@react-three/drei
+```
+
+Open the index.css and remove the default styling and add this simple reset.
+
+```css
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+```
+
+We need to do this as our Canvas will be our main child element and it will take up 100% of its parents width and height. We reset the margin and padding because we are good devs. If we were just adding our canvas to regular jsx markup then we would want to make sure that the parent element to our canvas has a fixed width and height.
+
+## The 3D component
+
+Create a components folder inside of src and add a new component named whatever you like. I will be using a picture of me for this example so will name it me-cube.js.
+
+```jsx
+import React from 'react';
+import { useTexture } from '@react-three/drei';
+
+const MeCube = () => {
+  // Load the texture. This is a single texture that will be placed on all 6 sides of the cube
+  const [militaryTexture] = useTexture(['/me.jpg']);
+
+  return (
+    <mesh visible position={[0, 0, 0]} rotation={[10, 20, 0]}>
+      <boxGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshBasicMaterial attach="material" map={militaryTexture} />
+    </mesh>
+  );
+};
+
+export default MeCube;
+```
+
+Drei (three in German) is a helper library that basically does a lot of the lifting for us so we don't have to get our hands dirty with raw ThreeJS code. In this case we are importing a useTexture hook which uses the TextureLoader from ThreeJS. We add our image, it takes an array but we will only be playing with one image today.
+
+Our component returns a mesh, this is like a skeleton for our component. Our skeleton needs to know what shape it's going to take so we attach a box geometry shape. The args are the ThreeJS classes constructor args. In this case the width, height and depth. The great thing about react-three-fiber is that you can use any of the ThreeJS classes and check the docs for how to use them. Back to our cube. Now that we have attached a shape to our mesh we have to tell it how it should look. What kind of material should cover it? The useTexture hook provides us with an easy way to hook into the ThreeJS TextureLoader and load an image to use on our cube. We use the map prop to add our texture.
+
+Depending on what you are using (we can assume codesandbox given that was the suggestion at the start) load your image into the public folder.
+
+Our mesh node has a visible prop which say we should be able to see it in the canvas. We set its position to full stack 0's which places it in the middle of our viewport. The rotation simply places the cube on it's side and at an angle so that we can see that it is in fact 3D and not just a 2D picture.
+
+## The Canvas
+
+Remove all the content from inside the returned App function. Replace it with a Canvas imported from react-three-fiber. THe Canvas takes a some props, add colorManagement to handle the colors for us and camera to position the camera. The camera prop allows us to not only position the camera but also the point of view from which we view the objects within the cameras viewport. The cameras position array takes the same values as the mesh, geometry and material meshes: [x, y, z] => horizontal, vertical, depth.
+
+```jsx
+import { OrbitControls } from '@react-three/drei';
+import React, { Suspense } from 'react';
+import { Canvas } from 'react-three-fiber';
+import MeCube from './components/me-cube';
+import './styles.css';
+
+export default function App() {
+  return (
+    <Canvas
+      colorManagement
+      camera={{
+        position: [0, 0, 5],
+        fov: 75,
+      }}
+    >
+      <color attach="background" args={['#1d1d1d']} />
+      <Suspense fallback={null}>
+        <MeCube />
+      </Suspense>
+      <OrbitControls />
+    </Canvas>
+  );
+}
+```
+
+The color node is a ThreeJS class that we can access via react-three-fiber and allows us to set the background of the Canvas by attaching the color. We have to add the Suspense component otherwise the cube wont load. Note that this won't work with server side rendering (SSR). Finally we have added the OrbitControls from drei which allows us to move the scene with our mouse.
+
+BOOM! Have fun with this. Im going to create a small home page with this combined with [useCannon](https://github.com/pmndrs/use-cannon), i'll post that soon. I'd love to see what you make too!

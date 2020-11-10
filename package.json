@@ -1,0 +1,40 @@
+{
+  "name": "digital-garden",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "gatsby develop",
+    "build": "gatsby build",
+    "clean": "gatsby clean",
+    "pretty-check": "prettier --check \"src/**/*.{js}\"",
+    "pretty": "prettier --write \"src/**/*js\"",
+    "sitemap": "gatsby build && gatsby serve",
+    "z": "gatsby clean && gatsby develop"
+  },
+  "dependencies": {
+    "@chakra-ui/core": "^1.0.0-rc.8",
+    "@jlengstorf/get-share-image": "^0.8.0",
+    "@mdx-js/mdx": "^1.6.21",
+    "@mdx-js/react": "^1.6.21",
+    "@react-three/cannon": "^0.5.3",
+    "@react-three/drei": "^2.2.6",
+    "framer-motion": "^2.9.4",
+    "fuse.js": "^6.4.3",
+    "gatsby": "^2.25.3",
+    "gatsby-plugin-chakra-ui": "^0.1.4",
+    "gatsby-plugin-mdx": "^1.3.1",
+    "gatsby-plugin-prefetch-google-fonts": "^1.4.3",
+    "gatsby-source-filesystem": "^2.4.2",
+    "gsap": "^3.5.1",
+    "prism-react-renderer": "^1.1.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-three-fiber": "^5.1.9",
+    "remark-slug": "^6.0.0",
+    "three": "^0.122.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.1.2"
+  }
+}
