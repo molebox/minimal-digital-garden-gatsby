@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Suspense} from "react";
 import { Box } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
@@ -37,6 +37,7 @@ const Cubes = () => {
           fov: 57, // Field of view, the higher the number the further away the camera
         }}
       >
+        <Suspense fallback={null}>
         <pointLight position={[-10, -10, 30]} intensity={0.25} />
         <spotLight
           intensity={0.2}
@@ -62,6 +63,7 @@ const Cubes = () => {
           <Cube imagePath={[E]} position={[1, 3, 2]} />
           <Cube imagePath={[N]} position={[2, 2, 2]} />
         </Physics>
+        </Suspense>
       </Canvas>
     </Box>
   );

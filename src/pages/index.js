@@ -5,18 +5,11 @@ import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
-import { Loader } from "@react-three/drei";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   return (
     <Layout>
-      {/* An overlay that shows a loading percentage, when the loading is done it removes itself */}
-      <Loader
-        containerStyles={{
-          margin: "0 auto",
-        }}
-      />
       <Text as="h1" hidden>
         Digital Garden
       </Text>

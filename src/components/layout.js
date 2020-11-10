@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Box } from "@chakra-ui/core";
+import { Loader } from "@react-three/drei";
 
 const Layout = ({ children }) => {
   return (
@@ -12,6 +13,12 @@ const Layout = ({ children }) => {
         p={3}
       >
         {children}
+      {/* An overlay that shows a loading percentage, when the loading is done it removes itself */}
+      <Loader
+        containerStyles={{
+          margin: "0 auto",
+        }}
+      />
       </Flex>
     </Box>
   );
