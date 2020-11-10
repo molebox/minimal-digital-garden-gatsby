@@ -13,12 +13,12 @@ const components = {
     </Text>
   ),
   h2: (props) => (
-    <Text fontSize="4xl" my={3} fontFamily="heading">
+    <Text fontSize="3xl" my={3} fontFamily="heading">
       {props.children}
     </Text>
   ),
   h3: (props) => (
-    <Text fontSize="3xl" my={3} fontFamily="heading">
+    <Text fontSize="2xl" my={3} fontFamily="heading">
       {props.children}
     </Text>
   ),
