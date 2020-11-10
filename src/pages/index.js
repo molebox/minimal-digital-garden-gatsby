@@ -4,12 +4,19 @@ import { Flex, Link, Text } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";
-import { useSearchBar } from './../components/blog/useSearchbar';
+import { useSearchBar } from "./../components/blog/useSearchbar";
+import { Loader } from "@react-three/drei";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   return (
     <Layout>
+      {/* An overlay that shows a loading percentage, when the loading is done it removes itself */}
+      <Loader
+        containerStyles={{
+          margin: "0 auto",
+        }}
+      />
       <Text as="h1" hidden>
         Digital Garden
       </Text>
@@ -23,9 +30,9 @@ export default ({ data }) => {
         href="https://twitter.com/studio_hungry"
         isExternal
         textDecoration="underline"
-        >
-          By Rich Haines
-        </Link>
+      >
+        By Rich Haines
+      </Link>
       <SearchBar handleSearchQuery={handleSearchQuery} />
       {posts.map(({ id, frontmatter, fields, excerpt }) => (
         <Link
@@ -42,7 +49,7 @@ export default ({ data }) => {
         >
           <Flex direction="column" wrap="wrap" maxW={600} lineHeight={1} mb={5}>
             <Text
-              fontSize={["5xl","6xl"]}
+              fontSize={["5xl", "6xl"]}
               fontWeight={800}
               fontFamily="heading"
               color="brand.black"
@@ -51,16 +58,16 @@ export default ({ data }) => {
             </Text>
           </Flex>
           <Text
-              fontSize={["2xl","3xl"]}
-              fontWeight={700}
-              fontFamily="heading"
-              color="brand.black"
-              my={5}
-            >
-              {frontmatter.description}
-            </Text>
+            fontSize={["2xl", "3xl"]}
+            fontWeight={700}
+            fontFamily="heading"
+            color="brand.black"
+            my={5}
+          >
+            {frontmatter.description}
+          </Text>
           <Text
-            fontSize={["xl","3xl"]}
+            fontSize={["xl", "3xl"]}
             fontWeight={800}
             fontFamily="body"
             color="brand.lightGrey"

@@ -17,7 +17,7 @@ const PostTemplate = ({ data, pageContext }) => {
 
   return (
     <Layout>
-      <Flex wrap="wrap" maxW={["300px","600px"]}>
+      <Flex wrap="wrap" maxW={["300px", "600px"]}>
         <Text
           as="h1"
           fontSize={["5xl", "6xl"]}
