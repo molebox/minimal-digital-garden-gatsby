@@ -3,20 +3,64 @@ import { Text, Flex } from "@chakra-ui/core";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
+import getShareImage from "@jlengstorf/get-share-image";
+import { Helmet } from "react-helmet";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
     frontmatter,
     body,
     excerpt,
-    headings,
     fields: { editLink, slug },
   } = data.mdx;
-  const { title, date, category, description } = frontmatter;
+  const { title, description } = frontmatter;
   const { previous, next } = pageContext;
+
+  const socialImage = getShareImage({
+    title: title,
+    tagline: description,
+    cloudName: "richardhaines",
+    imagePublicID: "social-card/og-image",
+    textAreaWidth: 1193,
+    textLeftOffset: 100,
+    titleFontSize: 110,
+    titleExtraConfig: "_bold",
+    titleBottomOffset: 200,
+    titleGravity: "north_west",
+    taglineGravity: "north_west",
+    titleFont: "Jost.ttf",
+    taglineFont: "Jost.ttf",
+    taglineTopOffset: 547,
+    taglineFontSize: 24,
+    textColor: "E7E7E9",
+    version: "v1596023964",
+  });
 
   return (
     <Layout>
+      <Helmet>
+        <title>{title}</title>
+        <meta name="description" content={excerpt} />
+        <meta name="image" content={socialImage} />
+
+        {/* OpenGraph tags */}
+        <meta
+          property="og:url"
+          content={`https://garden.richardhaines.dev${slug}`}
+        />
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={excerpt} />
+        <meta property="og:image" content={socialImage} />
+
+        {/* Twitter Card tags */}
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={excerpt} />
+        <meta name="twitter:image" content={socialImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@studio_hungry" />
+        <meta name="twitter:creator" content="@studio_hungry" />
+      </Helmet>
       <Flex wrap="wrap" maxW={["300px", "600px"]}>
         <Text
           as="h1"

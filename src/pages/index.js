@@ -5,7 +5,6 @@ import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
-import { Loader } from '@react-three/drei';
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -15,11 +14,6 @@ export default ({ data }) => {
         Digital Garden
       </Text>
       <Cubes />
-      <Loader
-        containerStyles={{
-          margin: '0 auto',
-        }}
-      />
       <Link
         fontSize="xl"
         fontWeight={500}
@@ -37,7 +31,7 @@ export default ({ data }) => {
         <Link
           key={id}
           as={GatsbyLink}
-          href={fields.slug}
+          to={fields.slug}
           p={4}
           borderBottom="solid 2px"
           my={6}
