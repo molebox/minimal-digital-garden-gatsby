@@ -37,8 +37,8 @@ const Cubes = () => {
           colorManagement
           shadowMap
           camera={{
-            position: [2, 7, 5], // x, y, z
-            fov: 85, // Field of view, the higher the number the further away the camera
+            position: [2, 7, 3], // x, y, z
+            fov: 65, // Field of view, the higher the number the further away the camera
           }}
         >
           <Suspense fallback={<Spinner size="xl" />}>

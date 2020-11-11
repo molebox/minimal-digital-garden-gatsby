@@ -41,7 +41,6 @@ const Header = ({ prev, next }) => {
       ref={headerRef}
       position="sticky"
       top={0}
-      // m="0 auto"
       h={100}
       zIndex={999}
       overflowX="hidden"
@@ -51,14 +50,14 @@ const Header = ({ prev, next }) => {
         ? null
         : prev && (
             <NavigationLink to={prev.fields.slug}>
-              {prev.fields.slug}
+              {prev.fields.slug.replace(/^\/|\/$/g, "")}
             </NavigationLink>
           )}
       {next === false
         ? null
         : next && (
             <NavigationLink to={next.fields.slug}>
-              {next.fields.slug}
+              {next.fields.slug.replace(/^\/|\/$/g, "")}
             </NavigationLink>
           )}
     </Flex>
