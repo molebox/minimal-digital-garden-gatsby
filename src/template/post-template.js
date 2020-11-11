@@ -4,7 +4,7 @@ import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
-import { Helmet } from "react-helmet";
+import Helmet from "react-helmet";
 import Header from "./../components/blog/header";
 
 const PostTemplate = ({ data, pageContext }) => {
@@ -41,7 +41,7 @@ const PostTemplate = ({ data, pageContext }) => {
     <Layout>
       <Helmet>
         <title>{title}</title>
-        <meta name="description" content={excerpt} />
+        <meta name="description" content={description} />
         <meta name="image" content={socialImage} />
 
         {/* OpenGraph tags */}
@@ -51,12 +51,12 @@ const PostTemplate = ({ data, pageContext }) => {
         />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content={excerpt} />
+        <meta property="og:description" content={description} />
         <meta property="og:image" content={socialImage} />
 
         {/* Twitter Card tags */}
         <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={excerpt} />
+        <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImage} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@studio_hungry" />
