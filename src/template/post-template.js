@@ -5,13 +5,14 @@ import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import { Helmet } from "react-helmet";
+import Header from "./../components/blog/header";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
     frontmatter,
     body,
     excerpt,
-    fields: { editLink, slug },
+    fields: { slug },
   } = data.mdx;
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
@@ -62,6 +63,7 @@ const PostTemplate = ({ data, pageContext }) => {
         <meta name="twitter:site" content="@studio_hungry" />
         <meta name="twitter:creator" content="@studio_hungry" />
       </Helmet>
+      <Header prev={previous} next={next} />
       <Flex wrap="wrap" maxW={["300px", "600px"]}>
         <Text
           as="h1"

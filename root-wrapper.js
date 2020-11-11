@@ -1,9 +1,10 @@
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
-import { ChakraProvider, Text, UnorderedList, ListItem, Image } from "@chakra-ui/core";
+import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link } from "@chakra-ui/core";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
+import { RoughNotation } from 'react-rough-notation';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -23,10 +24,17 @@ const components = {
     </Text>
   ),
   ul: (props) => <UnorderedList my={2}>{props.children}</UnorderedList>,
-  li: (props) => <ListItem fontFamily="body">{props.children}</ListItem>,
+  li: (props) => <ListItem><Text fontFamily="body" fontSize="xl">{props.children}</Text></ListItem>,
   p: (props) => <Text my={2} fontSize="xl" fontFamily="body">{props.children}</Text>,
   img: (props) => (
     <Image m="0 auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
+  ),
+  a: (props) => (
+    <Link isExternal href={props.href}>
+      <RoughNotation multiline type="underline" color="#1f2127" show={true}>
+        {props.children}
+      </RoughNotation>
+    </Link>
   ),
   wrapper: ({children, ...props}) => {
     console.log({props})
