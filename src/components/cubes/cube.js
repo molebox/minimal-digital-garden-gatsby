@@ -21,7 +21,7 @@ const Cube = ({ position, imagePath }) => {
         attach="material"
         map={image}
         roughness={0}
-        color="#f6f8fa"
+        color="#000000"
       />
     </mesh>
   );

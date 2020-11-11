@@ -47,6 +47,18 @@ module.exports = {
                 },
               ],
             },
-          }
+          },
+          {
+            resolve: `gatsby-plugin-manifest`,
+            options: {
+              name: `Rich Haines Digital Garden`,
+              short_name: `Rich Haines Digital Garden`,
+              start_url: `/`,
+              background_color: `#ffffff`,
+              theme_color: `#ffffffc`,
+              display: `standalone`,
+              icon: `src/images/favicon.png`
+            },
+          },
     ]
 }

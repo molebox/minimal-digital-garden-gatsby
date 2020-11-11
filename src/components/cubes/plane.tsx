@@ -10,7 +10,7 @@ const Plane = () => {
   return (
     <mesh ref={ref} receiveShadow>
       <planeBufferGeometry attach="geometry" args={[1000, 1000]}/>
-      <shadowMaterial attach="material" color="#171717" />
+      <shadowMaterial attach="material" transparent={false}/>
     </mesh>
   );
 };

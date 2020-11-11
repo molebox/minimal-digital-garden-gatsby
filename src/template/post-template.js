@@ -17,12 +17,11 @@ const PostTemplate = ({ data, pageContext }) => {
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
 
-  // TODO: fix og image in figma
   const socialImage = getShareImage({
     title: title,
     tagline: description,
     cloudName: "richardhaines",
-    imagePublicID: "social-card/og-image",
+    imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 1193,
     textLeftOffset: 100,
     titleFontSize: 110,
@@ -34,8 +33,8 @@ const PostTemplate = ({ data, pageContext }) => {
     taglineFont: "Jost.ttf",
     taglineTopOffset: 547,
     taglineFontSize: 24,
-    textColor: "E7E7E9",
-    version: "v1596023964",
+    textColor: "ffffff",
+    version: "v1605125205",
   });
 
   return (

@@ -15,7 +15,7 @@ const theme = {
     "2xl": "24px",
     "3xl": "28px",
     "4xl": "36px",
-    "5xl": "48px",
+    "5xl": "74px",
     "6xl": "100px",
   },
   colors: {

@@ -37,12 +37,12 @@ const Cubes = () => {
           /> */}
           {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
         <spotLight intensity={0.3} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow /> */}
-          <hemisphereLight intensity={0.5} />
+          <hemisphereLight intensity={0.1} />
           <spotLight
             position={[10, 15, 5]}
             angle={0.4}
             penumbra={1}
-            intensity={2}
+            intensity={1.5}
             castShadow
           />
           <Physics>

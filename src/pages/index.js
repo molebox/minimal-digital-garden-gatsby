@@ -40,9 +40,9 @@ export default ({ data }) => {
             cursor: "pointer",
           }}
         >
-          <Flex direction="column" wrap="wrap" maxW={600} lineHeight={1} mb={5}>
+          <Flex direction="column" wrap="wrap" maxW={500} lineHeight={1} mb={5}>
             <Text
-              fontSize={["5xl", "6xl"]}
+              fontSize={["4xl", "5xl"]}
               fontWeight={800}
               fontFamily="heading"
               color="brand.black"
@@ -51,7 +51,7 @@ export default ({ data }) => {
             </Text>
           </Flex>
           <Text
-            fontSize={["2xl", "3xl"]}
+            fontSize={["xl", "2xl"]}
             fontWeight={700}
             fontFamily="heading"
             color="brand.black"
@@ -60,7 +60,7 @@ export default ({ data }) => {
             {frontmatter.description}
           </Text>
           <Text
-            fontSize={["xl", "3xl"]}
+            fontSize={["md", "xl"]}
             fontWeight={800}
             fontFamily="body"
             color="brand.lightGrey"
