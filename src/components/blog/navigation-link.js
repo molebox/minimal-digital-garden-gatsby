@@ -9,6 +9,7 @@ const NavigationLink = ({ children, to }) => (
     color="brand.darkGrey"
     fontFamily="heading"
     fontSize={["md", "xl"]}
+    w="100%"
   >
     {children}
   </Link>

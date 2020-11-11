@@ -14,6 +14,7 @@ import N from "./../../assets/letters/Letter_N.png";
 import R from "./../../assets/letters/Letter_R.png";
 import T from "./../../assets/letters/Letter_T.png";
 import E from "./../../assets/letters/Letter_E.png";
+import Stork from "./../stork";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"

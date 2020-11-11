@@ -1,11 +1,14 @@
-import React from "react";
+import React, { Suspense } from "react";
 import gsap from "gsap";
-import { Flex } from "@chakra-ui/core";
+import { Flex, Box, Grid } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Location } from "@reach/router";
+import { Canvas } from "react-three-fiber";
+import Stork from "./../stork";
 
-const Header = ({ prev, next }) => {
+const Header = ({ prev, next, Location }) => {
   const headerRef = React.useRef(null);
   React.useEffect(() => {
     if (typeof window !== undefined) {
@@ -31,9 +34,10 @@ const Header = ({ prev, next }) => {
   }, []);
 
   return (
-    <Flex
+    <Grid
       as="header"
-      direction={["column", "row"]}
+      templateColumns={["1fr", "250px auto 1fr 1fr"]}
+      templateRows={["repeat(3, 1fr)", "1fr"]}
       w="100%"
       justify="space-evenly"
       align="center"
@@ -41,26 +45,50 @@ const Header = ({ prev, next }) => {
       ref={headerRef}
       position="sticky"
       top={0}
-      h={100}
+      h={[200, 100]}
       zIndex={999}
       overflowX="hidden"
+      mb={6}
     >
-      <NavigationLink to="/">Start</NavigationLink>
-      {prev === false
-        ? null
-        : prev && (
-            <NavigationLink to={prev.fields.slug}>
-              {prev.fields.slug.replace(/^\/|\/$/g, "")}
-            </NavigationLink>
-          )}
-      {next === false
-        ? null
-        : next && (
-            <NavigationLink to={next.fields.slug}>
-              {next.fields.slug.replace(/^\/|\/$/g, "")}
-            </NavigationLink>
-          )}
-    </Flex>
+      <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
+        <NavigationLink to="/">
+          <Canvas colorManagement>
+            <Suspense fallback={null}>
+              <Stork position={[10, 10, 100]} />
+            </Suspense>
+          </Canvas>
+        </NavigationLink>
+      </Flex>
+
+      <Flex
+        gridColumn={[1, 3]}
+        gridRow={[2, 1]}
+        alignItems="center"
+        justifyContent="center"
+      >
+        {prev === false
+          ? null
+          : prev && (
+              <NavigationLink to={prev.fields.slug}>
+                {prev.fields.slug.replace(/^\/|\/$/g, "")}
+              </NavigationLink>
+            )}
+      </Flex>
+      <Flex
+        gridColumn={[1, 4]}
+        gridRow={[3, 1]}
+        alignItems="center"
+        justifyContent="center"
+      >
+        {next === false
+          ? null
+          : next && (
+              <NavigationLink to={next.fields.slug}>
+                {next.fields.slug.replace(/^\/|\/$/g, "")}
+              </NavigationLink>
+            )}
+      </Flex>
+    </Grid>
   );
 };
 
