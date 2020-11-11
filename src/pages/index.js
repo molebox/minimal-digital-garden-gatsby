@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Link as GatsbyLink } from "gatsby";
-import { Flex, Link, Text, Box } from "@chakra-ui/core";
+import { Flex, Link, Text } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";

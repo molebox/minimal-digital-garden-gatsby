@@ -1,12 +1,11 @@
 import React, { Suspense } from "react";
 import gsap from "gsap";
-import { Flex, Box, Grid } from "@chakra-ui/core";
+import { Flex, Grid } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Location } from "@reach/router";
 import { Canvas } from "react-three-fiber";
-import Stork from "./../stork";
+import Stork from "../bird/stork";
 
 const Header = ({ prev, next, Location }) => {
   const headerRef = React.useRef(null);
