@@ -4,7 +4,6 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Loader } from "@react-three/drei";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
@@ -19,9 +18,6 @@ const Cubes = () => {
       p={2}
       mt={6}
     >
-      <Loader
-        dataInterpolation={(p) => `Planting seeds....${p.toFixed(2)}% done`}
-      />
       <Canvas
         colorManagement
         shadowMap
