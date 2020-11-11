@@ -15,9 +15,14 @@ const Cube = ({ position, imagePath }) => {
   }));
 
   return (
-    <mesh ref={ref} castShadow>
-      <boxBufferGeometry attach="geometry" />
-      <meshBasicMaterial attach="material" map={image} />
+    <mesh ref={ref} castShadow receiveShadow>
+      <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial
+        attach="material"
+        map={image}
+        roughness={0}
+        color="#f6f8fa"
+      />
     </mesh>
   );
 };

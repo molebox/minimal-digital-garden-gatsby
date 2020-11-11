@@ -23,16 +23,26 @@ const Cubes = () => {
         shadowMap
         camera={{
           position: [2, 7, 3], // x, y, z
-          fov: 65, // Field of view, the higher the number the further away the camera
+          fov: 75, // Field of view, the higher the number the further away the camera
         }}
       >
         <Suspense fallback={<Spinner size="xl" />}>
-          <pointLight position={[-10, -10, 30]} intensity={0.25} />
+          {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
           <spotLight
             intensity={0.2}
             position={[20, 25, 14]}
             angle={0.15}
             penumbra={1}
+            castShadow
+          /> */}
+          {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
+        <spotLight intensity={0.3} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow /> */}
+          <hemisphereLight intensity={0.5} />
+          <spotLight
+            position={[10, 15, 5]}
+            angle={0.4}
+            penumbra={1}
+            intensity={2}
             castShadow
           />
           <Physics>
@@ -45,8 +55,8 @@ const Cubes = () => {
             <Cube imagePath={["/Letter_A.png"]} position={[2, 7, -3]} />
             <Cube imagePath={["/Letter_L.png"]} position={[3, 8, -3]} />
 
-            <Cube imagePath={["/Letter_G.png"]} position={[-2, 7, 2]} />
-            <Cube imagePath={["/Letter_A.png"]} position={[-1, 6, 2]} />
+            <Cube imagePath={["/Letter_G.png"]} position={[-3, 8, 2]} />
+            <Cube imagePath={["/Letter_A.png"]} position={[-2, 6, 2]} />
             <Cube imagePath={["/Letter_R.png"]} position={[0, 5, 2]} />
             <Cube imagePath={["/Letter_D.png"]} position={[1, 4, 2]} />
             <Cube imagePath={["/Letter_E.png"]} position={[3, 3, 2]} />
