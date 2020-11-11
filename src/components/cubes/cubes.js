@@ -32,7 +32,7 @@ const Cubes = () => {
       p={2}
       mt={6}
     >
-      {hasMounted && (
+      {hasMounted ? (
         <Canvas
           colorManagement
           shadowMap
@@ -69,6 +69,8 @@ const Cubes = () => {
             </Physics>
           </Suspense>
         </Canvas>
+      ) : (
+        <Spinner size="xl" />
       )}
     </Box>
   );
