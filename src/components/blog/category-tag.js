@@ -14,7 +14,7 @@ const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
       justifyContent="center"
       size="sm"
       p={1}
-      maxW="100px"
+      minW="100px"
       onClick={() => getCategory(category)}
       _hover={{
         cursor: "pointer",
