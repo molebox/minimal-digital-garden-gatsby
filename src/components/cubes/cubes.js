@@ -11,8 +11,8 @@ import Cube from "./cube";
 const Cubes = () => {
   return (
     <Box
-      w={["500px", "1000px"]}
-      h={600}
+      w={["350px", "1000px"]}
+      h={["300px", "600px"]}
       m="0 auto"
       bgColor="brand.bg"
       p={2}

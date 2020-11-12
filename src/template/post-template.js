@@ -63,10 +63,10 @@ const PostTemplate = ({ data, pageContext }) => {
         <meta name="twitter:creator" content="@studio_hungry" />
       </Helmet>
       <Header prev={previous} next={next} />
-      <Flex wrap="wrap" maxW={["300px", "600px"]}>
+      <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
         <Text
           as="h1"
-          fontSize={["5xl", "6xl"]}
+          fontSize={["4xl", "6xl"]}
           color="brand.black"
           fontFamily="heading"
           fontWeight={800}
