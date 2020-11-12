@@ -1,13 +1,38 @@
 import React from "react";
 import { Link as GatsbyLink } from "gatsby";
-import { Flex, Link, Text, Box } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
+import { useCategory } from "./../components/blog/useCategory";
+import CategoryTag from "./../components/blog/category-tag";
+import AllCategoryTag from "./../components/blog/all-category-tag";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
+  const [filteredPosts, setFilteredPosts] = React.useState(posts);
+  const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
+
+  // Get a unique list of all the categories from the forntmatter
+  const categoriesList = [
+    ...new Set(data.allMdx.nodes.map((post) => post.frontmatter.category)),
+  ];
+
+  // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
+  // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
+  // a category and may want to use the search on the category
+  React.useEffect(() => {
+    let result = posts;
+    if (categories.length === posts.length) {
+      result = posts;
+    } else if (categories.length && categories.length < posts.length) {
+      result = categories;
+    }
+
+    setFilteredPosts(result);
+  }, [categories, posts]);
+
   return (
     <Layout>
       <Text as="h1" hidden>
@@ -27,7 +52,25 @@ export default ({ data }) => {
         By Rich Haines
       </Link>
       <SearchBar handleSearchQuery={handleSearchQuery} />
-      {posts.map(({ id, frontmatter, fields, excerpt }) => (
+      <Grid
+        templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
+        gap={5}
+        templateRows={["auto", "1fr"]}
+        alignItems="center"
+        justifyContent={["space-evenly"]}
+        p={1}
+        h="auto"
+      >
+        <AllCategoryTag handleCategoryQuery={handleCategoryQuery} />
+        {categoriesList.map((cat, index) => (
+          <CategoryTag
+            key={cat + index}
+            category={cat}
+            handleCategoryQuery={handleCategoryQuery}
+          />
+        ))}
+      </Grid>
+      {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
         <Link
           key={id}
           as={GatsbyLink}

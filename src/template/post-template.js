@@ -11,7 +11,6 @@ const PostTemplate = ({ data, pageContext }) => {
   const {
     frontmatter,
     body,
-    excerpt,
     fields: { slug },
   } = data.mdx;
   const { title, description } = frontmatter;
