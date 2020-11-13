@@ -4,6 +4,7 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
+import { setMatchPaths } from "./../../../.cache/find-path";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
@@ -25,6 +26,7 @@ const Cubes = () => {
           position: [2, 7, 3], // x, y, z
           fov: 75, // Field of view, the higher the number the further away the camera
         }}
+        pixelRatio={window.devicePixelRatio * 1.5}
       >
         <Suspense fallback={<Spinner size="xl" />}>
           {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
@@ -37,7 +39,7 @@ const Cubes = () => {
           /> */}
           {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
         <spotLight intensity={0.3} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow /> */}
-          <hemisphereLight intensity={0.1} />
+          {/* <hemisphereLight intensity={0.1} /> */}
           <spotLight
             position={[10, 15, 5]}
             angle={0.4}

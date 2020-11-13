@@ -62,7 +62,7 @@ module.exports = {
               short_name: `Rich Haines Digital Garden`,
               start_url: `/`,
               background_color: `#ffffff`,
-              theme_color: `#ffffffc`,
+              theme_color: `#ffffff`,
               display: `standalone`,
               icon: `src/images/favicon.png`
             },

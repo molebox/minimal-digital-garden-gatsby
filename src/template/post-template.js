@@ -24,7 +24,7 @@ const PostTemplate = ({ data, pageContext }) => {
     textAreaWidth: 992,
     textLeftOffset: 100,
     titleFontSize: 110,
-    titleExtraConfig: "_bold, _line_spacing_-10",
+    titleExtraConfig: "_line_spacing_-10",
     titleBottomOffset: 200,
     titleGravity: "north_west",
     taglineGravity: "north_west",
