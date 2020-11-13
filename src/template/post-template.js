@@ -6,6 +6,7 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Helmet from "react-helmet";
 import Header from "./../components/blog/header";
+import SEO from "react-seo-component";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -38,12 +39,23 @@ const PostTemplate = ({ data, pageContext }) => {
 
   return (
     <Layout>
-      <Helmet>
+      <SEO
+        title={title}
+        titleTemplate={slug}
+        titleSeparator={`-`}
+        description={description}
+        image={socialImage}
+        pathname={`https://richardhaines.dev${slug}`}
+        twitterUsername="@studio_hungry"
+        author="Rich Haines"
+        article={true}
+      />
+      {/* <Helmet>
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="image" content={socialImage} />
 
-        {/* OpenGraph tags */}
+     
         <meta
           property="og:url"
           content={`https://richardhaines.dev${slug}`}
@@ -53,14 +65,13 @@ const PostTemplate = ({ data, pageContext }) => {
         <meta property="og:description" content={description} />
         <meta property="og:image" content={socialImage} />
 
-        {/* Twitter Card tags */}
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={socialImage} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@studio_hungry" />
         <meta name="twitter:creator" content="@studio_hungry" />
-      </Helmet>
+      </Helmet> */}
       <Header prev={previous} next={next} />
       <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
         <Text
