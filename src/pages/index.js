@@ -1,6 +1,16 @@
 import React from "react";
 import { Link as GatsbyLink } from "gatsby";
-import { Flex, Grid, Link, Text } from "@chakra-ui/core";
+import {
+  Flex,
+  Grid,
+  Link,
+  Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";
@@ -10,7 +20,6 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import { gsap } from "gsap";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -80,8 +89,8 @@ export default ({ data }) => {
       </Text>
       <Cubes />
       <Link
-        fontSize="2xl"
-        fontWeight={700}
+        fontSize="xl"
+        fontWeight={600}
         fontFamily="heading"
         color="brand.black"
         my={5}

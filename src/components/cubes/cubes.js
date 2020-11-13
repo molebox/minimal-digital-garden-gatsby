@@ -20,7 +20,7 @@ const Cubes = () => {
   return (
     <Box
       w={["350px", "1000px"]}
-      h={["300px", "600px"]}
+      h={["200px", "500px"]}
       m="0 auto"
       bgColor="brand.bg"
       p={2}
@@ -30,27 +30,21 @@ const Cubes = () => {
         colorManagement
         shadowMap
         camera={{
-          position: [2, 4, 5], // x, y, z
+          position: [2, 6, 5], // x, y, z
           // fov: 75, // Field of view, the higher the number the further away the camera
-          zoom: 1,
+          zoom: 1.5,
         }}
         pixelRatio={pixelRatio.current}
         concurrent
       >
         <Suspense fallback={<Spinner size="xl" />}>
-          {/* <spotLight
-            intensity={0.5}
-            position={[25, 30, 20]}
-            angle={0.2}
-            penumbra={1}
-            castShadow
-          /> */}
           <directionalLight
             intensity={("#fff", 0.5)}
-            position={[10, 10, 10]}
+            position={[10, 20, 10]}
             castShadow
           />
-          <hemisphereLight intensity={2} />
+          <ambientLight intensity={0.8} />
+          <hemisphereLight intensity={1} />
           <Physics>
             <Plane />
             <Cube imagePath={["/D.png"]} position={[-5, 11, -3]} />
