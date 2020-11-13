@@ -1,4 +1,5 @@
 import React from "react";
+import * as THREE from "three";
 import { useBox } from "@react-three/cannon";
 import { useTexture } from "@react-three/drei";
 
@@ -7,6 +8,7 @@ import { useTexture } from "@react-three/drei";
  */
 const Cube = ({ position, imagePath }) => {
   const [image] = useTexture(imagePath);
+  const imageRef = React.useRef();
   const [ref] = useBox(() => ({
     mass: 1,
     position,
@@ -14,10 +16,23 @@ const Cube = ({ position, imagePath }) => {
     args: [1, 1, 1],
   }));
 
+  React.useEffect(() => {
+    image.magFilter = THREE.LinearMipmapNearestFilter;
+  }, []);
+
   return (
     <mesh ref={ref} castShadow receiveShadow>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" map={image} roughness={0} />
+      {/* <meshBasicMaterial>
+          <texture
+            {...image}
+            attach="map"
+            // magFilter={THREE.NearestMipMapLinearFilter}
+            minFilter={THREE.LinearMipmapLinearFilter}
+            ref={imageRef}
+          />
+        </meshBasicMaterial> */}
+      <meshStandardMaterial attach="material" map={image} color="#fff" />
     </mesh>
   );
 };
