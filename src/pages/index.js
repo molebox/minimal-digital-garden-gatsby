@@ -1,16 +1,6 @@
 import React from "react";
 import { Link as GatsbyLink } from "gatsby";
-import {
-  Flex,
-  Grid,
-  Link,
-  Text,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
-  AccordionIcon,
-} from "@chakra-ui/core";
+import { Flex, Grid, Link, Text } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import Cubes from "./../components/cubes/cubes";
 import SearchBar from "../components/blog/searchbar";

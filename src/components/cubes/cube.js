@@ -8,8 +8,6 @@ import { useTexture } from "@react-three/drei";
  */
 const Cube = ({ position, imagePath }) => {
   const [image] = useTexture(imagePath);
-  const [hovered, setHover] = React.useState(false);
-  const [active, setActive] = React.useState(false);
   const [color, setColor] = React.useState("");
 
   const [ref] = useBox(() => ({
@@ -26,25 +24,17 @@ const Cube = ({ position, imagePath }) => {
 
     const interval = setTimeout(() => {
       setColor(`rgb(${r},${g},${b})`);
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(interval);
   });
 
   return (
-    <mesh
-      ref={ref}
-      castShadow
-      receiveShadow
-      onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)}
-      onPointerOut={(event) => setHover(false)}
-    >
+    <mesh ref={ref} castShadow receiveShadow>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <meshPhongMaterial
         attach="material"
         map={image}
-        // color={hovered ? "#DA5077" : active ? "#ECBF09" : "#f6f8fa"}
         color={color}
         shininess={600}
       />
