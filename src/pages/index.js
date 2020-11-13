@@ -8,7 +8,7 @@ import { useSearchBar } from "./../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
 import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
-import { SEO } from "react-seo-component";
+import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 
 export default ({ data }) => {
