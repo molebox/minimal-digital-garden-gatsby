@@ -1,3 +1,10 @@
+let activeEnv =
+  process.env.GATSBY_ACTIVE_ENV || process.env.NODE_ENV || "development" || "production"
+
+require("dotenv").config({
+  path: `.env.${activeEnv}`,
+})
+
 module.exports = {
     siteMetadata: {},
     plugins: [
@@ -60,5 +67,11 @@ module.exports = {
               icon: `src/images/favicon.png`
             },
           },
+          {
+            resolve: 'gatsby-plugin-google-analytics',
+            options: {
+              trackingId: process.env.GOOGLE_TRACKING_ID || 'none'
+            }
+        },
     ]
 }
