@@ -10,6 +10,14 @@ import { setMatchPaths } from "./../../../.cache/find-path";
  * A set of 3D cubes which spell out "Digital Garden"
  */
 const Cubes = () => {
+  let pixelRatio = undefined;
+
+  React.useEffect(() => {
+    if (typeof window !== undefined) {
+      pixelRatio = window.devicePixelRatio * 1.5;
+    }
+  }, []);
+
   return (
     <Box
       w={["350px", "1000px"]}
@@ -26,9 +34,7 @@ const Cubes = () => {
           position: [2, 6, 3], // x, y, z
           fov: 75, // Field of view, the higher the number the further away the camera
         }}
-        pixelRatio={
-          typeof window !== undefined ? window.devicePixelRatio * 1.5 : null
-        }
+        pixelRatio={pixelRatio}
       >
         <Suspense fallback={<Spinner size="xl" />}>
           <spotLight
