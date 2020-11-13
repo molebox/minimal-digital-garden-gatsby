@@ -8,6 +8,8 @@ import { useSearchBar } from "./../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
 import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
+import { SEO } from "react-seo-component";
+import getShareImage from "@jlengstorf/get-share-image";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -33,8 +35,38 @@ export default ({ data }) => {
     setFilteredPosts(result);
   }, [categories, posts]);
 
+  const socialImage = getShareImage({
+    title: "Rich Haines Digital Garden",
+    tagline: "My articles, tutorials and thoughts. Under one roof.",
+    cloudName: "richardhaines",
+    imagePublicID: "social-card/social-card-garden",
+    textAreaWidth: 992,
+    textLeftOffset: 100,
+    titleFontSize: 110,
+    titleExtraConfig: "_bold",
+    titleBottomOffset: 200,
+    titleGravity: "north_west",
+    taglineGravity: "north_west",
+    titleFont: "Jost.ttf",
+    taglineFont: "Jost.ttf",
+    taglineTopOffset: 547,
+    taglineFontSize: 24,
+    textColor: "ffffff",
+    version: "v1605269202",
+  });
+
   return (
     <Layout>
+      <SEO
+        title="Rich Haines Digital Garden"
+        titleTemplate=""
+        titleSeparator=""
+        description="My articles, tutorials and thoughts. Under one roof."
+        image={socialImage}
+        pathname={`https://richardhaines.dev`}
+        twitterUsername="@studio_hungry"
+        author="Rich Haines"
+      />
       <Text as="h1" hidden>
         Digital Garden
       </Text>

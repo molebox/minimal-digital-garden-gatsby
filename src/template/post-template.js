@@ -4,7 +4,6 @@ import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
-import Helmet from "react-helmet";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 
@@ -36,7 +35,7 @@ const PostTemplate = ({ data, pageContext }) => {
     textColor: "ffffff",
     version: "v1605269202",
   });
-// https://res.cloudinary.com/richardhaines/image/upload/v1605269202/social-card/social-card-garden.png
+  // https://res.cloudinary.com/richardhaines/image/upload/v1605269202/social-card/social-card-garden.png
   return (
     <Layout>
       <SEO
