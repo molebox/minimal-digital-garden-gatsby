@@ -46,7 +46,7 @@ const PostTemplate = ({ data, pageContext }) => {
         {/* OpenGraph tags */}
         <meta
           property="og:url"
-          content={`https://garden.richardhaines.dev${slug}`}
+          content={`https://richardhaines.dev${slug}`}
         />
         <meta property="og:type" content="article" />
         <meta property="og:title" content={title} />
