@@ -22,7 +22,7 @@ const PostTemplate = ({ data, pageContext }) => {
     tagline: description,
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
-    textAreaWidth: 1193,
+    textAreaWidth: 992,
     textLeftOffset: 100,
     titleFontSize: 110,
     titleExtraConfig: "_bold",
@@ -34,9 +34,9 @@ const PostTemplate = ({ data, pageContext }) => {
     taglineTopOffset: 547,
     taglineFontSize: 24,
     textColor: "ffffff",
-    version: "v1605125205",
+    version: "v1605269202",
   });
-
+// https://res.cloudinary.com/richardhaines/image/upload/v1605269202/social-card/social-card-garden.png
   return (
     <Layout>
       <SEO
