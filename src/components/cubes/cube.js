@@ -8,7 +8,7 @@ import { useTexture } from "@react-three/drei";
  */
 const Cube = ({ position, imagePath }) => {
   const [image] = useTexture(imagePath);
-  const imageRef = React.useRef();
+
   const [ref] = useBox(() => ({
     mass: 1,
     position,
@@ -16,23 +16,15 @@ const Cube = ({ position, imagePath }) => {
     args: [1, 1, 1],
   }));
 
-  React.useEffect(() => {
-    image.magFilter = THREE.LinearMipmapNearestFilter;
-  }, []);
-
   return (
     <mesh ref={ref} castShadow receiveShadow>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      {/* <meshBasicMaterial>
-          <texture
-            {...image}
-            attach="map"
-            // magFilter={THREE.NearestMipMapLinearFilter}
-            minFilter={THREE.LinearMipmapLinearFilter}
-            ref={imageRef}
-          />
-        </meshBasicMaterial> */}
-      <meshStandardMaterial attach="material" map={image} color="#fff" />
+      <meshPhongMaterial
+        attach="material"
+        map={image}
+        color="#f6f8fa"
+        shininess={600}
+      />
     </mesh>
   );
 };

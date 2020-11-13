@@ -4,17 +4,16 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { setMatchPaths } from "./../../../.cache/find-path";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
  */
 const Cubes = () => {
-  let pixelRatio = undefined;
+  const pixelRatio = React.useRef();
 
   React.useEffect(() => {
     if (typeof window !== undefined) {
-      pixelRatio = window.devicePixelRatio * 1.5;
+      pixelRatio.current = window.devicePixelRatio * 1.5;
     }
   }, []);
 
@@ -35,34 +34,39 @@ const Cubes = () => {
           // fov: 75, // Field of view, the higher the number the further away the camera
           zoom: 1,
         }}
-        pixelRatio={pixelRatio}
+        pixelRatio={pixelRatio.current}
         concurrent
       >
         <Suspense fallback={<Spinner size="xl" />}>
-          <spotLight
-            intensity={0.3}
+          {/* <spotLight
+            intensity={0.5}
             position={[25, 30, 20]}
             angle={0.2}
             penumbra={1}
             castShadow
+          /> */}
+          <directionalLight
+            intensity={("#fff", 0.5)}
+            position={[10, 10, 10]}
+            castShadow
           />
-          <hemisphereLight intensity={1} />
+          <hemisphereLight intensity={0.2} />
           <Physics>
             <Plane />
-            <Cube imagePath={["/D.jpg"]} position={[-5, 11, -3]} />
-            <Cube imagePath={["/I.jpg"]} position={[-2, 11, -3]} />
-            <Cube imagePath={["/G.jpg"]} position={[-1, 10, -3]} />
-            <Cube imagePath={["/I.jpg"]} position={[0, 9, -3]} />
-            <Cube imagePath={["/T.jpg"]} position={[1, 8, -3]} />
-            <Cube imagePath={["/A.jpg"]} position={[2, 7, -3]} />
-            <Cube imagePath={["/L.jpg"]} position={[3, 8, -3]} />
+            <Cube imagePath={["/D.png"]} position={[-5, 11, -3]} />
+            <Cube imagePath={["/I.png"]} position={[-2, 11, -3]} />
+            <Cube imagePath={["/G.png"]} position={[-1, 10, -3]} />
+            <Cube imagePath={["/I.png"]} position={[0, 9, -3]} />
+            <Cube imagePath={["/T.png"]} position={[1, 8, -3]} />
+            <Cube imagePath={["/A.png"]} position={[2, 7, -3]} />
+            <Cube imagePath={["/L.png"]} position={[3, 8, -3]} />
 
-            <Cube imagePath={["/G.jpg"]} position={[-3, 8, 2]} />
-            <Cube imagePath={["/A.jpg"]} position={[-2, 6, 2]} />
-            <Cube imagePath={["/R.jpg"]} position={[0, 5, 2]} />
-            <Cube imagePath={["/D.jpg"]} position={[1, 4, 2]} />
-            <Cube imagePath={["/E.jpg"]} position={[3, 3, 2]} />
-            <Cube imagePath={["/N.jpg"]} position={[4, 2, 2]} />
+            <Cube imagePath={["/G.png"]} position={[-3, 8, 2]} />
+            <Cube imagePath={["/A.png"]} position={[-2, 6, 2]} />
+            <Cube imagePath={["/R.png"]} position={[0, 5, 2]} />
+            <Cube imagePath={["/D.png"]} position={[1, 4, 2]} />
+            <Cube imagePath={["/E.png"]} position={[3, 3, 2]} />
+            <Cube imagePath={["/N.png"]} position={[4, 2, 2]} />
           </Physics>
         </Suspense>
       </Canvas>
