@@ -10,6 +10,7 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
+import { gsap } from "gsap";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -34,6 +35,13 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
+
+  // React.useEffect(() => {
+  //   if (typeof window !== undefined) {
+  //     gsap.fromTo('.cat-tag', {opacity: 0}, {opacity: 1, duration: 1.2, delay: 2})
+  //   }
+
+  // }, [])
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -72,14 +80,17 @@ export default ({ data }) => {
       </Text>
       <Cubes />
       <Link
-        fontSize="xl"
-        fontWeight={500}
+        fontSize="2xl"
+        fontWeight={700}
         fontFamily="heading"
         color="brand.black"
         my={5}
         href="https://twitter.com/studio_hungry"
         isExternal
         textDecoration="underline"
+        _hover={{
+          color: "brand.darkGrey",
+        }}
       >
         By Rich Haines
       </Link>

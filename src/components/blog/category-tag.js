@@ -18,7 +18,9 @@ const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
       onClick={() => getCategory(category)}
       _hover={{
         cursor: "pointer",
+        bgColor: "brand.black",
       }}
+      className="cat-tag"
     >
       {category}
     </Tag>

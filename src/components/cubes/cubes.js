@@ -50,7 +50,7 @@ const Cubes = () => {
             position={[10, 10, 10]}
             castShadow
           />
-          <hemisphereLight intensity={0.2} />
+          <hemisphereLight intensity={2} />
           <Physics>
             <Plane />
             <Cube imagePath={["/D.png"]} position={[-5, 11, -3]} />

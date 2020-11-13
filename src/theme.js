@@ -25,6 +25,7 @@ const theme = {
       lightGrey: "#707070",
       darkGrey: "#1f2127",
       offWhite: "#f6f8fa",
+      accent: "#DA5077",
     },
   },
 };
