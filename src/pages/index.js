@@ -136,8 +136,8 @@ export default ({ data }) => {
           </Text>
           <Text
             fontSize={["md", "xl"]}
-            fontWeight={800}
-            fontFamily="body"
+            fontWeight={600}
+            fontFamily="heading"
             color="brand.lightGrey"
           >
             {excerpt}

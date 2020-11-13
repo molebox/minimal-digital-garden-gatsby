@@ -23,10 +23,10 @@ const Cubes = () => {
         colorManagement
         shadowMap
         camera={{
-          position: [2, 7, 3], // x, y, z
+          position: [2, 6, 3], // x, y, z
           fov: 75, // Field of view, the higher the number the further away the camera
         }}
-        pixelRatio={window.devicePixelRatio * 1.5}
+        pixelRatio={typeof window !== undefined ? window.devicePixelRatio * 1.5 : null}
       >
         <Suspense fallback={<Spinner size="xl" />}>
           {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
@@ -37,16 +37,17 @@ const Cubes = () => {
             penumbra={1}
             castShadow
           /> */}
-          {/* <pointLight position={[-10, -10, 30]} intensity={0.25} />
-        <spotLight intensity={0.3} position={[30, 30, 50]} angle={0.2} penumbra={1} castShadow /> */}
+          {/* {/* <pointLight position={[-10, -10, 30]} intensity={0.25} /> */}
+          <pointLight position={[-10, -10, 30]} intensity={0.25} />
+        {/* <spotLight intensity={0.3} position={[25, 30, 20]} angle={0.2} penumbra={1} castShadow /> */}
           {/* <hemisphereLight intensity={0.1} /> */}
-          <spotLight
+          {/* <spotLight
             position={[10, 15, 5]}
-            angle={0.4}
+            angle={0.8}
             penumbra={1}
             intensity={1.5}
             castShadow
-          />
+          /> */}
           <Physics>
             <Plane />
             <Cube imagePath={["/Letter_D.png"]} position={[-5, 11, -3]} />
