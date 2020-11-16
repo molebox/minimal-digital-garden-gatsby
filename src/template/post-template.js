@@ -23,7 +23,7 @@ const PostTemplate = ({ data, pageContext }) => {
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 992,
     textLeftOffset: 100,
-    titleFontSize: 110,
+    titleFontSize: 85,
     titleExtraConfig: "_line_spacing_-10",
     titleBottomOffset: 200,
     titleGravity: "north_west",
@@ -35,7 +35,7 @@ const PostTemplate = ({ data, pageContext }) => {
     textColor: "ffffff",
     version: "v1605269202",
   });
-  // https://res.cloudinary.com/richardhaines/image/upload/v1605269202/social-card/social-card-garden.png
+
   return (
     <Layout>
       <SEO
@@ -49,28 +49,6 @@ const PostTemplate = ({ data, pageContext }) => {
         author="Rich Haines"
         article={true}
       />
-      {/* <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="image" content={socialImage} />
-
-     
-        <meta
-          property="og:url"
-          content={`https://richardhaines.dev${slug}`}
-        />
-        <meta property="og:type" content="article" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content={socialImage} />
-
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={socialImage} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@studio_hungry" />
-        <meta name="twitter:creator" content="@studio_hungry" />
-      </Helmet> */}
       <Header prev={previous} next={next} />
       <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
         <Text
