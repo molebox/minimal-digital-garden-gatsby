@@ -21,8 +21,8 @@ import T from "./letters/T.png";
  */
 const Cubes = () => {
   const pixelRatio = React.useRef();
-  const { progress } = useProgress();
-  React.useEffect(() => console.log("cubes progress: ", progress), [progress]);
+  const { active } = useProgress();
+
   React.useEffect(() => {
     if (typeof window !== undefined) {
       pixelRatio.current = window.devicePixelRatio * 1.5;
@@ -43,7 +43,7 @@ const Cubes = () => {
         p={2}
         mt={6}
       >
-        {progress === 100 ? (
+        {!active ? (
           <Canvas
             colorManagement
             shadowMap

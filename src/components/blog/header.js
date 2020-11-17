@@ -8,7 +8,7 @@ import { Canvas } from "react-three-fiber";
 import Stork from "../bird/stork";
 import { useProgress } from "@react-three/drei";
 
-const Header = ({ prev, next, Location }) => {
+const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
   const { progress } = useProgress();
   React.useEffect(() => {
