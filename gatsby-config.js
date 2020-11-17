@@ -40,20 +40,31 @@ module.exports = {
               name: 'assets'
             },
           },
+          // {
+          //   resolve: `gatsby-plugin-prefetch-google-fonts`,
+          //   options: {
+          //     fonts: [
+          //       {
+          //         family: `Jost`,
+          //         variants: [`400`, `500`, `600`, `700`, `800`, `900`]
+          //       },
+          //       {
+          //         family: `Open Sans`,
+          //         variants: [`400`, `500`, `600`, `700`, `800`, `900`]
+          //       },
+          //     ],
+          //   },
+          // },
           {
-            resolve: `gatsby-plugin-prefetch-google-fonts`,
+            resolve: `gatsby-plugin-google-fonts`,
             options: {
               fonts: [
-                {
-                  family: `Jost`,
-                  variants: [`400`, `500`, `600`, `700`, `800`, `900`]
-                },
-                {
-                  family: `Open Sans`,
-                  variants: [`400`, `500`, `600`, `700`, `800`, `900`]
-                },
+                `Jost`,
+                `Open Sans`,
+                `source sans pro\:300,400,400i,700` // you can also specify font weights and styles
               ],
-            },
+              // display: 'swap'
+            }
           },
           {
             resolve: `gatsby-plugin-manifest`,

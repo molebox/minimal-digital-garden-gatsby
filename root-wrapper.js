@@ -25,7 +25,7 @@ const components = {
     </Text>
   ),
   ul: (props) => <UnorderedList my={2}>{props.children}</UnorderedList>,
-  li: (props) => <ListItem><Text fontFamily="body" fontSize="xl">{props.children}</Text></ListItem>,
+  li: (props) => <ListItem fontFamily="body" fontSize="xl">{props.children}</ListItem>,
   p: (props) => <Text my={2} fontSize="xl" fontFamily="body">{props.children}</Text>,
   img: (props) => (
     <Image m="0 auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
