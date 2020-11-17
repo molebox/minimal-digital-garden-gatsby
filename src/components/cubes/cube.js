@@ -1,5 +1,4 @@
 import React from "react";
-import * as THREE from "three";
 import { useBox } from "@react-three/cannon";
 import { useTexture } from "@react-three/drei";
 import { useRandomColor } from "./../blog/useRandomColor";

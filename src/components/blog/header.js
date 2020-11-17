@@ -10,7 +10,7 @@ import { useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next, Location }) => {
   const headerRef = React.useRef(null);
-  const { active, progress, errors, item, loaded, total } = useProgress();
+  const { progress } = useProgress();
   React.useEffect(() => {
     if (typeof window !== undefined) {
       gsap.registerPlugin(ScrollTrigger);
@@ -43,7 +43,7 @@ const Header = ({ prev, next, Location }) => {
   //   );
   // }
 
-  React.useEffect(() => console.log({ item }), [item]);
+  React.useEffect(() => console.log("stork progress: ", progress), [progress]);
 
   return (
     <Grid
@@ -63,13 +63,19 @@ const Header = ({ prev, next, Location }) => {
       mb={6}
     >
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
-        <NavigationLink to="/">
-          <Canvas colorManagement>
-            <Suspense fallback={<Spinner/>}>
-              <Stork position={[10, 10, 100]} />
-            </Suspense>
-          </Canvas>
-        </NavigationLink>
+        {progress === 100 ? (
+          <NavigationLink to="/">
+            <Canvas colorManagement>
+              <Suspense fallback={<Spinner />}>
+                <Stork position={[10, 10, 100]} />
+              </Suspense>
+            </Canvas>
+          </NavigationLink>
+        ) : (
+          <Flex align="center" justify="center" m="0 auto">
+            <Spinner size="md" />
+          </Flex>
+        )}
       </Flex>
 
       <Flex
