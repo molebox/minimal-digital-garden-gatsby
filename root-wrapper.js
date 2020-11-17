@@ -37,7 +37,7 @@ const components = {
       </RoughNotation>
     </Link>
   ),
-  wrapper: ({children, ...props}) => {
+  wrapper: ({children}) => {
     return (
       <Layout>
           {children}
