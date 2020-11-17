@@ -6,6 +6,16 @@ import Plane from "./plane";
 import Cube from "./cube";
 import { Loader, useProgress } from "@react-three/drei";
 
+import A from "./letters/A.png";
+import D from "./letters/D.png";
+import E from "./letters/E.png";
+import G from "./letters/G.png";
+import I from "./letters/I.png";
+import L from "./letters/L.png";
+import N from "./letters/N.png";
+import R from "./letters/R.png";
+import T from "./letters/T.png";
+
 /**
  * A set of 3D cubes which spell out "Digital Garden"
  */
@@ -54,25 +64,25 @@ const Cubes = () => {
             <hemisphereLight intensity={1} />
             <Physics>
               <Plane />
-              <Cube imagePath={["/D.png"]} position={[-5, 11, -3]} />
-              <Cube imagePath={["/I.png"]} position={[-2, 11, -3]} />
-              <Cube imagePath={["/G.png"]} position={[-1, 10, -3]} />
-              <Cube imagePath={["/I.png"]} position={[0, 9, -3]} />
-              <Cube imagePath={["/T.png"]} position={[1, 8, -3]} />
-              <Cube imagePath={["/A.png"]} position={[2, 7, -3]} />
-              <Cube imagePath={["/L.png"]} position={[3, 8, -3]} />
+              <Cube imagePath={[D]} position={[-5, 11, -3]} />
+              <Cube imagePath={[I]} position={[-2, 11, -3]} />
+              <Cube imagePath={[G]} position={[-1, 10, -3]} />
+              <Cube imagePath={[I]} position={[0, 9, -3]} />
+              <Cube imagePath={[T]} position={[1, 8, -3]} />
+              <Cube imagePath={[A]} position={[2, 7, -3]} />
+              <Cube imagePath={[L]} position={[3, 8, -3]} />
 
-              <Cube imagePath={["/G.png"]} position={[-3, 8, 2]} />
-              <Cube imagePath={["/A.png"]} position={[-2, 6, 2]} />
-              <Cube imagePath={["/R.png"]} position={[0, 5, 2]} />
-              <Cube imagePath={["/D.png"]} position={[1, 4, 2]} />
-              <Cube imagePath={["/E.png"]} position={[3, 3, 2]} />
-              <Cube imagePath={["/N.png"]} position={[4, 2, 2]} />
+              <Cube imagePath={[G]} position={[-3, 8, 2]} />
+              <Cube imagePath={[A]} position={[-2, 6, 2]} />
+              <Cube imagePath={[R]} position={[0, 5, 2]} />
+              <Cube imagePath={[D]} position={[1, 4, 2]} />
+              <Cube imagePath={[E]} position={[3, 3, 2]} />
+              <Cube imagePath={[N]} position={[4, 2, 2]} />
             </Physics>
           </Suspense>
         </Canvas>
       </Box>
-      <Loader/>
+      <Loader />
       {/* <Loader
         containerStyles={{ background: "white", margin: "0 auto" }}
         dataStyles={{ color: "#1f2127" }}

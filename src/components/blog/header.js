@@ -64,13 +64,13 @@ const Header = ({ prev, next, Location }) => {
     >
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
-            <Canvas colorManagement>
-              <Suspense fallback={null}>
-                <Stork position={[10, 10, 100]} />
-              </Suspense>
-            </Canvas>
+          <Canvas colorManagement>
+            <Suspense fallback={null}>
+              <Stork position={[10, 10, 100]} />
+            </Suspense>
+          </Canvas>
         </NavigationLink>
-        <Loader/>
+        <Loader />
       </Flex>
 
       <Flex
