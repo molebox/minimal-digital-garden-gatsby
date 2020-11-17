@@ -5,7 +5,6 @@ import theme from './src/theme';
 import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
-import {Loader} from '@react-three/drei';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -49,7 +48,6 @@ const components = {
 export const wrapRootElement = ({ element }) => (
   <ChakraProvider resetCSS theme={theme}>
     <MDXProvider components={components}>{element}</MDXProvider>
-    <Loader containerStyles={{background: 'white'}} dataStyles={{color: '#1f2127'}} dataInterpolation={(p) => `Planting seeds... ${p.toFixed(2)}%`}/>
   </ChakraProvider>
   
 )
