@@ -4,19 +4,24 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Loader } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
  */
 const Cubes = () => {
   const pixelRatio = React.useRef();
+  const { active, progress, errors, item, loaded, total } = useProgress();
 
   React.useEffect(() => {
     if (typeof window !== undefined) {
       pixelRatio.current = window.devicePixelRatio * 1.5;
     }
   }, []);
+
+  function Loader() {
+    return <Html center>Planting Seeds... {progress}%</Html>;
+  }
 
   return (
     <>
@@ -39,7 +44,7 @@ const Cubes = () => {
           pixelRatio={pixelRatio.current}
           concurrent
         >
-          <Suspense fallback={null}>
+          <Suspense fallback={<Loader />}>
             <directionalLight
               intensity={("#fff", 0.5)}
               position={[10, 20, 10]}
@@ -67,7 +72,7 @@ const Cubes = () => {
           </Suspense>
         </Canvas>
       </Box>
-      <Loader
+      {/* <Loader
         containerStyles={{ background: "white", margin: "0 auto" }}
         dataStyles={{ color: "#1f2127" }}
         dataInterpolation={(p) => (
@@ -75,7 +80,7 @@ const Cubes = () => {
             Planting seeds... {p.toFixed(2)}%
           </Text>
         )}
-      />
+      /> */}
     </>
   );
 };
