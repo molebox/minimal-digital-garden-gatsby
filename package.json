@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "node postinstall.js && gatsby develop",
-    "build": "node postinstall.js && gatsby build",
+    "dev": "yarn postinstall && gatsby develop",
+    "build": "yarn postinstall && gatsby build",
     "clean": "gatsby clean",
     "pretty-check": "prettier --check \"src/**/*.{js}\"",
     "pretty": "prettier --write \"src/**/*js\"",
@@ -41,10 +41,10 @@
     "react-seo-component": "^2.0.2",
     "react-three-fiber": "^5.1.9",
     "remark-slug": "^6.0.0",
-    "three": "^0.122.0",
-    "replace-in-file": "6.1.0"
+    "three": "^0.122.0"
   },
   "devDependencies": {
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "replace-in-file": "6.1.0"
   }
 }

@@ -6,7 +6,7 @@ import NavigationLink from "./navigation-link";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
 import Stork from "../bird/stork";
-import { useProgress } from "@react-three/drei";
+import { Loader, useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next, Location }) => {
   const headerRef = React.useRef(null);
@@ -34,14 +34,14 @@ const Header = ({ prev, next, Location }) => {
     }
   }, []);
 
-  function Loader() {
-    return (
-      <Flex align="center" justify="center">
-        <Spinner />
-        <Text>{progress}%</Text>
-      </Flex>
-    );
-  }
+  // function Loader() {
+  //   return (
+  //     <Flex align="center" justify="center">
+  //       <Spinner />
+  //       <Text>{progress}%</Text>
+  //     </Flex>
+  //   );
+  // }
 
   React.useEffect(() => console.log({ loaded }), [loaded]);
 
@@ -64,16 +64,13 @@ const Header = ({ prev, next, Location }) => {
     >
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
-          {loaded ? (
             <Canvas colorManagement>
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={null}>
                 <Stork position={[10, 10, 100]} />
               </Suspense>
             </Canvas>
-          ) : (
-            <Spinner />
-          )}
         </NavigationLink>
+        <Loader/>
       </Flex>
 
       <Flex

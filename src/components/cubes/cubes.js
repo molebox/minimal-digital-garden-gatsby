@@ -4,7 +4,7 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Html, useProgress } from "@react-three/drei";
+import { Loader, useProgress } from "@react-three/drei";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
@@ -19,9 +19,9 @@ const Cubes = () => {
     }
   }, []);
 
-  function Loader() {
-    return <Html center>Planting Seeds... {progress}%</Html>;
-  }
+  // function Loader() {
+  //   return <Html center>Planting Seeds... {progress}%</Html>;
+  // }
 
   return (
     <>
@@ -72,6 +72,7 @@ const Cubes = () => {
           </Suspense>
         </Canvas>
       </Box>
+      <Loader/>
       {/* <Loader
         containerStyles={{ background: "white", margin: "0 auto" }}
         dataStyles={{ color: "#1f2127" }}
