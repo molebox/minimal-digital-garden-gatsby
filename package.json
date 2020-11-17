@@ -10,7 +10,9 @@
     "pretty-check": "prettier --check \"src/**/*.{js}\"",
     "pretty": "prettier --write \"src/**/*js\"",
     "sitemap": "gatsby build && gatsby serve",
-    "z": "gatsby clean && gatsby develop"
+    "z": "gatsby clean && gatsby develop",
+    "prepack": "if-env CI=true && echo \"skip build\" || (npm run test && npm run eslint && npm run build)",
+    "postinstall": "node postinstall.js"
   },
   "dependencies": {
     "@chakra-ui/core": "^1.0.0-rc.8",
@@ -39,7 +41,8 @@
     "react-seo-component": "^2.0.2",
     "react-three-fiber": "^5.1.9",
     "remark-slug": "^6.0.0",
-    "three": "^0.122.0"
+    "three": "^0.122.0",
+    "replace-in-file": "6.1.0"
   },
   "devDependencies": {
     "prettier": "^2.1.2"

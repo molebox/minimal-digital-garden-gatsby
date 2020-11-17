@@ -10,10 +10,8 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import { Loader } from "@react-three/drei";
 
 export default ({ data }) => {
-  const [loadingModels, setLoadingModels] = React.useState(false);
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
@@ -36,6 +34,13 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
+
+  // React.useEffect(() => {
+  //   if (typeof window !== undefined) {
+  //     gsap.fromTo('.cat-tag', {opacity: 0}, {opacity: 1, duration: 1.2, delay: 2})
+  //   }
+
+  // }, [])
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -73,16 +78,7 @@ export default ({ data }) => {
         Digital Garden
       </Text>
       <Cubes />
-      {loadingModels ? (
-                  <Loader
-                  containerStyles={{ background: "white", height: '100vh', width: '100%', margin: '0 auto' }}
-                  dataStyles={{ color: "#1f2127" }}
-                  dataInterpolation={(p) => <Text fontFamily="heading" fontSize="md">Planting seeds... {p.toFixed(2)}%</Text>}
-                  initialState={(active) => setLoadingModels(active)}
-                />
-      ) : (
-        <>
-     <Link
+      <Link
         fontSize="xl"
         fontWeight={600}
         fontFamily="heading"
@@ -158,9 +154,6 @@ export default ({ data }) => {
           </Text>
         </Link>
       ))}
-        </>
-      )}
- 
     </Layout>
   );
 };
