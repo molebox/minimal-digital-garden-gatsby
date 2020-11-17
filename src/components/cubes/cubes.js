@@ -1,10 +1,10 @@
 import React, { Suspense } from "react";
-import { Box, Text } from "@chakra-ui/core";
+import { Box, Spinner } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Loader, useProgress } from "@react-three/drei";
+import { useProgress } from "@react-three/drei";
 
 import A from "./letters/A.png";
 import D from "./letters/D.png";
@@ -22,7 +22,7 @@ import T from "./letters/T.png";
 const Cubes = () => {
   const pixelRatio = React.useRef();
   const { active, progress, errors, item, loaded, total } = useProgress();
-
+  console.log(active, progress, errors, loaded, total)
   React.useEffect(() => {
     if (typeof window !== undefined) {
       pixelRatio.current = window.devicePixelRatio * 1.5;
@@ -54,7 +54,7 @@ const Cubes = () => {
           pixelRatio={pixelRatio.current}
           concurrent
         >
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Spinner />}>
             <directionalLight
               intensity={("#fff", 0.5)}
               position={[10, 20, 10]}
@@ -82,7 +82,6 @@ const Cubes = () => {
           </Suspense>
         </Canvas>
       </Box>
-      <Loader />
       {/* <Loader
         containerStyles={{ background: "white", margin: "0 auto" }}
         dataStyles={{ color: "#1f2127" }}
