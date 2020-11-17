@@ -1,10 +1,9 @@
 import React, { Suspense } from "react";
-import { Box, Spinner } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Loader } from "@react-three/drei";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"
@@ -18,7 +17,9 @@ const Cubes = () => {
     }
   }, []);
 
+
   return (
+    <>
     <Box
       w={["350px", "1000px"]}
       h={["200px", "500px"]}
@@ -27,11 +28,6 @@ const Cubes = () => {
       p={2}
       mt={6}
     >
-      <Loader
-        containerStyles={{ background: "white" }}
-        dataStyles={{ color: "#1f2127" }}
-        dataInterpolation={(p) => `Planting seeds... ${p.toFixed(2)}%`}
-      />
       <Canvas
         colorManagement
         shadowMap
@@ -43,7 +39,7 @@ const Cubes = () => {
         pixelRatio={pixelRatio.current}
         concurrent
       >
-        <Suspense fallback={<Spinner size="xl" />}>
+        <Suspense fallback={null}>
           <directionalLight
             intensity={("#fff", 0.5)}
             position={[10, 20, 10]}
@@ -71,6 +67,8 @@ const Cubes = () => {
         </Suspense>
       </Canvas>
     </Box>
+
+    </>
   );
 };
 
