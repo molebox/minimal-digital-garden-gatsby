@@ -4,8 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "gatsby develop",
-    "build": "gatsby build",
+    "dev": "node postinstall.js && gatsby develop",
+    "build": "node postinstall.js && gatsby build",
     "clean": "gatsby clean",
     "pretty-check": "prettier --check \"src/**/*.{js}\"",
     "pretty": "prettier --write \"src/**/*js\"",
