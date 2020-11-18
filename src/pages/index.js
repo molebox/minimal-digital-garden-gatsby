@@ -157,7 +157,7 @@ export default ({ data }) => {
         </Link>
       ))}
     </Layout>
-   <Loader />
+   {/* <Loader /> */}
     </>
   );
 };
