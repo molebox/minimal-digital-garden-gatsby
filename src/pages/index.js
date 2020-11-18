@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Link as GatsbyLink } from "gatsby";
-import { Flex, Grid, Link, Text } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -79,9 +79,18 @@ export default ({ data }) => {
       <Text as="h1" hidden>
         Digital Garden
       </Text>
-      <Suspense fallback={null}>
-        <Cubes />
-      </Suspense>
+      <Box
+        w={["350px", "1000px"]}
+        h={["200px", "500px"]}
+        m="0 auto"
+        bgColor="brand.bg"
+        p={2}
+        mt={6}
+      >
+        <Suspense fallback={null}>
+          <Cubes />
+        </Suspense>
+      </Box>
 
       <Link
         fontSize="xl"

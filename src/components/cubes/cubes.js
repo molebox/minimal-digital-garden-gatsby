@@ -27,60 +27,46 @@ const Cubes = () => {
     }
   }, []);
 
-  // function Loader() {
-  //   return <Html center>Planting Seeds... {progress}%</Html>;
-  // }
-
   return (
     <>
-      <Box
-        w={["350px", "1000px"]}
-        h={["200px", "500px"]}
-        m="0 auto"
-        bgColor="brand.bg"
-        p={2}
-        mt={6}
+      <Canvas
+        colorManagement
+        shadowMap
+        camera={{
+          position: [2, 6, 5], // x, y, z
+          // fov: 75, // Field of view, the higher the number the further away the camera
+          zoom: 1.5,
+        }}
+        pixelRatio={pixelRatio.current}
+        concurrent
       >
-        <Canvas
-          colorManagement
-          shadowMap
-          camera={{
-            position: [2, 6, 5], // x, y, z
-            // fov: 75, // Field of view, the higher the number the further away the camera
-            zoom: 1.5,
-          }}
-          pixelRatio={pixelRatio.current}
-          concurrent
-        >
-          <Suspense fallback={null}>
-            <directionalLight
-              intensity={("#fff", 0.5)}
-              position={[10, 20, 10]}
-              castShadow
-            />
-            <ambientLight intensity={0.8} />
-            <hemisphereLight intensity={1} />
-            <Physics>
-              <Plane />
-              <Cube imagePath={[D]} position={[-5, 11, -3]} />
-              <Cube imagePath={[I]} position={[-2, 11, -3]} />
-              <Cube imagePath={[G]} position={[-1, 10, -3]} />
-              <Cube imagePath={[I]} position={[0, 9, -3]} />
-              <Cube imagePath={[T]} position={[1, 8, -3]} />
-              <Cube imagePath={[A]} position={[2, 7, -3]} />
-              <Cube imagePath={[L]} position={[3, 8, -3]} />
+        <Suspense fallback={null}>
+          <directionalLight
+            intensity={("#fff", 0.5)}
+            position={[10, 20, 10]}
+            castShadow
+          />
+          <ambientLight intensity={0.8} />
+          <hemisphereLight intensity={1} />
+          <Physics>
+            <Plane />
+            <Cube imagePath={[D]} position={[-5, 11, -3]} />
+            <Cube imagePath={[I]} position={[-2, 11, -3]} />
+            <Cube imagePath={[G]} position={[-1, 10, -3]} />
+            <Cube imagePath={[I]} position={[0, 9, -3]} />
+            <Cube imagePath={[T]} position={[1, 8, -3]} />
+            <Cube imagePath={[A]} position={[2, 7, -3]} />
+            <Cube imagePath={[L]} position={[3, 8, -3]} />
 
-              <Cube imagePath={[G]} position={[-3, 8, 2]} />
-              <Cube imagePath={[A]} position={[-2, 6, 2]} />
-              <Cube imagePath={[R]} position={[0, 5, 2]} />
-              <Cube imagePath={[D]} position={[1, 4, 2]} />
-              <Cube imagePath={[E]} position={[3, 3, 2]} />
-              <Cube imagePath={[N]} position={[4, 2, 2]} />
-            </Physics>
-          </Suspense>
-        </Canvas>
-      </Box>
-      {/* <Loader /> */}
+            <Cube imagePath={[G]} position={[-3, 8, 2]} />
+            <Cube imagePath={[A]} position={[-2, 6, 2]} />
+            <Cube imagePath={[R]} position={[0, 5, 2]} />
+            <Cube imagePath={[D]} position={[1, 4, 2]} />
+            <Cube imagePath={[E]} position={[3, 3, 2]} />
+            <Cube imagePath={[N]} position={[4, 2, 2]} />
+          </Physics>
+        </Suspense>
+      </Canvas>
     </>
   );
 };

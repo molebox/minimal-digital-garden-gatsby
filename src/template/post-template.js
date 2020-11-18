@@ -66,7 +66,6 @@ const PostTemplate = ({ data, pageContext }) => {
         </Flex>
         <MDXRenderer>{body}</MDXRenderer>
       </Layout>
-      {/* <Loader /> */}
     </>
   );
 };
