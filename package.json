@@ -12,7 +12,7 @@
     "sitemap": "gatsby build && gatsby serve",
     "z": "gatsby clean && gatsby develop",
     "prepack": "if-env CI=true && echo \"skip build\" || (npm run test && npm run eslint && npm run build)",
-    "postinstall": "node postinstall.js && npx patch-package"
+    "postinstall": "node postinstall.js"
   },
   "dependencies": {
     "@chakra-ui/core": "^1.0.0-rc.8",
