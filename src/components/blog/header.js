@@ -1,11 +1,12 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense } from "react";
 import gsap from "gsap";
-import { Flex, Grid, Text } from "@chakra-ui/core";
+import { Flex, Grid, Spinner } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
 import Stork from "../bird/stork";
+import { Html } from "@react-three/drei";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
@@ -50,25 +51,16 @@ const Header = ({ prev, next }) => {
       overflowX="hidden"
       mb={6}
     >
-      {/* <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
-        {progress === 100 ? (
-          <NavigationLink to="/">
-            <Canvas colorManagement>
-              <Suspense fallback={<Spinner />}>
-                <Stork position={[10, 10, 100]} />
-              </Suspense>
-            </Canvas>
-          </NavigationLink>
-        ) : (
-          <Flex align="center" justify="center" m="0 auto">
-            <Spinner size="md" />
-          </Flex>
-        )}
-      </Flex> */}
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
           <Canvas colorManagement>
-            <Suspense fallback={null}>
+            <Suspense
+              fallback={
+                <Html center>
+                  <Spinner />
+                </Html>
+              }
+            >
               <Stork position={[10, 10, 100]} />
             </Suspense>
           </Canvas>

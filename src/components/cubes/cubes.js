@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
-import { Box } from "@chakra-ui/core";
+import { Spinner } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
+import { Html } from "@react-three/drei";
 
 import A from "./letters/A.png";
 import D from "./letters/D.png";
@@ -40,7 +41,13 @@ const Cubes = () => {
         pixelRatio={pixelRatio.current}
         concurrent
       >
-        <Suspense fallback={null}>
+        <Suspense
+          fallback={
+            <Html center>
+              <Spinner />
+            </Html>
+          }
+        >
           <directionalLight
             intensity={("#fff", 0.5)}
             position={[10, 20, 10]}

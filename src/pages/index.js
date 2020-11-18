@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Link as GatsbyLink } from "gatsby";
 import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
 import Layout from "./../components/layout";
@@ -10,7 +10,6 @@ import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import Cubes from "./../components/cubes/cubes";
-import { Html } from "@react-three/drei";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -79,9 +78,7 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        <Suspense fallback={<Html center>Loading....</Html>}>
-          <Cubes />
-        </Suspense>
+        <Cubes />
       </Box>
 
       <Link
