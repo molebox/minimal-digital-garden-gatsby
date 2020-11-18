@@ -62,7 +62,9 @@ const Header = ({ prev, next }) => {
                 </Html>
               }
             >
-              {!active && progress === 100 ? <Stork position={[10, 10, 100]} /> : null}
+              {!active && progress === 100 ? (
+                <Stork position={[10, 10, 100]} />
+              ) : null}
             </Suspense>
           </Canvas>
         </NavigationLink>

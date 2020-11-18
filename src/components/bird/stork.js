@@ -43,4 +43,4 @@ export default function Stork(props) {
   );
 }
 
-useGLTF.preload("/stork.glb");
+// useGLTF.preload("/stork.glb");

@@ -10,6 +10,9 @@ import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import Cubes from "./../components/cubes/cubes";
+import { useGLTF } from "@react-three/drei/useGLTF";
+
+useGLTF.preload("/stork.glb");
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
