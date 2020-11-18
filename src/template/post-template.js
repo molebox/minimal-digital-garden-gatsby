@@ -6,6 +6,7 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
+import { Loader } from './../components/loader/loader';
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -37,6 +38,7 @@ const PostTemplate = ({ data, pageContext }) => {
   });
 
   return (
+    <>
     <Layout>
       <SEO
         title={title}
@@ -65,6 +67,8 @@ const PostTemplate = ({ data, pageContext }) => {
       </Flex>
       <MDXRenderer>{body}</MDXRenderer>
     </Layout>
+    <Loader />
+    </>
   );
 };
 
