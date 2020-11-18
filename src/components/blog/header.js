@@ -5,7 +5,7 @@ import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
-const Stork = lazy(() => import("../bird/stork"));
+import Stork from "../bird/stork";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
