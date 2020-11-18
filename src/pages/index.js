@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import { Link as GatsbyLink } from "gatsby";
 import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
 import Layout from "./../components/layout";
@@ -9,7 +9,6 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import { Loader } from "@react-three/drei";
 
 const Cubes = lazy(() => import("./../components/cubes/cubes"));
 
@@ -36,13 +35,6 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
-
-  // React.useEffect(() => {
-  //   if (typeof window !== undefined) {
-  //     gsap.fromTo('.cat-tag', {opacity: 0}, {opacity: 1, duration: 1.2, delay: 2})
-  //   }
-
-  // }, [])
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -87,9 +79,7 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        <Suspense fallback={null}>
           <Cubes />
-        </Suspense>
       </Box>
 
       <Link
