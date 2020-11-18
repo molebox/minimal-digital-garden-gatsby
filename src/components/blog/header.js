@@ -6,10 +6,11 @@ import NavigationLink from "./navigation-link";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
 import Stork from "../bird/stork";
-import { Html } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
+  const { active } = useProgress();
 
   React.useEffect(() => {
     if (typeof window !== undefined) {
@@ -61,7 +62,7 @@ const Header = ({ prev, next }) => {
                 </Html>
               }
             >
-              <Stork position={[10, 10, 100]} />
+              {!active ? <Stork position={[10, 10, 100]} /> : null}
             </Suspense>
           </Canvas>
         </NavigationLink>

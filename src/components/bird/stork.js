@@ -10,7 +10,6 @@ import { PerspectiveCamera } from "@react-three/drei";
 export default function Stork(props) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("/stork.glb");
-  console.log({ materials });
 
   const actions = useRef();
   const [mixer] = useState(() => new THREE.AnimationMixer());
@@ -21,7 +20,7 @@ export default function Stork(props) {
     };
     actions.current.storkFly_B_.play();
     return () => animations.forEach((clip) => mixer.uncacheClip(clip));
-  }, []);
+  }, [animations, mixer]);
   return (
     <group ref={group} {...props} dispose={null}>
       <PerspectiveCamera makeDefault position={[-10, 50, 250]} />

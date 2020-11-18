@@ -9,8 +9,8 @@ const Plane = () => {
   const [ref] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0] }));
   return (
     <mesh ref={ref} receiveShadow>
-      <planeBufferGeometry attach="geometry" args={[1000, 1000]}/>
-      <shadowMaterial attach="material" opacity={0.5}/>
+      <planeBufferGeometry attach="geometry" args={[1000, 1000]} />
+      <shadowMaterial attach="material" opacity={0.5} />
     </mesh>
   );
 };
