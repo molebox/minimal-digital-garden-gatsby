@@ -10,7 +10,7 @@ import { Html, useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
-  const { active } = useProgress();
+  const { active, progress } = useProgress();
 
   React.useEffect(() => {
     if (typeof window !== undefined) {
@@ -62,7 +62,7 @@ const Header = ({ prev, next }) => {
                 </Html>
               }
             >
-              {!active ? <Stork position={[10, 10, 100]} /> : null}
+              {!active && progress === 100 ? <Stork position={[10, 10, 100]} /> : null}
             </Suspense>
           </Canvas>
         </NavigationLink>

@@ -8,6 +8,7 @@ import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 
 const PostTemplate = ({ data, pageContext }) => {
+
   const {
     frontmatter,
     body,
