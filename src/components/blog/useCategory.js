@@ -20,7 +20,6 @@ export const useCategory = (posts) => {
   const hasSearchResult = filteredData !== [];
 
   const categories = hasSearchResult ? filteredData : posts;
-  console.log({ categories });
 
   return { categories, handleCategoryQuery };
 };

@@ -1,16 +1,15 @@
 import React, { Suspense } from "react";
 import gsap from "gsap";
-import { Flex, Grid, Spinner } from "@chakra-ui/core";
+import { Flex, Grid } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
 import Stork from "../bird/stork";
-import { useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
-  const { progress } = useProgress();
+
   React.useEffect(() => {
     if (typeof window !== undefined) {
       gsap.registerPlugin(ScrollTrigger);
@@ -34,17 +33,6 @@ const Header = ({ prev, next }) => {
     }
   }, []);
 
-  // function Loader() {
-  //   return (
-  //     <Flex align="center" justify="center">
-  //       <Spinner />
-  //       <Text>{progress}%</Text>
-  //     </Flex>
-  //   );
-  // }
-
-  React.useEffect(() => console.log("stork progress: ", progress), [progress]);
-
   return (
     <Grid
       as="header"
@@ -62,7 +50,7 @@ const Header = ({ prev, next }) => {
       overflowX="hidden"
       mb={6}
     >
-      <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
+      {/* <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         {progress === 100 ? (
           <NavigationLink to="/">
             <Canvas colorManagement>
@@ -76,6 +64,15 @@ const Header = ({ prev, next }) => {
             <Spinner size="md" />
           </Flex>
         )}
+      </Flex> */}
+      <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
+        <NavigationLink to="/">
+          <Canvas colorManagement>
+            <Suspense fallback={null}>
+              <Stork position={[10, 10, 100]} />
+            </Suspense>
+          </Canvas>
+        </NavigationLink>
       </Flex>
 
       <Flex

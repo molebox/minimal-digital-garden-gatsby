@@ -10,6 +10,7 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
+import { Loader } from "../components/loader/loader";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -154,6 +155,7 @@ export default ({ data }) => {
           </Text>
         </Link>
       ))}
+      <Loader />
     </Layout>
   );
 };
