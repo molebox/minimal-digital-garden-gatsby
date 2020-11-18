@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link as GatsbyLink } from "gatsby";
 import { Flex, Grid, Link, Text } from "@chakra-ui/core";
 import Layout from "./../components/layout";
@@ -10,7 +10,7 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import { Loader } from '@react-three/drei';
+import { Html, Loader } from "@react-three/drei";
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -64,101 +64,107 @@ export default ({ data }) => {
   });
 
   return (
-    <>
-    <Layout>
-      <SEO
-        title="Rich Haines Digital Garden"
-        titleTemplate=""
-        titleSeparator=""
-        description="My articles, tutorials and thoughts. Under one roof."
-        image={socialImage}
-        pathname={`https://richardhaines.dev`}
-        twitterUsername="@studio_hungry"
-        author="Rich Haines"
-      />
-      <Text as="h1" hidden>
-        Digital Garden
-      </Text>
-      <Cubes />
-      <Link
-        fontSize="xl"
-        fontWeight={600}
-        fontFamily="heading"
-        color="brand.black"
-        my={5}
-        href="https://twitter.com/studio_hungry"
-        isExternal
-        textDecoration="underline"
-        _hover={{
-          color: "brand.darkGrey",
-        }}
-      >
-        By Rich Haines
-      </Link>
-      <SearchBar handleSearchQuery={handleSearchQuery} />
-      <Grid
-        templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
-        gap={5}
-        templateRows={["auto", "1fr"]}
-        alignItems="center"
-        justifyContent={["space-evenly"]}
-        p={1}
-        h="auto"
-      >
-        <AllCategoryTag handleCategoryQuery={handleCategoryQuery} />
-        {categoriesList.map((cat, index) => (
-          <CategoryTag
-            key={cat + index}
-            category={cat}
-            handleCategoryQuery={handleCategoryQuery}
-          />
-        ))}
-      </Grid>
-      {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
+    <Suspense fallback={<Html>loading...</Html>}>
+      <Layout>
+        <SEO
+          title="Rich Haines Digital Garden"
+          titleTemplate=""
+          titleSeparator=""
+          description="My articles, tutorials and thoughts. Under one roof."
+          image={socialImage}
+          pathname={`https://richardhaines.dev`}
+          twitterUsername="@studio_hungry"
+          author="Rich Haines"
+        />
+        <Text as="h1" hidden>
+          Digital Garden
+        </Text>
+        <Cubes />
         <Link
-          key={id}
-          as={GatsbyLink}
-          to={fields.slug}
-          p={4}
-          borderBottom="solid 2px"
-          my={6}
+          fontSize="xl"
+          fontWeight={600}
+          fontFamily="heading"
+          color="brand.black"
+          my={5}
+          href="https://twitter.com/studio_hungry"
+          isExternal
+          textDecoration="underline"
           _hover={{
-            backgroundColor: "brand.offWhite",
-            cursor: "pointer",
+            color: "brand.darkGrey",
           }}
         >
-          <Flex direction="column" wrap="wrap" maxW={500} lineHeight={1} mb={5}>
+          By Rich Haines
+        </Link>
+        <SearchBar handleSearchQuery={handleSearchQuery} />
+        <Grid
+          templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
+          gap={5}
+          templateRows={["auto", "1fr"]}
+          alignItems="center"
+          justifyContent={["space-evenly"]}
+          p={1}
+          h="auto"
+        >
+          <AllCategoryTag handleCategoryQuery={handleCategoryQuery} />
+          {categoriesList.map((cat, index) => (
+            <CategoryTag
+              key={cat + index}
+              category={cat}
+              handleCategoryQuery={handleCategoryQuery}
+            />
+          ))}
+        </Grid>
+        {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
+          <Link
+            key={id}
+            as={GatsbyLink}
+            to={fields.slug}
+            p={4}
+            borderBottom="solid 2px"
+            my={6}
+            _hover={{
+              backgroundColor: "brand.offWhite",
+              cursor: "pointer",
+            }}
+          >
+            <Flex
+              direction="column"
+              wrap="wrap"
+              maxW={500}
+              lineHeight={1}
+              mb={5}
+            >
+              <Text
+                fontSize={["4xl", "5xl"]}
+                fontWeight={800}
+                fontFamily="heading"
+                color="brand.black"
+              >
+                {frontmatter.title}
+              </Text>
+            </Flex>
             <Text
-              fontSize={["4xl", "5xl"]}
-              fontWeight={800}
+              fontSize={["xl", "2xl"]}
+              fontWeight={700}
               fontFamily="heading"
               color="brand.black"
+              my={5}
             >
-              {frontmatter.title}
+              {frontmatter.description}
             </Text>
-          </Flex>
-          <Text
-            fontSize={["xl", "2xl"]}
-            fontWeight={700}
-            fontFamily="heading"
-            color="brand.black"
-            my={5}
-          >
-            {frontmatter.description}
-          </Text>
-          <Text
-            fontSize={["md", "xl"]}
-            fontWeight={600}
-            fontFamily="heading"
-            color="brand.lightGrey"
-          >
-            {excerpt}
-          </Text>
-        </Link>
-      ))}
-    </Layout>
-   {/* <Loader /> */}
-    </>
+            <Text
+              fontSize={["md", "xl"]}
+              fontWeight={600}
+              fontFamily="heading"
+              color="brand.lightGrey"
+            >
+              {excerpt}
+            </Text>
+          </Link>
+        ))}
+      </Layout>
+      {/* <Loader /> */}
+    </Suspense>
   );
 };
 

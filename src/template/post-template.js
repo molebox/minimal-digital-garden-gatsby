@@ -6,7 +6,6 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
-import { Loader } from './../components/loader/loader';
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -39,35 +38,35 @@ const PostTemplate = ({ data, pageContext }) => {
 
   return (
     <>
-    <Layout>
-      <SEO
-        title={title}
-        titleTemplate={slug}
-        titleSeparator={`-`}
-        description={description}
-        image={socialImage}
-        pathname={`https://richardhaines.dev${slug}`}
-        twitterUsername="@studio_hungry"
-        author="Rich Haines"
-        article={true}
-      />
-      <Header prev={previous} next={next} />
-      <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
-        <Text
-          as="h1"
-          fontSize={["4xl", "6xl"]}
-          color="brand.black"
-          fontFamily="heading"
-          fontWeight={800}
-          lineHeight={1}
-          my={5}
-        >
-          {title}
-        </Text>
-      </Flex>
-      <MDXRenderer>{body}</MDXRenderer>
-    </Layout>
-    <Loader />
+      <Layout>
+        <SEO
+          title={title}
+          titleTemplate={slug}
+          titleSeparator={`-`}
+          description={description}
+          image={socialImage}
+          pathname={`https://richardhaines.dev${slug}`}
+          twitterUsername="@studio_hungry"
+          author="Rich Haines"
+          article={true}
+        />
+        <Header prev={previous} next={next} />
+        <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
+          <Text
+            as="h1"
+            fontSize={["4xl", "6xl"]}
+            color="brand.black"
+            fontFamily="heading"
+            fontWeight={800}
+            lineHeight={1}
+            my={5}
+          >
+            {title}
+          </Text>
+        </Flex>
+        <MDXRenderer>{body}</MDXRenderer>
+      </Layout>
+      {/* <Loader /> */}
     </>
   );
 };

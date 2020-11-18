@@ -81,8 +81,7 @@ const Cubes = () => {
           </Suspense>
         </Canvas>
       </Box>
-    {/* <Loader /> */}
-
+      {/* <Loader /> */}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import gsap from "gsap";
-import { Flex, Grid } from "@chakra-ui/core";
+import { Flex, Grid, Text } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -68,7 +68,7 @@ const Header = ({ prev, next }) => {
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
           <Canvas colorManagement>
-            <Suspense fallback={null}>
+            <Suspense fallback={<Text>Loading...</Text>}>
               <Stork position={[10, 10, 100]} />
             </Suspense>
           </Canvas>
