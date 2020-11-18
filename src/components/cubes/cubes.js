@@ -14,7 +14,6 @@ import L from "./letters/L.png";
 import N from "./letters/N.png";
 import R from "./letters/R.png";
 import T from "./letters/T.png";
-import { Loader } from "@react-three/drei";
 
 /**
  * A set of 3D cubes which spell out "Digital Garden"

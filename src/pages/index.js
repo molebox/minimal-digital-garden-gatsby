@@ -79,7 +79,7 @@ export default ({ data }) => {
       <Text as="h1" hidden>
         Digital Garden
       </Text>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={null}>
         <Cubes />
       </Suspense>
 
