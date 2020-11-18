@@ -6,8 +6,19 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
+import { useLocation } from "@reach/router"
 
 const PostTemplate = ({ data, pageContext }) => {
+  const location = useLocation();
+  const [isPost, setIsPost] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log(location)
+    if (location.pathname !== '/') {
+      setIsPost(true);
+    }
+  }, [location])
+
   const {
     frontmatter,
     body,
@@ -50,7 +61,8 @@ const PostTemplate = ({ data, pageContext }) => {
           author="Rich Haines"
           article={true}
         />
-        <Header prev={previous} next={next} />
+        {isPost ? <Header prev={previous} next={next} /> : null}
+        
         <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
           <Text
             as="h1"
