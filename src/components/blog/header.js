@@ -1,11 +1,11 @@
-import React, { Suspense } from "react";
+import React, { Suspense, lazy } from "react";
 import gsap from "gsap";
 import { Flex, Grid, Text } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
-import Stork from "../bird/stork";
+const Stork = lazy(() => import("../bird/stork"));
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
@@ -68,7 +68,7 @@ const Header = ({ prev, next }) => {
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
           <Canvas colorManagement>
-            <Suspense fallback={<Text>Loading...</Text>}>
+            <Suspense fallback={null}>
               <Stork position={[10, 10, 100]} />
             </Suspense>
           </Canvas>
