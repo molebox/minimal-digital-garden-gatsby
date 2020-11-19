@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Link as GatsbyLink } from "gatsby";
-import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text, Box, Spinner } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -9,8 +9,9 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import Cubes from "./../components/cubes/cubes";
 import { useGLTF } from "@react-three/drei/useGLTF";
+import { lazy } from '@loadable/component'
+const Cubes = lazy(() => import('./../components/cubes/cubes'))
 
 useGLTF.preload("/stork.glb");
 
@@ -83,7 +84,7 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<Spinner/>}>
           <Cubes />
         </Suspense>
       </Box>
