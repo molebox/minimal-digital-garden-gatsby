@@ -5,8 +5,10 @@ import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
-import { lazy } from '@loadable/component'
-const Stork = lazy(() => import('../bird/stork'))
+import { lazy } from "@loadable/component";
+import { Html } from "@react-three/drei";
+
+const Stork = lazy(() => import("../bird/stork"));
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
@@ -54,7 +56,13 @@ const Header = ({ prev, next }) => {
       <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
         <NavigationLink to="/">
           <Canvas colorManagement>
-            <Suspense fallback={<Spinner/>}>
+            <Suspense
+              fallback={
+                <Html center>
+                  <Spinner />
+                </Html>
+              }
+            >
               <Stork position={[10, 10, 100]} />
             </Suspense>
           </Canvas>

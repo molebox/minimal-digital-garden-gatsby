@@ -10,8 +10,8 @@ import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import { useGLTF } from "@react-three/drei/useGLTF";
-import { lazy } from '@loadable/component'
-const Cubes = lazy(() => import('./../components/cubes/cubes'))
+import { lazy } from "@loadable/component";
+const Cubes = lazy(() => import("./../components/cubes/cubes"));
 
 useGLTF.preload("/stork.glb");
 
@@ -84,7 +84,7 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        <Suspense fallback={<Spinner/>}>
+        <Suspense fallback={<Spinner />}>
           <Cubes />
         </Suspense>
       </Box>
