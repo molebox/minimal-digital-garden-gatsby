@@ -47,6 +47,8 @@ const PostTemplate = ({ data, pageContext }) => {
     version: "v1605269202",
   });
 
+  const isBrowser = typeof window !== 'undefined';
+
   return (
     <>
       <Layout>
@@ -61,7 +63,7 @@ const PostTemplate = ({ data, pageContext }) => {
           author="Rich Haines"
           article={true}
         />
-        {isPost ? <Header prev={previous} next={next} /> : null}
+        {isBrowser && <Header prev={previous} next={next} />}
         
         <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
           <Text

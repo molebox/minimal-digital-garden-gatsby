@@ -58,6 +58,8 @@ export default ({ data }) => {
     version: "v1605269202",
   });
 
+  const isBrowser = typeof window !== 'undefined';
+
   return (
     <Layout>
       <SEO
@@ -81,7 +83,7 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        <Cubes />
+        {isBrowser &&<Cubes />}
       </Box>
 
       <Link
