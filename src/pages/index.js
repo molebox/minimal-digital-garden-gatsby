@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link as GatsbyLink } from "gatsby";
 import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
 import Layout from "./../components/layout";
@@ -58,7 +58,7 @@ export default ({ data }) => {
     version: "v1605269202",
   });
 
-  const isBrowser = typeof window !== 'undefined';
+  const isBrowser = typeof window !== "undefined";
 
   return (
     <Layout>
@@ -83,7 +83,9 @@ export default ({ data }) => {
         p={2}
         mt={6}
       >
-        {isBrowser &&<Cubes />}
+        <Suspense fallback={null}>
+          <Cubes />
+        </Suspense>
       </Box>
 
       <Link

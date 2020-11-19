@@ -1,13 +1,11 @@
 import React from "react";
 import { useBox } from "@react-three/cannon";
-import { useTexture } from "@react-three/drei";
 import { useRandomColor } from "./../blog/useRandomColor";
 
 /**
  * A single 3D cube
  */
-const Cube = ({ position, imagePath }) => {
-  const [image] = useTexture(imagePath);
+const Cube = ({ position, texture }) => {
   const { color, hovered, setHover } = useRandomColor();
 
   const [ref] = useBox(() => ({
@@ -28,7 +26,7 @@ const Cube = ({ position, imagePath }) => {
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <meshPhongMaterial
         attach="material"
-        map={image}
+        map={texture}
         color={hovered ? color : "#f6f8fa"}
         shininess={600}
       />

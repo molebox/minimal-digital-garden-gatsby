@@ -6,18 +6,18 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
-import { useLocation } from "@reach/router"
+import { useLocation } from "@reach/router";
 
 const PostTemplate = ({ data, pageContext }) => {
   const location = useLocation();
   const [isPost, setIsPost] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(location)
-    if (location.pathname !== '/') {
+    console.log(location);
+    if (location.pathname !== "/") {
       setIsPost(true);
     }
-  }, [location])
+  }, [location]);
 
   const {
     frontmatter,
@@ -47,7 +47,7 @@ const PostTemplate = ({ data, pageContext }) => {
     version: "v1605269202",
   });
 
-  const isBrowser = typeof window !== 'undefined';
+  const isBrowser = typeof window !== "undefined";
 
   return (
     <>
@@ -64,7 +64,7 @@ const PostTemplate = ({ data, pageContext }) => {
           article={true}
         />
         {isBrowser && <Header prev={previous} next={next} />}
-        
+
         <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
           <Text
             as="h1"
