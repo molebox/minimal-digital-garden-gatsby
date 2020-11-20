@@ -4,7 +4,7 @@ import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
 import Cube from "./cube";
-import { Html, useTexture } from "@react-three/drei";
+import { Html, useTexture, useProgress } from "@react-three/drei";
 
 import Letter_A from "./letters/A.png";
 import Letter_D from "./letters/D.png";
@@ -32,6 +32,11 @@ const Cubes = () => {
     Letter_R,
     Letter_T,
   ]);
+  const {progress} = useProgress();
+
+  React.useEffect(() => {
+    console.log({progress})
+  }, [progress])
 
   React.useEffect(() => {
     if (typeof window !== undefined) {

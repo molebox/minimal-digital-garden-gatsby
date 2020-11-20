@@ -6,8 +6,10 @@ import { useFrame } from "react-three-fiber";
 import { useGLTF } from "@react-three/drei/useGLTF";
 import * as THREE from "three";
 import { PerspectiveCamera } from "@react-three/drei";
+import { useProgress } from '@react-three/drei';
 
 export default function Stork(props) {
+  const {progress} = useProgress();
   const group = useRef();
   const { nodes, materials, animations } = useGLTF("/stork.glb");
 

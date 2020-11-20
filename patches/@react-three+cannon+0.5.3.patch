@@ -1,5 +1,5 @@
 diff --git a/node_modules/@react-three/cannon/src/Provider.tsx b/node_modules/@react-three/cannon/src/Provider.tsx
-index 50d2ec8..9d95e90 100644
+index 50d2ec8..7540425 100644
 --- a/node_modules/@react-three/cannon/src/Provider.tsx
 +++ b/node_modules/@react-three/cannon/src/Provider.tsx
 @@ -105,22 +105,22 @@ export default function Provider({
@@ -40,7 +40,17 @@ index 50d2ec8..9d95e90 100644
  
    useEffect(() => {
      worker.postMessage({
-@@ -143,11 +143,11 @@ export default function Provider({
+@@ -137,17 +137,22 @@ export default function Provider({
+       },
+     })
+ 
++    function loop() {
++      worker.postMessage({ op: 'step', ...buffers }, [buffers.positions.buffer, buffers.quaternions.buffer])
++    }
++
+     worker.onmessage = (e: IncomingWorkerMessage) => {
+       switch (e.data.op) {
+         case 'frame':
            buffers.positions = e.data.positions
            buffers.quaternions = e.data.quaternions
            e.data.observations.forEach(([id, value]) => subscriptions[id](value))
@@ -49,6 +59,7 @@ index 50d2ec8..9d95e90 100644
 -          } else {
 -            requestAnimationFrame(loop);
 -          }
++          requestAnimationFrame(loop)
 +          // if(gl.xr.isPresenting) {
 +          //   gl.xr.getSession().requestAnimationFrame(loop);
 +          // } else {
@@ -57,12 +68,3 @@ index 50d2ec8..9d95e90 100644
            if (e.data.active) invalidate()
            break
          case 'sync':
-@@ -175,7 +175,7 @@ export default function Provider({
-           break
-       }
-     }
--    loop()
-+    // loop()
-     return () => worker.terminate()
-   }, [])
- 

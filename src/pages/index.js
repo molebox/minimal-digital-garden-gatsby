@@ -11,7 +11,8 @@ import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import { useGLTF } from "@react-three/drei/useGLTF";
 import { lazy } from "@loadable/component";
-const Cubes = lazy(() => import("./../components/cubes/cubes"));
+import Cubes from "./../components/cubes/cubes";
+// const Cubes = lazy(() => import("./../components/cubes/cubes"));
 
 useGLTF.preload("/stork.glb");
 
@@ -58,8 +59,6 @@ export default ({ data }) => {
     textColor: "ffffff",
     version: "v1605269202",
   });
-
-  const isBrowser = typeof window !== "undefined";
 
   return (
     <Layout>
