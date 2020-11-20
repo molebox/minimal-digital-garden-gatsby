@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Spinner } from "@chakra-ui/core";
+import { Box, Spinner } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
@@ -32,11 +32,11 @@ const Cubes = () => {
     Letter_R,
     Letter_T,
   ]);
-  const {progress} = useProgress();
+  const { progress } = useProgress();
 
   React.useEffect(() => {
-    console.log({progress})
-  }, [progress])
+    console.log("cubes progress: ", progress);
+  }, [progress]);
 
   React.useEffect(() => {
     if (typeof window !== undefined) {
@@ -45,7 +45,14 @@ const Cubes = () => {
   }, []);
 
   return (
-    <>
+    <Box
+      w={["350px", "1000px"]}
+      h={["200px", "500px"]}
+      m="0 auto"
+      bgColor="brand.bg"
+      p={2}
+      mt={6}
+    >
       <Canvas
         colorManagement
         shadowMap
@@ -57,7 +64,7 @@ const Cubes = () => {
         pixelRatio={pixelRatio.current}
         concurrent
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<Spinner />}>
           <directionalLight
             intensity={("#fff", 0.5)}
             position={[10, 20, 10]}
@@ -84,7 +91,7 @@ const Cubes = () => {
           </Physics>
         </Suspense>
       </Canvas>
-    </>
+    </Box>
   );
 };
 

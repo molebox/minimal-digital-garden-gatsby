@@ -6,12 +6,19 @@ import NavigationLink from "./navigation-link";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Canvas } from "react-three-fiber";
 import { lazy } from "@loadable/component";
-import { Html } from "@react-three/drei";
+import { Html, useProgress } from "@react-three/drei";
 
-const Stork = lazy(() => import("../bird/stork"));
+//  Stork = lazy(() => import("../bird/stork"));
+import Stork from "./../bird/stork";
 
 const Header = ({ prev, next }) => {
   const headerRef = React.useRef(null);
+
+  const { progress } = useProgress();
+
+  React.useEffect(() => {
+    console.log("stork progress: ", progress);
+  }, [progress]);
 
   React.useEffect(() => {
     if (typeof window !== undefined) {

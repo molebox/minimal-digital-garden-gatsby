@@ -75,18 +75,10 @@ export default ({ data }) => {
       <Text as="h1" hidden>
         Digital Garden
       </Text>
-      <Box
-        w={["350px", "1000px"]}
-        h={["200px", "500px"]}
-        m="0 auto"
-        bgColor="brand.bg"
-        p={2}
-        mt={6}
-      >
-        <Suspense fallback={<Spinner />}>
-          <Cubes />
-        </Suspense>
-      </Box>
+
+      <Suspense fallback={<Spinner />}>
+        <Cubes />
+      </Suspense>
 
       <Link
         fontSize="xl"
