@@ -76,7 +76,7 @@ export default ({ data }) => {
         Digital Garden
       </Text>
 
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={null}>
         <Cubes />
       </Suspense>
 

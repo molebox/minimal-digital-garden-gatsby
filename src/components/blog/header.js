@@ -64,11 +64,7 @@ const Header = ({ prev, next }) => {
         <NavigationLink to="/">
           <Canvas colorManagement>
             <Suspense
-              fallback={
-                <Html center>
-                  <Spinner />
-                </Html>
-              }
+              fallback={null}
             >
               <Stork position={[10, 10, 100]} />
             </Suspense>

@@ -64,7 +64,7 @@ const Cubes = () => {
         pixelRatio={pixelRatio.current}
         concurrent
       >
-        <Suspense fallback={<Spinner />}>
+        <Suspense fallback={null}>
           <directionalLight
             intensity={("#fff", 0.5)}
             position={[10, 20, 10]}
