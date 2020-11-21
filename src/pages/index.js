@@ -72,17 +72,32 @@ export default ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      <Text as="h1" hidden>
-        Digital Garden
-      </Text>
+      <Box
+        bgColor="brand.bg"
+        mt={6}
+        wrap="wrap"
+        maxW={1000}
+        lineHeight={1}
+        mb={6}
+      >
+        <Text
+          as="h1"
+          fontSize={["5xl", "7xl"]}
+          fontWeight={800}
+          fontFamily="heading"
+          color="brand.black"
+        >
+          Digital Garden
+        </Text>
+      </Box>
 
-      <Suspense fallback={null}>
+      {/* <Suspense fallback={null}>
         <Cubes />
-      </Suspense>
+      </Suspense> */}
 
       <Link
         fontSize="xl"
-        fontWeight={600}
+        fontWeight={500}
         fontFamily="heading"
         color="brand.black"
         my={5}

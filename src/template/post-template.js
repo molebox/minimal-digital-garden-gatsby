@@ -50,7 +50,7 @@ const PostTemplate = ({ data, pageContext }) => {
           author="Rich Haines"
           article={true}
         />
-        <Header prev={previous} next={next} />
+        <Header prev={previous} next={next} opacity={0.7} />
 
         <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
           <Text

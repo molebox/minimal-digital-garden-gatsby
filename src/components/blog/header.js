@@ -9,17 +9,10 @@ import { lazy } from "@loadable/component";
 import { Html, useProgress } from "@react-three/drei";
 
 //  Stork = lazy(() => import("../bird/stork"));
-import Stork from "./../bird/stork";
+// import Stork from "./../bird/stork";
 
-const Header = ({ prev, next }) => {
+const Header = ({ prev, next, ...rest }) => {
   const headerRef = React.useRef(null);
-
-  const { progress } = useProgress();
-
-  React.useEffect(() => {
-    console.log("stork progress: ", progress);
-  }, [progress]);
-
   React.useEffect(() => {
     if (typeof window !== undefined) {
       gsap.registerPlugin(ScrollTrigger);
@@ -46,22 +39,23 @@ const Header = ({ prev, next }) => {
   return (
     <Grid
       as="header"
-      templateColumns={["1fr", "250px auto 1fr 1fr"]}
-      templateRows={["repeat(3, 1fr)", "1fr"]}
+      templateColumns={["1fr 1fr 1fr"]}
+      autoRows="auto"
+      // templateRows={["repeat(3, 1fr)", "1fr"]}
       w="100%"
       justify="space-evenly"
       align="center"
-      bgColor="brand.bg"
+      bg="rgba(255,255,255, 0.9)"
       ref={headerRef}
       position="sticky"
       top={0}
-      h={[200, 100]}
+      h={100}
       zIndex={999}
       overflowX="hidden"
-      mb={6}
+      {...rest}
     >
-      <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
-        <NavigationLink to="/">
+      {/* <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
+        <NavigationLink to="/"></NavigationLink>
           <Canvas colorManagement>
             <Suspense
               fallback={null}
@@ -70,35 +64,38 @@ const Header = ({ prev, next }) => {
             </Suspense>
           </Canvas>
         </NavigationLink>
+      </Flex> */}
+
+      <Flex
+        gridColumn={1}
+        gridRow={1}
+        alignItems="center"
+        justifyContent="center"
+      >
+        <NavigationLink to="/">home</NavigationLink>
       </Flex>
 
       <Flex
-        gridColumn={[1, 3]}
-        gridRow={[2, 1]}
+        gridColumn={2}
+        // gridRow={[2, 1]}
         alignItems="center"
         justifyContent="center"
       >
         {prev && prev === false
           ? null
           : prev && (
-              <NavigationLink to={prev.fields.slug}>
-                {prev.fields.slug.replace(/^\/|\/$/g, "")}
-              </NavigationLink>
+              <NavigationLink to={prev.fields.slug}>previous</NavigationLink>
             )}
       </Flex>
       <Flex
-        gridColumn={[1, 4]}
-        gridRow={[3, 1]}
+        gridColumn={3}
+        // gridRow={[3, 1]}
         alignItems="center"
         justifyContent="center"
       >
         {next && next === false
           ? null
-          : next && (
-              <NavigationLink to={next.fields.slug}>
-                {next.fields.slug.replace(/^\/|\/$/g, "")}
-              </NavigationLink>
-            )}
+          : next && <NavigationLink to={next.fields.slug}>next</NavigationLink>}
       </Flex>
     </Grid>
   );

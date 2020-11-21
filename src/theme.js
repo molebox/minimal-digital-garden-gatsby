@@ -17,6 +17,7 @@ const theme = {
     "4xl": "36px",
     "5xl": "74px",
     "6xl": "100px",
+    "7xl": "130px",
   },
   colors: {
     brand: {
