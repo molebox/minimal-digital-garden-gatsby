@@ -13,6 +13,9 @@ import { Html, useProgress } from "@react-three/drei";
 
 const Header = ({ prev, next, ...rest }) => {
   const headerRef = React.useRef(null);
+
+  const isBrowser = typeof window !== undefined;
+
   React.useEffect(() => {
     if (typeof window !== undefined) {
       gsap.registerPlugin(ScrollTrigger);
@@ -36,7 +39,7 @@ const Header = ({ prev, next, ...rest }) => {
     }
   }, []);
 
-  return (
+  return isBrowser ? (
     <Grid
       as="header"
       templateColumns={["1fr 1fr 1fr"]}
@@ -98,7 +101,7 @@ const Header = ({ prev, next, ...rest }) => {
           : next && <NavigationLink to={next.fields.slug}>next</NavigationLink>}
       </Flex>
     </Grid>
-  );
+  ) : null;
 };
 
 export default Header;

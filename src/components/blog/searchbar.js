@@ -8,7 +8,7 @@ const SearchBar = ({ handleSearchQuery }) => {
       alignItems="center"
       position="sticky"
       top={0}
-      bgColor="brand.bg"
+      bg="rgba(255,255,255, 0.9)"
       h={100}
       my={1}
     >
