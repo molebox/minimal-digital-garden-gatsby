@@ -1,12 +1,12 @@
-import React, { Suspense } from "react";
+import React from "react";
 import gsap from "gsap";
-import { Flex, Grid, Spinner } from "@chakra-ui/core";
+import { Flex, Grid } from "@chakra-ui/core";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Canvas } from "react-three-fiber";
-import { lazy } from "@loadable/component";
-import { Html, useProgress } from "@react-three/drei";
+// import { Canvas } from "react-three-fiber";
+// import { lazy } from "@loadable/component";
+// import { Html, useProgress } from "@react-three/drei";
 
 //  Stork = lazy(() => import("../bird/stork"));
 // import Stork from "./../bird/stork";

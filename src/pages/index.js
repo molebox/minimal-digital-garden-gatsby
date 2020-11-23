@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Link as GatsbyLink, graphql } from "gatsby";
-import { Flex, Grid, Link, Text, Box, Spinner } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text, Box, useMediaQuery } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -22,6 +22,7 @@ export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
+  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
@@ -43,29 +44,28 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   React.useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && isLargerThan375) {
       gsap.registerPlugin(ScrollTrigger);
       gsap.core.globals("ScrollTrigger", ScrollTrigger);
       gsap.to("body", { visibility: "visible" });
 
+      console.log({ isLargerThan375 });
       gsap.utils.toArray(".post").forEach((post, index) => {
         if (index >= 1) {
           gsap.from(post, {
             y: window.innerHeight * 1,
             opacity: 0,
-            duration: 0.9,
+            duration: 1.2,
             scrollTrigger: {
               trigger: post,
-              toggleActions: "restart none none none",
-              start: "top bottom",
-              // markers: true
-              // end: 'bottom top',
+              toggleActions: "restart pause resume pause",
+              // start: "top center",
             },
           });
         }
       });
     }
-  }, []);
+  }, [isLargerThan375]);
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
