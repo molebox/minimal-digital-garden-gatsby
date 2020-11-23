@@ -6,6 +6,7 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
+import gsap from "gsap";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -15,6 +16,10 @@ const PostTemplate = ({ data, pageContext }) => {
   } = data.mdx;
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
+
+  React.useEffect(() => {
+    gsap.to("body", { visibility: "visible" });
+  }, []);
 
   const socialImage = getShareImage({
     title: title,

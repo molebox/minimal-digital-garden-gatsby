@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Link as GatsbyLink } from "gatsby";
+import { Link as GatsbyLink, graphql } from "gatsby";
 import { Flex, Grid, Link, Text, Box, Spinner } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
@@ -10,8 +10,10 @@ import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import { useGLTF } from "@react-three/drei/useGLTF";
-import { lazy } from "@loadable/component";
-import Cubes from "./../components/cubes/cubes";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import { lazy } from "@loadable/component";
+// import Cubes from "./../components/cubes/cubes";
 // const Cubes = lazy(() => import("./../components/cubes/cubes"));
 
 useGLTF.preload("/stork.glb");
@@ -39,6 +41,31 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.core.globals("ScrollTrigger", ScrollTrigger);
+      gsap.to("body", { visibility: "visible" });
+
+      gsap.utils.toArray(".post").forEach((post, index) => {
+        if (index >= 1) {
+          gsap.from(post, {
+            y: window.innerHeight * 1,
+            opacity: 0,
+            duration: 1.5,
+            scrollTrigger: {
+              trigger: post,
+              toggleActions: "restart none none none",
+              start: "top bottom",
+              // markers: true
+              // end: 'bottom top',
+            },
+          });
+        }
+      });
+    }
+  }, []);
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -129,8 +156,9 @@ export default ({ data }) => {
           />
         ))}
       </Grid>
-      {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
+      {filteredPosts.map(({ id, frontmatter, fields, excerpt }, index) => (
         <Link
+          className={`post`}
           key={id}
           as={GatsbyLink}
           to={fields.slug}
@@ -177,7 +205,7 @@ export default ({ data }) => {
 
 export const query = graphql`
   query BlogIndexQuery {
-    allMdx {
+    allMdx(sort: { fields: [frontmatter___category], order: ASC }) {
       nodes {
         id
         excerpt(pruneLength: 200)

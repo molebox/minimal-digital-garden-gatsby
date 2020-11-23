@@ -30,11 +30,11 @@ const components = {
     <Image m="0 auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
   ),
   a: (props) => (
-    <Link isExternal href={props.href}>
       <RoughNotation multiline type="underline" color="#1f2127" show={true}>
+        <Link isExternal href={props.href}>
         {props.children}
+        </Link>
       </RoughNotation>
-    </Link>
   ),
   wrapper: ({children}) => {
     return (

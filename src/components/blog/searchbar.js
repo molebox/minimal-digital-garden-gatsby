@@ -11,6 +11,7 @@ const SearchBar = ({ handleSearchQuery }) => {
       bg="rgba(255,255,255, 0.9)"
       h={100}
       my={1}
+      zIndex="99999"
     >
       <Input
         fontFamily="body"

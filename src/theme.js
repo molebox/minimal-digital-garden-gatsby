@@ -2,6 +2,13 @@ import defaultTheme from "@chakra-ui/theme";
 
 const theme = {
   ...defaultTheme,
+  styles: {
+    global: {
+      body: {
+        visibility: "hidden",
+      },
+    },
+  },
   fonts: {
     heading: "Open Sans",
     body: "Jost",
@@ -29,6 +36,7 @@ const theme = {
       accent: "#DA5077",
     },
   },
+  // breakpoints: ["30em", "48em", "62em", "80em"],
 };
 
 export default theme;
