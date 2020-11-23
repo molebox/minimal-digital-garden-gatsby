@@ -42,12 +42,15 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
+ 
+  React.useEffect(() => {
+    gsap.to("body", { visibility: "visible" });
+  }, [])
 
   React.useEffect(() => {
     if (typeof window !== "undefined" && isLargerThan375) {
       gsap.registerPlugin(ScrollTrigger);
       gsap.core.globals("ScrollTrigger", ScrollTrigger);
-      gsap.to("body", { visibility: "visible" });
 
       console.log({ isLargerThan375 });
       gsap.utils.toArray(".post").forEach((post, index) => {
