@@ -53,7 +53,7 @@ export default ({ data }) => {
           gsap.from(post, {
             y: window.innerHeight * 1,
             opacity: 0,
-            duration: 1.5,
+            duration: 0.9,
             scrollTrigger: {
               trigger: post,
               toggleActions: "restart none none none",
