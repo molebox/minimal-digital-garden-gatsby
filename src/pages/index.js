@@ -14,13 +14,10 @@ import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
 // import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { lazy } from "@loadable/component";
 // import Cubes from "./../components/cubes/cubes";
 import ExternalLink from "./../components/external-link";
 
-const Cubes = lazy(() => import("./../components/cubes/cubes"));
-
-useGLTF.preload("/stork.glb");
+// useGLTF.preload("/stork.glb");
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
@@ -106,7 +103,7 @@ export default ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      {/* <Box bgColor="brand.bg" wrap="wrap" maxW={1000} lineHeight={1} my={6}>
+      <Box bgColor="brand.bg" wrap="wrap" maxW={1000} lineHeight={1} my={6}>
         <Text
           as="h1"
           fontSize={["5xl", "7xl"]}
@@ -116,9 +113,8 @@ export default ({ data }) => {
         >
           Digital Garden
         </Text>
-      </Box> */}
+      </Box>
 
-      <Cubes />
       <Grid
         templateColumns="max-content auto 50px 50px"
         w="100%"
