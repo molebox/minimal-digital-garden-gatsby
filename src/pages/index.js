@@ -47,28 +47,28 @@ export default ({ data }) => {
     gsap.to("body", { visibility: "visible" });
   }, [])
 
-  React.useEffect(() => {
-    if (typeof window !== "undefined" && isLargerThan375) {
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.core.globals("ScrollTrigger", ScrollTrigger);
+  // React.useEffect(() => {
+  //   if (typeof window !== "undefined" && isLargerThan375) {
+  //     gsap.registerPlugin(ScrollTrigger);
+  //     gsap.core.globals("ScrollTrigger", ScrollTrigger);
 
-      console.log({ isLargerThan375 });
-      gsap.utils.toArray(".post").forEach((post, index) => {
-        if (index >= 1) {
-          gsap.from(post, {
-            y: window.innerHeight * 1,
-            opacity: 0,
-            duration: 1.2,
-            scrollTrigger: {
-              trigger: post,
-              toggleActions: "restart pause resume pause",
-              // start: "top center",
-            },
-          });
-        }
-      });
-    }
-  }, [isLargerThan375]);
+  //     console.log({ isLargerThan375 });
+  //     gsap.utils.toArray(".post").forEach((post, index) => {
+  //       if (index >= 1) {
+  //         gsap.from(post, {
+  //           y: window.innerHeight * 1,
+  //           opacity: 0,
+  //           duration: 1.2,
+  //           scrollTrigger: {
+  //             trigger: post,
+  //             toggleActions: "restart pause resume pause",
+  //             // start: "top center",
+  //           },
+  //         });
+  //       }
+  //     });
+  //   }
+  // }, [isLargerThan375]);
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
