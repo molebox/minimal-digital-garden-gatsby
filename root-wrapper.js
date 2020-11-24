@@ -1,5 +1,5 @@
 import { MDXProvider } from '@mdx-js/react'
-import React, { Suspense } from 'react'
+import React from 'react'
 import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link } from "@chakra-ui/core";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
@@ -10,7 +10,6 @@ import ThreeBall from './src/components/3d/three-ball';
 import ThreeBallWobble from './src/components/3d/three-wobble-ball';
 import ThreeBallDistort from './src/components/3d/three-ball-distort';
 import StorkExample from './src/components/3d/stork-example';
-import { Loader } from '@react-three/drei';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -56,12 +55,9 @@ const components = {
 }
 
 export const wrapRootElement = ({ element }) => (
-  <Suspense fallback={<Loader/>}>
   <ChakraProvider resetCSS theme={theme}>
     <MDXEmbedProvider>
       <MDXProvider components={components}>{element}</MDXProvider>
     </MDXEmbedProvider>
   </ChakraProvider>
-  </Suspense>
-  
 )

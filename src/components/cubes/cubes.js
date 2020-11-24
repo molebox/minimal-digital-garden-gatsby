@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Box, Spinner } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/core";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
@@ -64,7 +64,7 @@ const Cubes = () => {
         pixelRatio={pixelRatio.current}
         concurrent
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<Html>Loading....</Html>}>
           <directionalLight
             intensity={("#fff", 0.5)}
             position={[10, 20, 10]}
