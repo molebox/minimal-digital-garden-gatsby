@@ -1,6 +1,6 @@
 import React from "react";
 import { Link as GatsbyLink, graphql } from "gatsby";
-import { Flex, Grid, Link, Text, Box, useMediaQuery } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -11,7 +11,9 @@ import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
 import { useGLTF } from "@react-three/drei/useGLTF";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Github from "../assets/github";
+import Twitter from "../assets/twitter";
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
 // import { lazy } from "@loadable/component";
 // import Cubes from "./../components/cubes/cubes";
 // const Cubes = lazy(() => import("./../components/cubes/cubes"));
@@ -22,7 +24,7 @@ export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
-  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
+  // const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
@@ -42,10 +44,10 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
- 
+
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
-  }, [])
+  }, []);
 
   // React.useEffect(() => {
   //   if (typeof window !== "undefined" && isLargerThan375) {
@@ -102,14 +104,7 @@ export default ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      <Box
-        bgColor="brand.bg"
-        mt={6}
-        wrap="wrap"
-        maxW={1000}
-        lineHeight={1}
-        mb={6}
-      >
+      <Box bgColor="brand.bg" wrap="wrap" maxW={1000} lineHeight={1} my={6}>
         <Text
           as="h1"
           fontSize={["5xl", "7xl"]}
@@ -124,22 +119,55 @@ export default ({ data }) => {
       {/* <Suspense fallback={null}>
         <Cubes />
       </Suspense> */}
-
-      <Link
-        fontSize="xl"
-        fontWeight={500}
-        fontFamily="heading"
-        color="brand.black"
-        my={5}
-        href="https://twitter.com/studio_hungry"
-        isExternal
-        textDecoration="underline"
-        _hover={{
-          color: "brand.darkGrey",
-        }}
+      <Grid
+        templateColumns="max-content auto 50px 50px"
+        w="100%"
+        placeItems="center"
       >
-        By Rich Haines
-      </Link>
+        <Text
+          fontSize="xl"
+          fontWeight={500}
+          fontFamily="heading"
+          color="brand.black"
+          my={5}
+          gridColumn={1}
+        >
+          By Rich Haines
+        </Text>
+        <Link
+          fontSize="xl"
+          fontWeight={500}
+          fontFamily="heading"
+          color="brand.black"
+          my={5}
+          href="https://twitter.com/studio_hungry"
+          isExternal
+          // textDecoration="underline"
+          _hover={{
+            color: "brand.lightGrey",
+          }}
+          gridColumn={3}
+        >
+          <Github />
+        </Link>
+        <Link
+          fontSize="xl"
+          fontWeight={500}
+          fontFamily="heading"
+          color="brand.black"
+          my={5}
+          href="https://twitter.com/studio_hungry"
+          isExternal
+          // textDecoration="underline"
+          _hover={{
+            color: "brand.darkGrey",
+          }}
+          gridColumn={4}
+        >
+          <Twitter />
+        </Link>
+      </Grid>
+
       <SearchBar handleSearchQuery={handleSearchQuery} />
       <Grid
         templateColumns="repeat(auto-fill, minmax(100px, 1fr))"

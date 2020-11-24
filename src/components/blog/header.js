@@ -28,7 +28,7 @@ const Header = ({ prev, next, ...rest }) => {
           scrollTrigger: {
             trigger: headerRef.current,
             toggleActions: "restart none none none",
-            start: "top center",
+            start: "center center",
           },
           opacity: 1,
           duration: 1.2,
