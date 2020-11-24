@@ -9039,6 +9039,11 @@ mdurl@^1.0.0:
   resolved "https://registry.yarnpkg.com/mdurl/-/mdurl-1.0.1.tgz#fe85b2ec75a59037f2adfec100fd6c601761152e"
   integrity sha1-/oWy7HWlkDfyrf7BAP1sYBdhFS4=
 
+mdx-embed@^0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/mdx-embed/-/mdx-embed-0.0.15.tgz#e561a7afd5e616464e40322fc059477be089318a"
+  integrity sha512-MmvGOZqg5U6+RgDoRtMCrICcRxBJn/6ffUGOfZp/rocVKUL5dYCIfAGArGfFLIC6/PvnpnU2FBmZhFxYUoUJ+w==
+
 meant@^1.0.1, meant@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/meant/-/meant-1.0.2.tgz#5d0c78310a3d8ae1408a16be0fe0bd42a969f560"

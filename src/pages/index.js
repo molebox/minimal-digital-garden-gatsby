@@ -17,6 +17,7 @@ import Twitter from "../assets/twitter";
 // import { lazy } from "@loadable/component";
 // import Cubes from "./../components/cubes/cubes";
 // const Cubes = lazy(() => import("./../components/cubes/cubes"));
+import ExternalLink from "./../components/external-link";
 
 useGLTF.preload("/stork.glb");
 
@@ -33,7 +34,7 @@ export default ({ data }) => {
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
   // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
-  // a category and may want to use the search on the category
+  // a category and may want to use the searchbar on the category
   React.useEffect(() => {
     let result = posts;
     if (categories.length === posts.length) {
@@ -134,38 +135,16 @@ export default ({ data }) => {
         >
           By Rich Haines
         </Text>
-        <Link
-          fontSize="xl"
-          fontWeight={500}
-          fontFamily="heading"
-          color="brand.black"
-          my={5}
-          href="https://twitter.com/studio_hungry"
-          isExternal
-          // textDecoration="underline"
-          _hover={{
-            color: "brand.lightGrey",
-          }}
+        <ExternalLink
+          icon={<Github />}
+          href="https://github.com/molebox"
           gridColumn={3}
-        >
-          <Github />
-        </Link>
-        <Link
-          fontSize="xl"
-          fontWeight={500}
-          fontFamily="heading"
-          color="brand.black"
-          my={5}
+        />
+        <ExternalLink
+          icon={<Twitter />}
           href="https://twitter.com/studio_hungry"
-          isExternal
-          // textDecoration="underline"
-          _hover={{
-            color: "brand.darkGrey",
-          }}
           gridColumn={4}
-        >
-          <Twitter />
-        </Link>
+        />
       </Grid>
 
       <SearchBar handleSearchQuery={handleSearchQuery} />

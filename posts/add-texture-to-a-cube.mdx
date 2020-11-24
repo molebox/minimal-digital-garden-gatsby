@@ -4,9 +4,11 @@ category: 3D
 description: Add texture to a cube in three js using react-three-fiber
 ---
 
-Our finished piece can be viewed here: [A cube with texture](https://codesandbox.io/s/a-cube-with-texture-fzsj5)
+Our finished piece will look like this:
 
-I was going to assume that you have your canvas added and your css resets setup but I know how it is to google something and fined information missing, so let's just cover basic setup real quick.
+<CodeSandbox codeSandboxId="a-cube-with-texture-fzsj5" />
+
+Let's just cover basic setup real quick.
 
 ## Setup
 
@@ -38,12 +40,12 @@ We need to do this as our Canvas will be our main child element and it will take
 Create a components folder inside of src and add a new component named whatever you like. I will be using a picture of me for this example so will name it me-cube.js.
 
 ```jsx
-import React from 'react';
-import { useTexture } from '@react-three/drei';
+import React from "react";
+import { useTexture } from "@react-three/drei";
 
 const MeCube = () => {
   // Load the texture. This is a single texture that will be placed on all 6 sides of the cube
-  const [militaryTexture] = useTexture(['/me.jpg']);
+  const [militaryTexture] = useTexture(["/me.jpg"]);
 
   return (
     <mesh visible position={[0, 0, 0]} rotation={[10, 20, 0]}>
@@ -69,11 +71,11 @@ Our mesh node has a visible prop which say we should be able to see it in the ca
 Remove all the content from inside the returned App function. Replace it with a Canvas imported from react-three-fiber. THe Canvas takes a some props, add colorManagement to handle the colors for us and camera to position the camera. The camera prop allows us to not only position the camera but also the point of view from which we view the objects within the cameras viewport. The cameras position array takes the same values as the mesh, geometry and material meshes: [x, y, z] => horizontal, vertical, depth.
 
 ```jsx
-import { OrbitControls } from '@react-three/drei';
-import React, { Suspense } from 'react';
-import { Canvas } from 'react-three-fiber';
-import MeCube from './components/me-cube';
-import './styles.css';
+import { OrbitControls } from "@react-three/drei";
+import React, { Suspense } from "react";
+import { Canvas } from "react-three-fiber";
+import MeCube from "./components/me-cube";
+import "./styles.css";
 
 export default function App() {
   return (
@@ -84,7 +86,7 @@ export default function App() {
         fov: 75,
       }}
     >
-      <color attach="background" args={['#1d1d1d']} />
+      <color attach="background" args={["#1d1d1d"]} />
       <Suspense fallback={null}>
         <MeCube />
       </Suspense>

@@ -11,7 +11,7 @@ This is a collection of notes im putting together to better understand how to wo
 Install:
 
 ```bash
-yarn add react-three-fiber three
+yarn add react-three-fiber three @react-three/drei
 
 ```
 
@@ -40,7 +40,7 @@ We cant directly use HTML elements within the Canvas though there is a way to do
 
 Because the Canvas component renders threejs elements we can use stuff like mesh, sphereGeometry and meshStandardMaterial amongst many others. It provides all these via its context to any children rendered within it, translating the threejs API into React components that can be used as normal so we can also pass props to these elements/components too.
 
-#### mesh, geometry and material
+### mesh, geometry and material
 
 A mesh is like the base skeleton an object is made from, like a wire frame or modal.
 
@@ -60,7 +60,7 @@ Constructor arguments are passed with the args prop. The sphereGeometry takes a 
 - thetaStart — specify vertical starting angle. Default is 0.
 - thetaLength — specify vertical sweep angle size. Default is Math.PI.
 
-#### lights
+### Lights
 
 If no sources of lights are provided then the object will be black. Which makes sense as without light we wouldn't be able to see ti in real life. A list of the light sources taken from a [smashing magazine article](https://www.smashingmagazine.com/2013/09/introduction-to-polygonal-modeling-and-three-js/):
 
@@ -91,7 +91,7 @@ The third uses a drei Sphere with a distort material attached. A couple of light
 <Canvas>
   <mesh
     visible // object gets render if true
-    userData={{ test: 'hello' }} // An object that can be used to store custom data about the Object3d
+    userData={{ test: "hello" }} // An object that can be used to store custom data about the Object3d
     position={[0, 0, 1]} // The position on the canvas of the object [x,y,x]
     rotation={[0, 0, 0]} // The rotation of the object
     castShadow // Sets whether or not the object cats a shadow
@@ -137,27 +137,27 @@ The third uses a drei Sphere with a distort material attached. A couple of light
 </Canvas>
 ```
 
-## drei
+## Drei
 
 Drei (three in german) is a super helpful package that contains loads of helpers and abstractions for react-three-fiber. One thing that I noticed was that using drei with Nextjs (as this site does) will throw an error when trying to import stuff - cannot use import statement outside a module. This is because Nextjs uses common js modules on server side rendering. We can use withTM from next-transpile-modules in the next.config file to transpile the common js stuff in drei. We also need to dynamically import the component using the drei components and disable server side rendering. See [this issue](https://github.com/pmndrs/drei/issues/2) and [this PR](https://github.com/vercel/next.js/pull/14864).
 
 ### If you are using Nextjs....
 
 ```js
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 const ThreeBall = dynamic(
-  () => import('./../../src/components/post/three-ball'),
-  { ssr: false },
+  () => import("./../../src/components/post/three-ball"),
+  { ssr: false }
 );
 ```
 
 ### next.config.js
 
 ```js
-const withTM = require('next-transpile-modules')([
-  'three',
-  'drei',
-  'postprocessing',
+const withTM = require("next-transpile-modules")([
+  "three",
+  "drei",
+  "postprocessing",
 ]);
 
 module.exports = withTM();
@@ -165,6 +165,157 @@ module.exports = withTM();
 
 ## The main players
 
-The Renderer in react-three-fiber(R3F) is the HTML canvas element which gets added dynamically to the DOM unless specifically added via an id or className. 
+The Renderer in react-three-fiber(R3F) is the HTML canvas element which gets added dynamically to the DOM unless specifically added via an id or className.
 
-The scene is the stage where everything plays out. The meshes encompass lights, groups, 3D positions and cameras. A scene can be thought of as a theater scene where the mesh or groups of meshes are the act that will play out, the lights give the mesh and its geometry and materials a purpose on the scene, they light them from angles and provide context to why they are there. The cameras and positions allow us to view them all from different angles. 
+The scene is the stage where everything plays out. The meshes encompass lights, groups, 3D positions and cameras. A scene can be thought of as a theater scene where the mesh or groups of meshes are the act that will play out, the lights give the mesh and its geometry and materials a purpose on the scene, they light them from angles and provide context to why they are there. The cameras and positions allow us to view them all from different angles.
+
+### A handy canvas component
+
+I made a handy canvas component which i use to render any 3D stuff i want. It takes advantage of Chakra-ui but the styles can just as easily be used inline with a style tag or added from a CSS file.
+
+```jsx
+import React, { Suspense } from 'react';
+import { Canvas } from 'react-three-fiber';
+import { Box } from '@chakra-ui/core';
+
+/**
+ * A container with a set width to hold the canvas.
+ * @param {String} width - The width of containing element
+ * @param {String} height - The height of containing element
+ * @param {Array}  position - The position of the camera, [x, y, z] axis.
+ * @param {Number} fov - The field of view of the camera. The higher the number, the further away the view
+ * @param {Number} zoom - If the camera should be zoomed in. Provide a number. Defaults to 1.
+ * ...rest = any styles you want to apply to the containing div
+ */
+const CanvasContainer = ({
+  width,
+  height,
+  position,
+  fov,
+  zoom,
+  children,
+  ...rest
+}) => {
+  return (
+    <Box height={height} width={width} {...rest}>
+      <Canvas
+        colorManagement
+        camera={{
+          position,
+          fov,
+          zoom,
+        }}
+      >
+        <Suspense fallback={null}>{children}</Suspense>
+      </Canvas>
+    </Box>
+  );
+};
+
+export default CanvasContainer;
+```
+
+### Models
+
+Working with models is very fun, and fairly painless using the tools the the [Poimandres](https://github.com/pmndrs) team have put together. Generally speaking you are going to be working with GLTF which is a specification for loading 3D content. It accepts both JSON (.gltf) or binary (.glb) formats. Instead of storing a single texture or assets like .jgp or .png, gltf packages up all that is needed to show the 3D content. That could include everything from the mesh, geometry, materials and textures. For more information checkout the Three [docs](https://threejs.org/docs/index.html#examples/en/loaders/GLTFLoader).
+
+You can use a package called [gltfjsx](https://github.com/pmndrs/gltfjsx) which will take a gltf file which has to be stored in your public folder and then read that and create a React component out of it for you. If your gltf model has animations then the package will handle that for you too, creating the animations logic right inside the component. We can take an example, one of the birds from the Three repository examples.
+
+<StorkExample />
+
+The code for this bird is auto generated for us. It looks like this:
+
+```jsx
+/*
+auto-generated by: https://github.com/pmndrs/gltfjsx
+*/
+import React, { useRef, useState, useEffect } from "react";
+import { useFrame } from "react-three-fiber";
+import { useGLTF } from "@react-three/drei/useGLTF";
+import * as THREE from "three";
+import { PerspectiveCamera } from "@react-three/drei";
+
+export default function Stork(props) {
+  const group = useRef();
+  const { nodes, materials, animations } = useGLTF("/stork.glb");
+
+  const actions = useRef();
+  const [mixer] = useState(() => new THREE.AnimationMixer());
+  useFrame((state, delta) => mixer.update(delta));
+  useEffect(() => {
+    actions.current = {
+      storkFly_B_: mixer.clipAction(animations[0], group.current),
+    };
+    actions.current.storkFly_B_.play(); // To play the animation we have to call the play method
+    return () => animations.forEach((clip) => mixer.uncacheClip(clip));
+  }, [animations, mixer]);
+  return (
+    <group ref={group} {...props} dispose={null}>
+      <PerspectiveCamera makeDefault position={[-10, 50, 250]} />
+      <hemisphereLight args={["white", 2, 2]} />
+      <spotLight
+        intensity={0.2}
+        position={[20, 25, 14]}
+        angle={0.15}
+        penumbra={1}
+        castShadow
+      />
+      <mesh
+        material={nodes.mesh_0.material}
+        geometry={nodes.mesh_0.geometry}
+        name="mesh_0"
+        morphTargetDictionary={nodes.mesh_0.morphTargetDictionary}
+        morphTargetInfluences={nodes.mesh_0.morphTargetInfluences}
+      />
+    </group>
+  );
+}
+
+useGLTF.preload("/stork.glb");
+```
+
+### A handy model component
+
+I made a handy gtlf model component too. This component accepts a number of props such as the path to the models .gltf file, the position the model should take up on the canvas, its rotation which is added in the Vactor3 array format of [x, y, z] and any additional props to be passed onto the models mesh.
+
+```jsx
+import React from 'react';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from 'react-three-fiber';
+
+/**
+ * A basic gltf modal renderer component.
+ * @param {String} scenePath - The path to the scene file. Should be kept in the public folder
+ * @param {Array} position - The position on the canvas the model should take
+ * @param {Array} rotation - Optional rotation of the model. If provided [x, y, z] values are mapped to the useFrame hook which will rotate the model in the given direction(s)
+ */
+const GLTFModal = ({ scenePath, position, rotation, ...rest }) => {
+  const gltf = useGLTF(scenePath, true);
+  const mesh = React.useRef();
+  useFrame(() =>
+    rotation
+      ? ((mesh.current.rotation.x += rotation[0]),
+        (mesh.current.rotation.y += rotation[1]),
+        (mesh.current.rotation.z += rotation[2]))
+      : null,
+  );
+  return (
+    <mesh castShadow ref={mesh} {...rest} position={position}>
+      <primitive object={gltf.scene} dispose={null} />
+    </mesh>
+  );
+};
+
+export default GLTFModal;
+
+```
+
+It's then used like this: 
+
+```jsx
+  <GLTFModal
+    scenePath="/scene.gltf"
+    position={[0, -1, 0]}
+    rotation={[0, 0.01, 0]}
+  />
+```
