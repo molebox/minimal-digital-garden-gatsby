@@ -25,7 +25,7 @@ const PostTemplate = ({ data, pageContext }) => {
     gsap.to("body", { visibility: "visible" });
   }, []);
 
-  const windowExists = typeof window !== undefined;
+  const windowExists = typeof window !== "undefined";
 
   React.useEffect(() => {
     if (windowExists && isLargerThan375) {
