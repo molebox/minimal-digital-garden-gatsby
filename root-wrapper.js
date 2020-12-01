@@ -11,7 +11,7 @@ import ThreeBallWobble from './src/components/3d/three-wobble-ball';
 import ThreeBallDistort from './src/components/3d/three-ball-distort';
 import StorkExample from './src/components/3d/stork-example';
 
-import './src/global.css'
+import './src/global.css';
 
 const components = {
   code: (props) => <Code {...props}/>,
