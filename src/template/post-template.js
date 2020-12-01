@@ -25,12 +25,10 @@ const PostTemplate = ({ data, pageContext }) => {
     gsap.to("body", { visibility: "visible" });
   }, []);
 
+  const windowExists = typeof window !== undefined;
+
   React.useEffect(() => {
-    if (
-      typeof window !== undefined &&
-      typeof document !== undefined &&
-      isLargerThan375
-    ) {
+    if (windowExists && isLargerThan375) {
       // Code from https://greensock.com/forums/topic/22406-follow-mouse/?do=findComment&comment=105851
 
       gsap.set(mouseRef.current, { xPercent: -50, yPercent: -50 });
@@ -82,7 +80,7 @@ const PostTemplate = ({ data, pageContext }) => {
   return (
     <>
       <Layout>
-        {isLargerThan375 ? (
+        {windowExists && isLargerThan375 ? (
           <div ref={mouseRef} className={styles.mouseStalker}></div>
         ) : null}
         <SEO
