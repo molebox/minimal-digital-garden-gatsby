@@ -49,14 +49,14 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
-    console.log({styles})
   }, []);
 
   React.useEffect(() => {
     if (
       typeof window !== undefined &&
       typeof document !== undefined &&
-      isLargerThan375
+      isLargerThan375 &&
+      mouseRef.current
     ) {
       // Code from https://greensock.com/forums/topic/22406-follow-mouse/?do=findComment&comment=105851
 
@@ -84,7 +84,7 @@ export default ({ data }) => {
         ySet(position.y);
       });
     }
-  }, [isLargerThan375]);
+  }, [isLargerThan375, mouseRef.current]);
 
   // React.useEffect(() => {
   //   if (typeof window !== "undefined" && isLargerThan375) {

@@ -2,13 +2,13 @@ import defaultTheme from "@chakra-ui/theme";
 
 const theme = {
   ...defaultTheme,
-  // styles: {
-  //   global: {
-  //     body: {
-  //       visibility: "hidden",
-  //     },
-  //   },
-  // },
+  styles: {
+    global: {
+      body: {
+        visibility: "hidden",
+      },
+    },
+  },
   fonts: {
     heading: "Open Sans",
     body: "Jost",
