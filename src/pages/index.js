@@ -49,7 +49,7 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
-  }, [isLargerThan375]);
+  }, []);
 
   React.useEffect(() => {
     if (
@@ -83,7 +83,7 @@ export default ({ data }) => {
         ySet(position.y);
       });
     }
-  }, []);
+  }, [isLargerThan375]);
 
   // React.useEffect(() => {
   //   if (typeof window !== "undefined" && isLargerThan375) {
