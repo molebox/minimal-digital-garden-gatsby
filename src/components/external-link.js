@@ -10,9 +10,6 @@ const ExternalLink = ({ icon, href, ...rest }) => (
     my={5}
     href={href}
     isExternal
-    _hover={{
-      color: "brand.lightGrey",
-    }}
     {...rest}
   >
     {icon}

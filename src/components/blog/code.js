@@ -7,6 +7,8 @@ import JavaScript from "./../../assets/javascript";
 import Bash from "./../../assets/bash";
 import ReactSVG from "./../../assets/react-svg";
 import CopyButton from "./copy-button";
+import HTML from "../../assets/html";
+import CSS from "./../../assets/css";
 
 const Code = ({ children, className }) => {
   const language = className.replace(/language-/, "");
@@ -23,6 +25,10 @@ const Code = ({ children, className }) => {
         return <Bash />;
       case "jsx":
         return <ReactSVG />;
+      case "html":
+        return <HTML />;
+      case "css":
+        return <CSS />;
       default:
         break;
     }

@@ -149,7 +149,6 @@ export default ({ data }) => {
         templateRows={["auto", "1fr"]}
         alignItems="center"
         justifyContent={["space-evenly"]}
-        p={1}
         h="auto"
       >
         <AllCategoryTag handleCategoryQuery={handleCategoryQuery} />
@@ -178,7 +177,7 @@ export default ({ data }) => {
           <Flex direction="column" wrap="wrap" maxW={500} lineHeight={1} mb={5}>
             <Text
               fontSize={["4xl", "5xl"]}
-              fontWeight={800}
+              fontWeight={900}
               fontFamily="heading"
               color="brand.black"
             >
@@ -187,7 +186,7 @@ export default ({ data }) => {
           </Flex>
           <Text
             fontSize={["xl", "2xl"]}
-            fontWeight={700}
+            fontWeight={500}
             fontFamily="heading"
             color="brand.black"
             my={5}
@@ -196,7 +195,7 @@ export default ({ data }) => {
           </Text>
           <Text
             fontSize={["md", "xl"]}
-            fontWeight={600}
+            fontWeight={500}
             fontFamily="heading"
             color="brand.lightGrey"
           >

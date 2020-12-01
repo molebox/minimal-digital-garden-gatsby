@@ -1,0 +1,80 @@
+---
+title: Chakra-ui external link with SVG icon
+category: CSS
+description: Use an SVG icon as an external link with Chakra-ui
+---
+
+I love using [Chakra-ui](https://chakra-ui.com/), it's enabled me to develop faster and get my ideas down on the page so I can concentrate on other aspects of development. External links are not an issue to create, and Chakra isn't breaking any moulds with their implementation but the composability of their components allows for easy creation of a nice external link that uses an icon as its display piece. A library I like to use for icons is [SimpleIcons](https://simpleicons.org/), these are not your car, bird, desk or shop icons, rather a set of brand icons perfect for showing off what stack you currently indulge in or even as links to services you use. That will be our use case today, let's dive right in.
+
+> I'm going to assume you have Chakra-ui installed in your project.
+
+## The SVG
+
+Head to simple icons and grab yourself the GitHub icon (or whatever icon takes your fancy) and download it. These svgs are small, their paths are for the most part not complicated and so we can just keep our file handy until later. In your project create a new file and name it the name of your icon, I will name mine GitHub. We will be taking advantage of polymorphism and the `as` prop which can be used on all Chakra primitives and enable us to set our generic Box component to act as an svg element semantically. (It's my understanding that all components derive from the Box component in Chakra). Import Box and set it as svg, then as children add the svg path that you downloaded earlier together with a title element.
+
+```jsx
+import React from "react";
+import { Box } from "@chakra-ui/core";
+
+function Github() {
+  return (
+    <Box
+      as="svg"
+      role="img"
+      width="20px"
+      height="20px"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="#1f2127"
+      _hover={{
+        fill: "brand.accent",
+      }}
+    >
+      <title>My GitHub Link</title>
+      <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
+    </Box>
+  );
+}
+
+export default Github;
+```
+
+One of the reasons I really like this approach to creating icons in my projects is that I can utilize the Chakra theme setup i have to alter the icon with user interaction. In the above code you can see that I have added an on hover event which will change the fill of the svg when the mouse hovers over it. You can of course include style tags in your svgs and there are other way to do the same but this is pure simplicity and reads very well in my opinion.
+
+## The External Link
+
+Now that we have our icon created we can create our external link. This wil really just be a wrapper around the native Chakra Link.
+
+```jsx
+import React from "react";
+import { Link } from "@chakra-ui/core";
+
+const ExternalLink = ({ icon, href, ...rest }) => (
+  <Link
+    fontSize="xl"
+    fontWeight={500}
+    fontFamily="heading"
+    color="brand.black"
+    my={5}
+    href={href}
+    isExternal
+    {...rest}
+  >
+    {icon}
+  </Link>
+);
+
+export default ExternalLink;
+```
+
+We pass in our icon as a child to the component meaning the icon will render instead of any text. When the user hovers over the icon they will be able to read the title element text we set in the icon component. By setting the `isExternal` prop on the component we are telling Chakra to add some defaults such as `referrerpolicy` and `rel`. We also spread anything else we might want to pass in depending where we are rendering our component. As the Link component derives from the Box it inherits all of it's props so basically anything (style wise) can be passed onto it. Finally we pass in the href so that our link knows where to direct our users.
+
+Using our new component is as simple as:
+
+```jsx
+<ExternalLink
+  icon={<Github />}
+  href="https://github.com/molebox"
+  gridColumn={3} // additional prop passed in
+/>
+```
