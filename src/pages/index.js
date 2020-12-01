@@ -49,6 +49,7 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
+    console.log({styles})
   }, []);
 
   React.useEffect(() => {
