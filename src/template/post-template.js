@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex } from "@chakra-ui/core";
+import { Text, Flex, useMediaQuery } from "@chakra-ui/core";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
@@ -7,6 +7,8 @@ import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import gsap from "gsap";
+
+import styles from "../components/mouse.module.css";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -16,10 +18,46 @@ const PostTemplate = ({ data, pageContext }) => {
   } = data.mdx;
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
+  const mouseRef = React.useRef();
+  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
   }, []);
+
+  React.useEffect(() => {
+    if (
+      typeof window !== undefined &&
+      typeof document !== undefined &&
+      isLargerThan375
+    ) {
+      // Code from https://greensock.com/forums/topic/22406-follow-mouse/?do=findComment&comment=105851
+
+      gsap.set(mouseRef.current, { xPercent: -50, yPercent: -50 });
+
+      let position = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+      let mouse = { x: position.x, y: position.y };
+      let speed = 0.1;
+
+      let xSet = gsap.quickSetter(mouseRef.current, "x", "px");
+      let ySet = gsap.quickSetter(mouseRef.current, "y", "px");
+
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+      });
+
+      gsap.ticker.add(() => {
+        let dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+
+        position.x += (mouse.x - position.x) * dt;
+        position.y += (mouse.y - position.y) * dt;
+        xSet(position.x);
+        ySet(position.y);
+      });
+    }
+  }, [isLargerThan375]);
 
   const socialImage = getShareImage({
     title: title,
@@ -44,6 +82,9 @@ const PostTemplate = ({ data, pageContext }) => {
   return (
     <>
       <Layout>
+        {isLargerThan375 ? (
+          <div ref={mouseRef} className={styles.mouseStalker}></div>
+        ) : null}
         <SEO
           title={title}
           titleTemplate={slug}

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link as GatsbyLink, graphql } from "gatsby";
-import { Flex, Grid, Link, Text, Box } from "@chakra-ui/core";
+import { Flex, Grid, Link, Text, Box, useMediaQuery } from "@chakra-ui/core";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -17,13 +17,16 @@ import Twitter from "../assets/twitter";
 // import Cubes from "./../components/cubes/cubes";
 import ExternalLink from "./../components/external-link";
 
+import styles from "../components/mouse.module.css";
+
 // useGLTF.preload("/stork.glb");
 
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
-  // const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
+  const mouseRef = React.useRef();
+  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
@@ -46,6 +49,40 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
+  }, [isLargerThan375]);
+
+  React.useEffect(() => {
+    if (
+      typeof window !== undefined &&
+      typeof document !== undefined &&
+      isLargerThan375
+    ) {
+      // Code from https://greensock.com/forums/topic/22406-follow-mouse/?do=findComment&comment=105851
+
+      gsap.set(mouseRef.current, { xPercent: -50, yPercent: -50 });
+
+      let position = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+      let mouse = { x: position.x, y: position.y };
+      let speed = 0.1;
+
+      let xSet = gsap.quickSetter(mouseRef.current, "x", "px");
+      let ySet = gsap.quickSetter(mouseRef.current, "y", "px");
+
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = e.x;
+        mouse.y = e.y;
+      });
+
+      gsap.ticker.add(() => {
+        let dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+
+        position.x += (mouse.x - position.x) * dt;
+        position.y += (mouse.y - position.y) * dt;
+        xSet(position.x);
+        ySet(position.y);
+      });
+    }
   }, []);
 
   // React.useEffect(() => {
@@ -93,6 +130,10 @@ export default ({ data }) => {
 
   return (
     <Layout>
+      {isLargerThan375 ? (
+        <div ref={mouseRef} className={styles.mouseStalker}></div>
+      ) : null}
+
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""

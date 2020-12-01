@@ -29,7 +29,7 @@ const components = {
     </Text>
   ),
   blockquote: (props) => (
-    <Text my={2} fontFamily="body" fontStyle="italic" fontWeight={600}>
+    <Text my={2} fontFamily="body" fontStyle="italic">
       {props.children}
     </Text>
   ),
