@@ -8,7 +8,7 @@ import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import gsap from "gsap";
 
-import styles from "../components/mouse.module.css";
+// import styles from "../components/mouse.module.css";
 
 const PostTemplate = ({ data, pageContext }) => {
   const {
@@ -81,7 +81,7 @@ const PostTemplate = ({ data, pageContext }) => {
     <>
       <Layout>
         {windowExists && isLargerThan375 ? (
-          <div ref={mouseRef} className={styles.mouseStalker}></div>
+          <div ref={mouseRef} className="mouseStalker"></div>
         ) : null}
         <SEO
           title={title}
