@@ -81,7 +81,7 @@ export default ({ data }) => {
         ySet(position.y);
       });
     }
-  }, []);
+  }, [windowExists, isLargerThan375]);
 
   // React.useEffect(() => {
   //   if (typeof window !== "undefined" && isLargerThan375) {
@@ -127,10 +127,11 @@ export default ({ data }) => {
   });
 
   return (
-    <Layout>
-      {windowExists && isLargerThan375 ? (
+  <>
+        {windowExists && isLargerThan375 ? (
         <div ref={mouseRef} className="mouseStalker"></div>
       ) : null}
+    <Layout>
 
       <SEO
         title="Rich Haines Digital Garden"
@@ -243,6 +244,7 @@ export default ({ data }) => {
         </Link>
       ))}
     </Layout>
+    </>
   );
 };
 
