@@ -17,8 +17,6 @@ import Twitter from "../assets/twitter";
 // import Cubes from "./../components/cubes/cubes";
 import ExternalLink from "./../components/external-link";
 
-// useGLTF.preload("/stork.glb");
-
 export default ({ data }) => {
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
