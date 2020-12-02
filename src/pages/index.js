@@ -13,7 +13,6 @@ import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
 // import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import Cubes from "./../components/cubes/cubes";
 import ExternalLink from "./../components/external-link";
 
 export default ({ data }) => {
@@ -130,7 +129,7 @@ export default ({ data }) => {
 
   return (
     <Layout>
-      {isLargerThan375 ? <div ref={mouseRef} className="mouseStalker"></div> : <div ref={mouseRef} className="onMobile"></div>}
+      {!isMobile ? <div ref={mouseRef} className="mouseStalker"></div> : <div ref={mouseRef} className="onMobile"></div>}
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""
