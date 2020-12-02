@@ -17,8 +17,6 @@ import Twitter from "../assets/twitter";
 // import Cubes from "./../components/cubes/cubes";
 import ExternalLink from "./../components/external-link";
 
-// import styles from "../components/mouse.module.css";
-
 // useGLTF.preload("/stork.glb");
 
 export default ({ data }) => {
