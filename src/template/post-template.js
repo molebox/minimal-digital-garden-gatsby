@@ -8,8 +8,6 @@ import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import gsap from "gsap";
 
-// import styles from "../components/mouse.module.css";
-
 const PostTemplate = ({ data, pageContext }) => {
   const {
     frontmatter,

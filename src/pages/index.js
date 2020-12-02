@@ -22,12 +22,14 @@ export default ({ data }) => {
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
   const mouseRef = React.useRef();
+  const [isMobile, setIsMobile] = React.useState(false);
   const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
 
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
     ...new Set(data.allMdx.nodes.map((post) => post.frontmatter.category)),
   ];
+
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
   // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
@@ -45,7 +47,12 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
-  }, []);
+
+    if (isLargerThan375 === false) {
+      setIsMobile(true)
+    }
+    setIsMobile(false);
+  }, [isLargerThan375]);
 
   const windowExists = typeof window !== "undefined";
 
