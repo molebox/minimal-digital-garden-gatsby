@@ -9,7 +9,6 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import { useGLTF } from "@react-three/drei/useGLTF";
 import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
