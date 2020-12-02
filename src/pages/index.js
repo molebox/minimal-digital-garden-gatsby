@@ -81,7 +81,7 @@ export default ({ data }) => {
         ySet(position.y);
       });
     }
-  }, [windowExists, isLargerThan375]);
+  }, []);
 
   // React.useEffect(() => {
   //   if (typeof window !== "undefined" && isLargerThan375) {
@@ -128,6 +128,7 @@ export default ({ data }) => {
 
   return (
     <Layout>
+      <div ref={mouseRef} className="mouseStalker"></div>
         {/* {windowExists && isLargerThan375 ? (
         <div ref={mouseRef} className="mouseStalker"></div>
       ) : null} */}
