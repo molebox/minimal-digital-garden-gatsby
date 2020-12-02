@@ -129,9 +129,6 @@ export default ({ data }) => {
   return (
     <Layout>
       <div ref={mouseRef} className={isLargerThan375 ? `mouseStalker` : 'onMouse'}></div>
-        {/* {windowExists && isLargerThan375 ? (
-        <div ref={mouseRef} className="mouseStalker"></div>
-      ) : null} */}
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""
