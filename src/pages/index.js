@@ -12,7 +12,6 @@ import getShareImage from "@jlengstorf/get-share-image";
 import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ExternalLink from "./../components/external-link";
 
 export default ({ data }) => {
