@@ -124,7 +124,7 @@ export default ({ data }) => {
 
   return (
     <Layout>
-      <div ref={mouseRef} className={isLargerThan375 ? `mouseStalker` : 'onMouse'}></div>
+      {isLargerThan375 ? <div ref={mouseRef} className="mouseStalker"></div> : <div ref={mouseRef} className="onMobile"></div>}
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""
