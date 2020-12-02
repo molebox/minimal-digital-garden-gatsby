@@ -21,7 +21,7 @@ export default ({ data }) => {
   const mouseRef = React.useRef();
   const [isMobile, setIsMobile] = React.useState(false);
   const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
-
+  const windowExists = typeof window !== "undefined";
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
     ...new Set(data.allMdx.nodes.map((post) => post.frontmatter.category)),
@@ -45,13 +45,13 @@ export default ({ data }) => {
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
 
-    if (isLargerThan375 === false) {
+    if (windowExists && isLargerThan375 === false) {
       setIsMobile(true)
     }
     setIsMobile(false);
   }, [isLargerThan375]);
 
-  const windowExists = typeof window !== "undefined";
+
 
   React.useEffect(() => {
     if (windowExists && isLargerThan375) {
