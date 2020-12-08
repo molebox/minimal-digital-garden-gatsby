@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@chakra-ui/core";
+import { Link } from "@chakra-ui/react";
 
 const ExternalLink = ({ icon, href, ...rest }) => (
   <Link

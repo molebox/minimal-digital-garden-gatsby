@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/react";
 
 function Github() {
   return (
@@ -12,7 +12,7 @@ function Github() {
       viewBox="0 0 24 24"
       fill="#1f2127"
       _hover={{
-        fill: "brand.accent",
+        fill: "brand.lightGrey",
       }}
     >
       <title>Rich Haines GitHub</title>

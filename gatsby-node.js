@@ -10,15 +10,27 @@ exports.createPages = ({ actions, graphql }) => {
   return graphql(`
     {
       allMdx {
-        nodes {
-          id
-          excerpt(pruneLength: 200)
-          frontmatter {
-            title
-            category
-            description
+        edges {
+          node {
+            id
+            excerpt(pruneLength: 200)
+            frontmatter {
+              title
+              category
+              description
+            }
+            fields {
+              slug
+            }
+            timeToRead
+            wordCount {
+              words
+            }
           }
-          fields {
+          next {
+            slug
+          }
+          previous {
             slug
           }
         }
@@ -29,20 +41,16 @@ exports.createPages = ({ actions, graphql }) => {
       throw result.errors
     }
 
-    const posts = result.data.allMdx.nodes
+    const posts = result.data.allMdx.edges
 
-    posts.forEach((post, index) => {
-      const previous =
-        index === post.length - 1 ? null : posts[index + 1]
-      const next = index === 0 ? null : posts[index - 1]
-
+    posts.forEach(({node, next, previous}) => {
       createPage({
-        path: post.fields.slug,
+        path: node.fields.slug,
         component: postTemplate,
         context: {
-          slug: post.fields.slug,
-          previous,
-          next,
+          slug: node.fields.slug,
+          previous: previous,
+          next: next,
         },
       })
     })

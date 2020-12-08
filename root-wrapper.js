@@ -1,6 +1,6 @@
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
-import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link } from "@chakra-ui/core";
+import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link  } from "@chakra-ui/react";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
 import Layout from './src/components/layout';

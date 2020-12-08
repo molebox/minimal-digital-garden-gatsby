@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { Canvas } from "react-three-fiber";
-import { Box } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/react";
 
 /**
  * A container with a set width to hold the canvas.

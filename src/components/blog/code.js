@@ -1,7 +1,7 @@
 import React from "react";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/vsDark";
-import { Flex, Grid, Spacer } from "@chakra-ui/core";
+import { Flex, Grid, Spacer } from "@chakra-ui/react";
 import TypeScript from "./../../assets/typescript";
 import JavaScript from "./../../assets/javascript";
 import Bash from "./../../assets/bash";

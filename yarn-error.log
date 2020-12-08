@@ -44,7 +44,7 @@ npm manifest:
       "postinstall": "node postinstall.js"
     },
     "dependencies": {
-      "@chakra-ui/core": "^1.0.0-rc.8",
+      "@chakra-ui/react": "^1.0.0-rc.8",
       "@jlengstorf/get-share-image": "^0.8.0",
       "@mdx-js/mdx": "^1.6.21",
       "@mdx-js/react": "^1.6.21",
@@ -1234,9 +1234,9 @@ Lockfile:
     dependencies:
       "@chakra-ui/utils" "1.0.0-rc.8"
   
-  "@chakra-ui/core@^1.0.0-rc.8":
+  "@chakra-ui/react@^1.0.0-rc.8":
     version "1.0.0-rc.8"
-    resolved "https://registry.yarnpkg.com/@chakra-ui/core/-/core-1.0.0-rc.8.tgz#2a2e7105b18488762edf479cc7cd77185503c760"
+    resolved "https://registry.yarnpkg.com/@chakra-ui/react/-/core-1.0.0-rc.8.tgz#2a2e7105b18488762edf479cc7cd77185503c760"
     integrity sha512-ZPGjTwy5QrYG/sYuGhrYeBNfWNIfQMSI4spHkNusd+qmNwPJMXR/WO0M8FwTdSnLc0ZVubUpvqdY4e9fp+xT+g==
     dependencies:
       "@chakra-ui/accordion" "1.0.0-rc.8"

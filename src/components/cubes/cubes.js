@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Box } from "@chakra-ui/core";
+import { Box } from "@chakra-ui/react";
 import { Canvas } from "react-three-fiber";
 import { Physics } from "@react-three/cannon";
 import Plane from "./plane";
@@ -33,10 +33,6 @@ const Cubes = () => {
     Letter_T,
   ]);
   const { progress } = useProgress();
-
-  React.useEffect(() => {
-    console.log("cubes progress: ", progress);
-  }, [progress]);
 
   React.useEffect(() => {
     if (typeof window !== undefined) {

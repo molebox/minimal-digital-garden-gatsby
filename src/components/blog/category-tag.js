@@ -1,5 +1,5 @@
 import React from "react";
-import { Tag } from "@chakra-ui/core";
+import { Tag } from "@chakra-ui/react";
 
 const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
   const getCategory = (category) => handleCategoryQuery(category);
@@ -15,6 +15,7 @@ const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
       size="sm"
       p={1}
       minW="100px"
+      borderRadius={0}
       onClick={() => getCategory(category)}
       _hover={{
         cursor: "pointer",

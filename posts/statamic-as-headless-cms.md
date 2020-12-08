@@ -12,7 +12,7 @@ With the release of v3, Statamic introduced a formal way of grabbing the data st
 
 So what are we going to build? We're going to be using Statamic as a headless CMS. We'll create a new Statamic project from scratch as well as a new Gatsby project from scratch and join the two, as one, like some super Jamstack baby from the future.
 
-You can view the final project repo here: [statamic-gatsby](https://github.com/molebox/statamic-gatsby). 
+You can view the final project repo here: [statamic-gatsby](https://github.com/molebox/statamic-gatsby).
 
 And the live site here: [statamic-gatsby.netlify.app]
 
@@ -88,7 +88,7 @@ I love Gatsby. I especially love creating fresh, brand spanking new Gatsby sites
 
 ```bash
 yarn init -y
-yarn add react react-dom gatsby @chakra-ui/core@next framer-motion gatsby-source-statamic
+yarn add react react-dom gatsby @chakra-ui/react@next framer-motion gatsby-source-statamic
 yarn add prettier -D
 ```
 
@@ -123,7 +123,7 @@ module.exports = {
       resolve: `gatsby-source-statamic`,
       options: {
         baseUrl: `http://statamic-gatsby.test:81`,
-        collections: [`posts`]
+        collections: [`posts`],
       },
     },
   ],
@@ -133,8 +133,8 @@ module.exports = {
 Because we are using Chakra we have to tell our app where the styles are coming form. Chakra asks that you wrap the root of your app in a provider which will pass down it's styles throughout the application tree. You can optionally also pass in a custom theme which would override whatever styles you like but we wont be covering that today. As we are using Gatsby as our React app we can use the wrapRootElement function which, as the name suggests, allows us to wrap our applications root with a provider. It's recommended to do this in both the gatsby-browser and gatsby-ssr files, so let's go ahead and create a single file we can export from both rather than duplicating code in both files. Create a new file at the root of the project called wrap-root-element.js and add the following code.
 
 ```jsx
-import React from 'react';
-import { ChakraProvider } from '@chakra-ui/core';
+import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 export const wrapRootElement = ({ element }) => (
   <ChakraProvider resetCSS>{element}</ChakraProvider>
@@ -144,7 +144,7 @@ export const wrapRootElement = ({ element }) => (
 Now create both gatsby-browser.js and gatsby-ssr.js and add the following code. We are going to import our new wrap-root-element file and export it again from each file.
 
 ```js
-import { wrapRootElement as wrap } from './wrap-root-element';
+import { wrapRootElement as wrap } from "./wrap-root-element";
 
 export const wrapRootElement = wrap;
 ```
@@ -176,7 +176,7 @@ If you navigate back to the Posts collection and click on the first entity you c
 When we left our Gatsby site all we had was a measly package.json a config file and some scripts. Pah! Let's add some meat to those bones! Inside our index.js add the following:
 
 ```jsx
-import React from 'react';
+import React from "react";
 import {
   Flex,
   Container,
@@ -184,8 +184,8 @@ import {
   Text,
   UnorderedList,
   ListItem,
-} from '@chakra-ui/core';
-import { graphql, Link as GatsbyLink } from 'gatsby';
+} from "@chakra-ui/react";
+import { graphql, Link as GatsbyLink } from "gatsby";
 
 const Index = ({ data }) => {
   const posts = data.allCollectionPosts.nodes;
@@ -249,7 +249,7 @@ const path = require(`path`);
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions;
   // Our blog post layout template. Used to layout all out posts
-  const postLayoutTemplate = path.resolve('src/templates/post-layout.js');
+  const postLayoutTemplate = path.resolve("src/templates/post-layout.js");
 
   return graphql(`
     {
@@ -305,10 +305,10 @@ There's a lot to unfold there, let's break it down.
 Now that Gatsby know what to do with our data, let's create the post layout template so that our blog post can be rendered on their own awesome pages. Create a new folder inside of the src folder called templates and inside that a file called post-layout.js
 
 ```jsx
-import React from 'react';
-import { graphql, Link as GatsbyLink } from 'gatsby';
-import { Container, Text, Image, Link, Flex } from '@chakra-ui/core';
-import ReactMarkdown from 'react-markdown/with-html';
+import React from "react";
+import { graphql, Link as GatsbyLink } from "gatsby";
+import { Container, Text, Image, Link, Flex } from "@chakra-ui/react";
+import ReactMarkdown from "react-markdown/with-html";
 
 const PostLayout = ({ data, pageContext }) => {
   const { title, content, images } = data.collectionPosts;
@@ -369,7 +369,7 @@ Now we can simply replace our dangerouslySetInnerHTML with the react-markdown co
 
 ```jsx
 // Other imports
-import ReactMarkdown from 'react-markdown/with-html';
+import ReactMarkdown from "react-markdown/with-html";
 
 // Component stuff
 <ReactMarkdown source={content} escapeHtml={false} />;

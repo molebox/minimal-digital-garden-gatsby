@@ -32,7 +32,7 @@ STATAMIC_API_ROUTE=api
 
 ```bash
 yarn init -y
-yarn add react react-dom gatsby @chakra-ui/core gatsby-source-statamic
+yarn add react react-dom gatsby @chakra-ui/react gatsby-source-statamic
 yarn add prettier -D
 ```
 
@@ -62,8 +62,8 @@ module.exports = {
 ```
 
 ```jsx
-import React from 'react';
-import { ChakraProvider } from '@chakra-ui/core';
+import React from "react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 export const wrapRootElement = ({ element }) => (
   <ChakraProvider resetCSS>{element}</ChakraProvider>
@@ -71,7 +71,7 @@ export const wrapRootElement = ({ element }) => (
 ```
 
 ```js
-import { wrapRootElement as wrap } from './wrap-root-element';
+import { wrapRootElement as wrap } from "./wrap-root-element";
 
 export const wrapRootElement = wrap;
 ```
@@ -81,7 +81,7 @@ php please make:user
 ```
 
 ```jsx
-import React from 'react';
+import React from "react";
 import {
   Flex,
   Container,
@@ -89,8 +89,8 @@ import {
   Text,
   UnorderedList,
   ListItem,
-} from '@chakra-ui/core';
-import { graphql, Link as GatsbyLink } from 'gatsby';
+} from "@chakra-ui/react";
+import { graphql, Link as GatsbyLink } from "gatsby";
 
 const Index = ({ data }) => {
   const posts = data.allCollectionPosts.nodes;
@@ -141,7 +141,7 @@ const path = require(`path`);
 exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions;
   // Our blog post layout template. Used to layout all out posts
-  const postLayoutTemplate = path.resolve('src/templates/post-layout.js');
+  const postLayoutTemplate = path.resolve("src/templates/post-layout.js");
 
   return graphql(`
     {
@@ -186,10 +186,10 @@ exports.createPages = ({ actions, graphql }) => {
 ```
 
 ```jsx
-import React from 'react';
-import { graphql, Link as GatsbyLink } from 'gatsby';
-import { Container, Text, Image, Link, Flex } from '@chakra-ui/core';
-import ReactMarkdown from 'react-markdown/with-html';
+import React from "react";
+import { graphql, Link as GatsbyLink } from "gatsby";
+import { Container, Text, Image, Link, Flex } from "@chakra-ui/react";
+import ReactMarkdown from "react-markdown/with-html";
 
 const PostLayout = ({ data, pageContext }) => {
   const { title, content, images } = data.collectionPosts;
@@ -244,7 +244,7 @@ yarn add react-markdown
 
 ```jsx
 // Other imports
-import ReactMarkdown from 'react-markdown/with-html';
+import ReactMarkdown from "react-markdown/with-html";
 
 // Component stuff
 <ReactMarkdown source={content} escapeHtml={false} />;

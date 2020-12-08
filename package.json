@@ -15,7 +15,9 @@
     "postinstall": "node postinstall.js"
   },
   "dependencies": {
-    "@chakra-ui/core": "^1.0.0-rc.8",
+    "@chakra-ui/react": "^1.0.0",
+    "@emotion/react": "^11.1.2",
+    "@emotion/styled": "^11.0.0",
     "@jlengstorf/get-share-image": "^0.8.0",
     "@mdx-js/mdx": "^1.6.21",
     "@mdx-js/react": "^1.6.21",

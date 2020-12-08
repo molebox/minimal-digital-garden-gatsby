@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Flex, useMediaQuery } from "@chakra-ui/core";
+import { Text, Flex, useMediaQuery, useColorModeValue } from "@chakra-ui/react";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
@@ -7,18 +7,16 @@ import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import gsap from "gsap";
+import WordCount from "../assets/word-count";
+import ReadingTime from "./../assets/reading-time";
 
 const PostTemplate = ({ data, pageContext }) => {
-  const {
-    frontmatter,
-    body,
-    fields: { slug },
-  } = data.mdx;
+  const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
   const { title, description } = frontmatter;
   const { previous, next } = pageContext;
   const mouseRef = React.useRef();
   const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
-
+  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
   React.useEffect(() => {
     gsap.to("body", { visibility: "visible" });
   }, []);
@@ -92,9 +90,15 @@ const PostTemplate = ({ data, pageContext }) => {
           author="Rich Haines"
           article={true}
         />
-        <Header prev={previous} next={next} opacity={0.7} />
+        <Header previous={previous} next={next} opacity={0.7} />
 
-        <Flex wrap="wrap" maxW={["300px", "600px"]} p={3}>
+        <Flex
+          bgColor={titleBox}
+          wrap="wrap"
+          maxW={["300px", "600px"]}
+          p={3}
+          my={6}
+        >
           <Text
             as="h1"
             fontSize={["4xl", "6xl"]}
@@ -107,6 +111,17 @@ const PostTemplate = ({ data, pageContext }) => {
             {title}
           </Text>
         </Flex>
+        <Flex>
+          <Flex p={3} align="center">
+            <WordCount />
+            <Text fontSize="xl">{wordCount.words} words</Text>
+          </Flex>
+          <Flex p={3} align="center">
+            <ReadingTime />
+            <Text fontSize="xl">{timeToRead} minutes</Text>
+          </Flex>
+        </Flex>
+
         <MDXRenderer>{body}</MDXRenderer>
       </Layout>
     </>
@@ -123,10 +138,12 @@ export const query = graphql`
         category
         description
       }
+      slug
       body
       excerpt
-      fields {
-        slug
+      timeToRead
+      wordCount {
+        words
       }
     }
   }

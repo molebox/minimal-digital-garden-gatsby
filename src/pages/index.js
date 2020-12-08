@@ -1,6 +1,16 @@
 import React from "react";
 import { Link as GatsbyLink, graphql } from "gatsby";
-import { Flex, Grid, Link, Text, Box, useMediaQuery } from "@chakra-ui/core";
+import {
+  Flex,
+  Grid,
+  Link,
+  Text,
+  Box,
+  useMediaQuery,
+  useColorMode,
+  useColorModeValue,
+  Button,
+} from "@chakra-ui/react";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
@@ -13,8 +23,10 @@ import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
 import ExternalLink from "./../components/external-link";
+import ModeButton from "../components/mode-button";
 
 export default ({ data }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState(posts);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
@@ -26,7 +38,6 @@ export default ({ data }) => {
   const categoriesList = [
     ...new Set(data.allMdx.nodes.map((post) => post.frontmatter.category)),
   ];
-
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
   // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
@@ -46,12 +57,10 @@ export default ({ data }) => {
     gsap.to("body", { visibility: "visible" });
 
     if (windowExists && isLargerThan375 === false) {
-      setIsMobile(true)
+      setIsMobile(true);
     }
     setIsMobile(false);
-  }, [isLargerThan375]);
-
-
+  }, [isLargerThan375, windowExists]);
 
   React.useEffect(() => {
     if (windowExists && isLargerThan375) {
@@ -126,6 +135,12 @@ export default ({ data }) => {
     version: "v1605269202",
   });
 
+  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
+  const textBox = useColorModeValue("brand.bg", "dark.black");
+  const text = useColorModeValue("brand.black", "dark.lightGrey");
+  const excerptText = useColorModeValue("brand.lightGrey", "brand.black");
+  const isDarkMode = colorMode === "dark";
+
   return (
     <Layout>
       {!isMobile ? <div ref={mouseRef} className="mouseStalker"></div> : null}
@@ -139,7 +154,14 @@ export default ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      <Box bgColor="brand.bg" wrap="wrap" maxW={1000} lineHeight={1} my={6}>
+      <Box
+        bgColor={titleBox}
+        wrap="wrap"
+        maxW={1000}
+        lineHeight={1}
+        my={6}
+        p={6}
+      >
         <Text
           as="h1"
           fontSize={["5xl", "7xl"]}
@@ -152,33 +174,47 @@ export default ({ data }) => {
       </Box>
 
       <Grid
-        templateColumns="max-content auto 50px 50px"
+        templateColumns="max-content auto 100px 50px 50px"
         w="100%"
         placeItems="center"
       >
-        <Text
-          fontSize="xl"
-          fontWeight={500}
-          fontFamily="heading"
-          color="brand.black"
-          my={5}
+        <Box
           gridColumn={1}
+          bgColor={textBox}
+          height="min-content"
+          my={5}
+          px={2}
+          style={{
+            transform: isDarkMode ? "rotate(5deg)" : null,
+          }}
         >
-          By Rich Haines
-        </Text>
+          <Text
+            fontSize="xl"
+            fontWeight={500}
+            fontFamily="heading"
+            color={text}
+          >
+            By Rich Haines
+          </Text>
+        </Box>
+        {/* <Button border="solid 1px" px={2} py={0} gridColumn={3} mr={6} onClick={toggleColorMode}>{colorMode === 'light' ? ' Like it Mustard?' : 'Like it Clean?'} </Button> */}
+        <ModeButton />
         <ExternalLink
           icon={<Github />}
           href="https://github.com/molebox"
-          gridColumn={3}
+          gridColumn={4}
         />
         <ExternalLink
           icon={<Twitter />}
           href="https://twitter.com/studio_hungry"
-          gridColumn={4}
+          gridColumn={5}
         />
       </Grid>
 
-      <SearchBar handleSearchQuery={handleSearchQuery} />
+      <SearchBar
+        isDarkMode={isDarkMode}
+        handleSearchQuery={handleSearchQuery}
+      />
       <Grid
         templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
         gap={5}
@@ -196,7 +232,7 @@ export default ({ data }) => {
           />
         ))}
       </Grid>
-      {filteredPosts.map(({ id, frontmatter, fields, excerpt }, index) => (
+      {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
         <Link
           className={`post`}
           key={id}
@@ -206,11 +242,19 @@ export default ({ data }) => {
           borderBottom="solid 2px"
           my={6}
           _hover={{
-            backgroundColor: "brand.offWhite",
+            backgroundColor: !isDarkMode ? "brand.offWhite" : null,
             cursor: "pointer",
           }}
         >
-          <Flex direction="column" wrap="wrap" maxW={500} lineHeight={1} mb={5}>
+          <Flex
+            bgColor={titleBox}
+            p={6}
+            direction="column"
+            wrap="wrap"
+            maxW={500}
+            lineHeight={1}
+            mb={5}
+          >
             <Text
               fontSize={["4xl", "5xl"]}
               fontWeight={900}
@@ -220,23 +264,35 @@ export default ({ data }) => {
               {frontmatter.title}
             </Text>
           </Flex>
-          <Text
-            fontSize={["xl", "2xl"]}
-            fontWeight={500}
-            fontFamily="heading"
-            color="brand.black"
-            my={5}
+          <Box
+            bgColor={textBox}
+            px={2}
+            wrap="wrap"
+            maxW="max-content"
+            style={{
+              transform: isDarkMode ? "rotate(-5deg)" : null,
+            }}
           >
-            {frontmatter.description}
-          </Text>
-          <Text
-            fontSize={["md", "xl"]}
-            fontWeight={500}
-            fontFamily="heading"
-            color="brand.lightGrey"
-          >
-            {excerpt}
-          </Text>
+            <Text
+              fontSize={["xl", "2xl"]}
+              fontWeight={500}
+              fontFamily="heading"
+              color={text}
+              my={5}
+            >
+              {frontmatter.description}
+            </Text>
+          </Box>
+          <Box my={2} p={2}>
+            <Text
+              fontSize={["md", "xl"]}
+              fontWeight={500}
+              fontFamily="heading"
+              color={excerptText}
+            >
+              {excerpt}
+            </Text>
+          </Box>
         </Link>
       ))}
     </Layout>

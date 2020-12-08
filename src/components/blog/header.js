@@ -1,18 +1,13 @@
 import React from "react";
 import gsap from "gsap";
-import { Flex, Grid } from "@chakra-ui/core";
+import { Flex, Grid, useColorModeValue } from "@chakra-ui/react";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import { Canvas } from "react-three-fiber";
-// import { lazy } from "@loadable/component";
-// import { Html, useProgress } from "@react-three/drei";
 
-//  Stork = lazy(() => import("../bird/stork"));
-// import Stork from "./../bird/stork";
-
-const Header = ({ prev, next, ...rest }) => {
+const Header = ({ previous, next, ...rest }) => {
   const headerRef = React.useRef(null);
+  const bg = useColorModeValue("rgba(255,255,255, 0.9)", "dark.bg");
 
   const isBrowser = typeof window !== undefined;
 
@@ -44,11 +39,10 @@ const Header = ({ prev, next, ...rest }) => {
       as="header"
       templateColumns={["1fr 1fr 1fr"]}
       autoRows="auto"
-      // templateRows={["repeat(3, 1fr)", "1fr"]}
       w="100%"
       justify="space-evenly"
       align="center"
-      bg="rgba(255,255,255, 0.9)"
+      bg={bg}
       ref={headerRef}
       position="sticky"
       top={0}
@@ -57,18 +51,6 @@ const Header = ({ prev, next, ...rest }) => {
       overflowX="hidden"
       {...rest}
     >
-      {/* <Flex gridColumn={1} gridRow={1} w={["100%", "250px"]} h="80px">
-        <NavigationLink to="/"></NavigationLink>
-          <Canvas colorManagement>
-            <Suspense
-              fallback={null}
-            >
-              <Stork position={[10, 10, 100]} />
-            </Suspense>
-          </Canvas>
-        </NavigationLink>
-      </Flex> */}
-
       <Flex
         gridColumn={1}
         gridRow={1}
@@ -78,27 +60,15 @@ const Header = ({ prev, next, ...rest }) => {
         <NavigationLink to="/">home</NavigationLink>
       </Flex>
 
-      <Flex
-        gridColumn={2}
-        // gridRow={[2, 1]}
-        alignItems="center"
-        justifyContent="center"
-      >
-        {prev && prev === false
-          ? null
-          : prev && (
-              <NavigationLink to={prev.fields.slug}>previous</NavigationLink>
-            )}
+      <Flex gridColumn={2} alignItems="center" justifyContent="center">
+        {previous !== null ? (
+          <NavigationLink to={`/${previous.slug}`}>previous</NavigationLink>
+        ) : null}
       </Flex>
-      <Flex
-        gridColumn={3}
-        // gridRow={[3, 1]}
-        alignItems="center"
-        justifyContent="center"
-      >
-        {next && next === false
-          ? null
-          : next && <NavigationLink to={next.fields.slug}>next</NavigationLink>}
+      <Flex gridColumn={3} alignItems="center" justifyContent="center">
+        {next !== null ? (
+          <NavigationLink to={`/${next.slug}`}>next</NavigationLink>
+        ) : null}
       </Flex>
     </Grid>
   ) : null;

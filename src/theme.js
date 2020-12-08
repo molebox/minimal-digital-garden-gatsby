@@ -1,5 +1,7 @@
 import defaultTheme from "@chakra-ui/theme";
 
+//  "dark mode" https://www.swissted.com/products/d-r-i-at-the-american-legion-hall-1984#&gid=1&pid=1
+
 const theme = {
   ...defaultTheme,
   styles: {
@@ -34,6 +36,11 @@ const theme = {
       darkGrey: "#1f2127",
       offWhite: "#f6f8fa",
       accent: "#DA5077",
+    },
+    dark: {
+      bg: "#e2a114",
+      black: "#000000",
+      lightGrey: "#dee2d7",
     },
   },
   // breakpoints: ["30em", "48em", "62em", "80em"],

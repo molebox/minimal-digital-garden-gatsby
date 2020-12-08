@@ -1,14 +1,17 @@
 import React from "react";
-import { Input, Flex } from "@chakra-ui/core";
+import { Input, Flex, useColorModeValue } from "@chakra-ui/react";
 
-const SearchBar = ({ handleSearchQuery }) => {
+const SearchBar = ({ isDarkMode, handleSearchQuery }) => {
+  const bg = useColorModeValue("rgba(255,255,255, 0.9)", "dark.bg");
+  const textBox = useColorModeValue("rgba(255,255,255, 0.9)", "dark.black");
+  const text = useColorModeValue("brand.black", "dark.lightGrey");
   return (
     <Flex
       justify="center"
       alignItems="center"
       position="sticky"
       top={0}
-      bg="rgba(255,255,255, 0.9)"
+      bg={bg}
       h={100}
       my={1}
       zIndex="99999"
@@ -19,6 +22,7 @@ const SearchBar = ({ handleSearchQuery }) => {
         id="blog-searchbar"
         placeholder="Search posts.."
         onChange={handleSearchQuery}
+        borderRadius={0}
       />
     </Flex>
   );
