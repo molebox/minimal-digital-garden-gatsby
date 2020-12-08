@@ -174,7 +174,11 @@ export default ({ data }) => {
       </Box>
 
       <Grid
-        templateColumns="max-content auto 100px 50px 50px"
+        templateColumns={[
+          "max-content auto 100px 50px 50px",
+          "max-content auto 100px 50px 50px",
+        ]}
+        templateRows="auto"
         w="100%"
         placeItems="center"
       >
@@ -189,7 +193,7 @@ export default ({ data }) => {
           }}
         >
           <Text
-            fontSize="xl"
+            fontSize={["md", "xl"]}
             fontWeight={500}
             fontFamily="heading"
             color={text}
@@ -197,7 +201,7 @@ export default ({ data }) => {
             By Rich Haines
           </Text>
         </Box>
-        {/* <Button border="solid 1px" px={2} py={0} gridColumn={3} mr={6} onClick={toggleColorMode}>{colorMode === 'light' ? ' Like it Mustard?' : 'Like it Clean?'} </Button> */}
+
         <ModeButton />
         <ExternalLink
           icon={<Github />}
