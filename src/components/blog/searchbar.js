@@ -22,7 +22,10 @@ const SearchBar = ({ isDarkMode, handleSearchQuery }) => {
         id="blog-searchbar"
         placeholder="Search posts.."
         onChange={handleSearchQuery}
-        borderRadius={0}
+        variant="flushed"
+        _placeholder={{
+          color: "brand.black"
+        }}
       />
     </Flex>
   );
