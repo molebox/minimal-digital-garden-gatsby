@@ -24,8 +24,9 @@ const SearchBar = ({ isDarkMode, handleSearchQuery }) => {
         onChange={handleSearchQuery}
         variant="flushed"
         _placeholder={{
-          color: "brand.black"
+          color: "brand.black",
         }}
+        borderBottom="solid 2px"
       />
     </Flex>
   );

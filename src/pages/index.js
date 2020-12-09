@@ -24,6 +24,7 @@ import Github from "../assets/github";
 import Twitter from "../assets/twitter";
 import ExternalLink from "./../components/external-link";
 import ModeButton from "../components/mode-button";
+import { RoughNotation } from "react-rough-notation";
 
 export default ({ data }) => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -92,29 +93,6 @@ export default ({ data }) => {
     }
   }, []);
 
-  // React.useEffect(() => {
-  //   if (typeof window !== "undefined" && isLargerThan375) {
-  //     gsap.registerPlugin(ScrollTrigger);
-  //     gsap.core.globals("ScrollTrigger", ScrollTrigger);
-
-  //     console.log({ isLargerThan375 });
-  //     gsap.utils.toArray(".post").forEach((post, index) => {
-  //       if (index >= 1) {
-  //         gsap.from(post, {
-  //           y: window.innerHeight * 1,
-  //           opacity: 0,
-  //           duration: 1.2,
-  //           scrollTrigger: {
-  //             trigger: post,
-  //             toggleActions: "restart pause resume pause",
-  //             // start: "top center",
-  //           },
-  //         });
-  //       }
-  //     });
-  //   }
-  // }, [isLargerThan375]);
-
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
@@ -143,7 +121,6 @@ export default ({ data }) => {
 
   return (
     <Layout>
-      {/* <div ref={mouseRef} className={isMobile ? "onMobile" : "mouseStalker"}></div> */}
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""
@@ -181,26 +158,34 @@ export default ({ data }) => {
         templateRows="auto"
         w="100%"
         placeItems="center"
+        my={4}
       >
-        <Box
-          gridColumn={1}
-          bgColor={textBox}
-          height="min-content"
-          my={5}
-          px={2}
-          style={{
-            transform: isDarkMode ? "rotate(5deg)" : null,
-          }}
+        <RoughNotation
+          type="underline"
+          strokeWidth={2}
+          color="#000"
+          show={!isDarkMode}
         >
-          <Text
-            fontSize={["md", "xl"]}
-            fontWeight={500}
-            fontFamily="heading"
-            color={text}
+          <Box
+            gridColumn={1}
+            bgColor={textBox}
+            height="min-content"
+            // my={5}
+            px={2}
+            style={{
+              transform: isDarkMode ? "rotate(5deg)" : null,
+            }}
           >
-            By Rich Haines
-          </Text>
-        </Box>
+            <Text
+              fontSize={["md", "xl"]}
+              fontWeight={500}
+              fontFamily="heading"
+              color={text}
+            >
+              By Rich Haines
+            </Text>
+          </Box>
+        </RoughNotation>
 
         <ModeButton />
         <ExternalLink

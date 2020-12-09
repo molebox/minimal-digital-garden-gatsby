@@ -7,8 +7,8 @@ const AllCategoryTag = ({ handleCategoryQuery, ...rest }) => {
   return (
     <Tag
       {...rest}
-      bg="brand.darkGrey"
-      color="brand.bg"
+      bg="brand.bg"
+      color="brand.black"
       variant="solid"
       fontFamily="heading"
       justifyContent="center"
@@ -16,10 +16,13 @@ const AllCategoryTag = ({ handleCategoryQuery, ...rest }) => {
       p={1}
       minW="100px"
       borderRadius={0}
+      border="solid 1px #000"
+      boxShadow="-3px 3px #000"
+      transition="all .25s ease-in-out"
       onClick={() => getCategory("All")}
       _hover={{
+        boxShadow: "-2px 2px #000",
         cursor: "pointer",
-        bgColor: "brand.black",
       }}
       className="cat-tag"
     >
