@@ -143,7 +143,7 @@ export default ({ data }) => {
 
   return (
     <Layout>
-      {!isMobile ? <div ref={mouseRef} className="mouseStalker"></div> : null}
+      {/* <div ref={mouseRef} className={isMobile ? "onMobile" : "mouseStalker"}></div> */}
       <SEO
         title="Rich Haines Digital Garden"
         titleTemplate=""
