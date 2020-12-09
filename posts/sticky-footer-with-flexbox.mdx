@@ -1,0 +1,27 @@
+---
+title: Sticky footer with flexbox
+category: CSS
+description: One way to create a sticky footer with flexbox
+---
+
+There are many ways to make a footer stick to the bottom of a page. The best way, in my opinion uses flexbox
+
+```css
+    html, 
+    body {
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content {
+        flex: 1 0 auto;
+    }
+
+    .footer {
+        flex-shrink: 0;
+    }
+```

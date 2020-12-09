@@ -1,0 +1,34 @@
+---
+title: Flattern nested array
+category: JavaScript
+description: Some helpful ways to flatten arrays in JavaScript
+---
+
+Two ways to flattern a nested array. he first is the more traditional approach using reduce and concat.
+
+```js
+const myArray = [['1', '2', '3'], ['4', '5']];
+
+const flatArray = myArray.reduce((total, amount) => total.concat(amount));
+
+>> ['1', '2', '3', '4', '5']
+
+```
+
+## With flat()
+
+The second uses the new flat() method. As an argument you can pass in the depth - <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat</a>
+
+```js
+const nestedArray = [1, 2, [3, 4]].flat();
+nestedArray.flat();
+>> [1, 2, 3, 4]
+```
+
+## With depth
+
+```js
+var nestedArray = [1, 2, [3, 4, [5, 6]]];
+nestedArray.flat(2);
+>> [1, 2, 3, 4, 5, 6]
+```

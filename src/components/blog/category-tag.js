@@ -14,7 +14,7 @@ const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
       fontWeight={500}
       fontSize="sm"
       justifyContent="center"
-      size="sm"
+      h="25px"
       minW="100px"
       borderRadius={0}
       border="solid 1px #000"

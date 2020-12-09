@@ -1,0 +1,125 @@
+---
+title: Setup a Gatsby theme
+category: Gatsby
+description: How to setup a Gatsby theme from an empty folder
+---
+
+This will guide you through how to get a base setup up and running for developing a gatsby theme
+
+```bash
+mkdir gatsby-theme-boop
+
+cd gatsby-theme-boop
+
+yarn init -y
+
+mkdir packages
+```
+Then i usually replace the content of the package.json with the following 
+
+```js
+    {
+        "private": true,
+        "workspaces": [
+            "packages/*"
+        ]
+    }
+```
+Then i create the folder structure and add the base packages to each project
+
+```bash
+cd packages
+
+mkdir gatsby-theme-boop
+mkdir demo
+
+cd gatsby-theme-boop
+yarn init -y
+yarn add react react-dom gatsby
+
+cd demo
+yarn init -y
+yarn add react react-dom gatsby
+```
+
+Go into your gatsby-theme-boop package.json and copy the dependancies to a peerDependancies
+
+```js
+....
+  "dependencies": {
+    "gatsby": "^2.18.24",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+  },
+  "peerDependencies": {
+    "gatsby": "^2.18.24",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+  },
+```
+Then we want to create our internal folder structure
+
+```bash
+cd gatsby-theme-boop
+
+touch src/pages
+touch src/components
+touch src/pages/index.js
+
+cd demo
+touch src/pages
+touch src/components
+touch src/pages/index.js
+```
+
+Because we are using yarn workspaces we want to link the theme to the demo. Create a gatsby-config.js in our demo root and add our theme as a plugin. We also want to add it to our demos package.json, accepting any version.
+
+
+```js
+    module.exports = {
+        plugins: [
+            'gatsby-theme-boop'
+        ]
+    }
+```
+
+```js
+....
+  "dependencies": {
+    "gatsby": "^2.18.24",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "gatsby-theme-boop": "*"
+  },
+  "peerDependencies": {
+    "gatsby": "^2.18.24",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+  },
+```
+Then we run yarn from the root of our project to link it all up and we can then check if its all cool
+
+```bash
+yarn
+yarn workspaces info
+```
+This should show us the following:
+
+```bash
+yarn workspaces v1.21.1
+{
+  "demo": {
+    "location": "packages/demo",
+    "workspaceDependencies": [
+      "gatsby-theme-boop"
+    ],
+    "mismatchedWorkspaceDependencies": []
+  },
+  "gatsby-theme-massage": {
+    "location": "packages/gatsby-theme-boop",
+    "workspaceDependencies": [],
+    "mismatchedWorkspaceDependencies": []
+  }
+}
+Done in 0.06s.
+```

@@ -12,9 +12,9 @@ const AllCategoryTag = ({ handleCategoryQuery, ...rest }) => {
       variant="solid"
       fontFamily="heading"
       fontWeight={500}
+      fontSize="sm"
       justifyContent="center"
-      size="sm"
-      // p={1}
+      h="25px"
       minW="100px"
       borderRadius={0}
       border="solid 1px #000"
