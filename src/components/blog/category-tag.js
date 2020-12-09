@@ -1,19 +1,20 @@
 import React from "react";
-import { Tag } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
 const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
   const getCategory = (category) => handleCategoryQuery(category);
 
   return (
-    <Tag
+    <Button
       {...rest}
       bg="brand.bg"
       color="brand.black"
       variant="solid"
       fontFamily="heading"
+      fontWeight={500}
+      fontSize="sm"
       justifyContent="center"
       size="sm"
-      p={1}
       minW="100px"
       borderRadius={0}
       border="solid 1px #000"
@@ -27,7 +28,7 @@ const CategoryTag = ({ category, handleCategoryQuery, ...rest }) => {
       className="cat-tag"
     >
       {category}
-    </Tag>
+    </Button>
   );
 };
 

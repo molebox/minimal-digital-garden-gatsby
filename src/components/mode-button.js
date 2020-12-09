@@ -6,7 +6,7 @@ const ModeButton = () => {
   return (
     <Button
       bg="brand.bg"
-      m={["0 0 0 100px", "0 40px 0 0"]}
+      m={["30px 0 0 100px", "0 40px 0 0"]}
       gridColumn={["1 / 4", 3]}
       gridRow={[2, 1]}
       px={[2]}

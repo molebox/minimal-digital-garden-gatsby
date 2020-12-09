@@ -170,6 +170,7 @@ export default ({ data }) => {
             gridColumn={1}
             bgColor={textBox}
             height="min-content"
+            mt={[2, 5]}
             // my={5}
             px={2}
             style={{
