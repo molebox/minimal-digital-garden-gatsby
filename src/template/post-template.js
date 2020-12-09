@@ -76,9 +76,9 @@ const PostTemplate = ({ data, pageContext }) => {
   return (
     <>
       <Layout>
-        {windowExists && isLargerThan375 ? (
+        {/* {windowExists && isLargerThan375 ? (
           <div ref={mouseRef} className="mouseStalker"></div>
-        ) : null}
+        ) : null} */}
         <SEO
           title={title}
           titleTemplate={slug}
