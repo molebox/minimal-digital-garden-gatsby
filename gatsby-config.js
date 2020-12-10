@@ -6,7 +6,9 @@ require("dotenv").config({
 })
 
 module.exports = {
-    siteMetadata: {},
+    siteMetadata: {
+      siteUrl: 'https://richardhaines.dev'
+    },
     plugins: [
         {
             resolve: 'gatsby-plugin-mdx',
@@ -63,7 +65,7 @@ module.exports = {
                 `Open Sans`,
                 `source sans pro\:300,400,400i,700` // you can also specify font weights and styles
               ],
-              // display: 'swap'
+              display: 'swap'
             }
           },
           {
@@ -85,5 +87,6 @@ module.exports = {
             }
         },
         'gatsby-plugin-react-helmet',
+        'gatsby-plugin-sitemap'
     ]
 }
