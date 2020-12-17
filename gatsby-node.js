@@ -18,6 +18,7 @@ exports.createPages = ({ actions, graphql }) => {
               title
               category
               description
+              canonical
             }
             fields {
               slug

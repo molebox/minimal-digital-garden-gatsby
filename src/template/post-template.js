@@ -12,7 +12,7 @@ import ReadingTime from "./../assets/reading-time";
 
 const PostTemplate = ({ data, pageContext }) => {
   const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
-  const { title, description } = frontmatter;
+  const { title, description, canonical } = frontmatter;
   const { previous, next } = pageContext;
   const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
   React.useEffect(() => {
@@ -48,7 +48,7 @@ const PostTemplate = ({ data, pageContext }) => {
           titleSeparator={`-`}
           description={description}
           image={socialImage}
-          pathname={`https://richardhaines.dev${slug}`}
+          pathname={canonical ? canonical :`https://richardhaines.dev${slug}`}
           twitterUsername="@studio_hungry"
           author="Rich Haines"
           article={true}
@@ -100,6 +100,7 @@ export const query = graphql`
         title
         category
         description
+        canonical
       }
       slug
       body

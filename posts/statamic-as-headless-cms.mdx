@@ -2,19 +2,55 @@
 title: Statamic as headless CMS with Gatsby
 category: Tutorial
 description: How to use Statamic as a headless CMS with Gatsby
+canonical: https://snipcart.com/blog/statamic-headless-gatsby-blog-tutorial
 ---
 
-Statamic v3 is many things. It's a Content Management Studio (CMS) where data can be pulled via an API endpoint. It's a Static Site Generator (SSG) which can be deployed to any Content Delivery Network (CDN) known to man. It's a content creation tool, enabling content creators to write posts and store and distribute videos. It's an open source PHP based Laravel package that is designed to scale and be used as both a front and backend.
+It’s hard to mention any other languages than JavaScript when writing about the Jamstack.
 
-Phew, that was a lot of joy to be throwing Statamics way. As a first time user I found the experience of both setting it up and grabbing data rather painless. Of course, I stumbled a few times and we will go over those together so that you don't have to do it alone. But all in all I'd have to say that I'm mightily impressed! Also the site and docs are just super cool to look at reading the copy feels like you're chatting with a mate, down the pub on a Sunday.
+As with most modern web trends, JavaScript is everywhere.
 
-With the release of v3, Statamic introduced a formal way of grabbing the data stored, the content API. In v2 there was the possibility to use an addon [Fetch](https://statamic.com/addons/aryeh-raber/fetch) which would supply JSON endpoints but with the introduction of the content API, getting your hands on that lovely data has become a first class citizen. It's now fully supported with a read-only endpoint. This feature at the time of writing is a PRO only feature, though we can still use it and try it out on a trial basis until we decide to purchase a license.
+However, it would be false to say that this paradigm can’t open its arms to “traditional” programming language like, say, PHP.
+
+Case in point: the Laravel-powered CMS, Statamic. Changes made in its latest version now allow developers to use it as a headless CMS, making it a perfect fit for Jamstack projects.
+
+And that’s exactly what I’m going to do today. In this tutorial, I’ll use Statamic headless to manage and feed data to a Gatsby frontend, resulting in a neat little blog.
+
+Here’s what I’ll cover:
+
+- Installing Statamic as headless
+- Creating a new Gatsby project
+- Setting up the Statamic GUI
+- Adding new collections
+- Using Statamic to feed the Gatsby blog
+- Handling Statamic’s data
+- Creating a blog post layout
+
+I’m no PHP expert, so I’ll certainly learn a thing or two along the way as well. Let’s dive right in!
+
+## What is Statamic?
+
+Statamic (and its latest version, v3) is many things:
+
+- It's a Content Management System (CMS) where data can be pulled via an API endpoint. You can use it as a headless CMS (as I’ll do in the tutorial below.)
+- It's a Static Site Generator (SSG) that can be deployed to any Content Delivery Network (CDN) known to man.
+- It's a content creation tool, enabling content creators to write posts and store and distribute videos.
+- It's an open-source, PHP-based, Laravel package designed to scale and be used as both a front and backend.
+
+Phew, that was a lot of joy to be throwing Statamic’s way. As a first time user, I found the experience of setting it up and grabbing data rather painless. Of course, I stumbled a few times; we’ll go over those together so that you don't have to do it alone.
+
+But all in all, I'd have to say that I'm mightily impressed! Also, the site and docs are just super cool to look at. Reading the copy feels like chatting with a mate down at the pub on a Sunday.
+
+With the release of v3, Statamic introduced a formal way of grabbing the data stored and making it headless: the content API. In v2, there was the possibility to use an addon called Fetch, which would supply JSON endpoints, but with the introduction of the content API, getting your hands on that lovely data has become a first-class citizen. It's now fully supported with a read-only endpoint.
+
+> At the time of writing, the Content API feature is a PRO only feature, though we can still use it and try it out on a trial basis until we decide to purchase a license.
+
+## Statamic headless tutorial: building a blog with Gatsby
 
 So what are we going to build? We're going to be using Statamic as a headless CMS. We'll create a new Statamic project from scratch as well as a new Gatsby project from scratch and join the two, as one, like some super Jamstack baby from the future.
 
 You can view the final project repo here: [statamic-gatsby](https://github.com/molebox/statamic-gatsby).
 
-And the live site here: [statamic-gatsby.netlify.app]
+And the live site here: [statamic-gatsby-cms-demo.netlify.app](https://statamic-gatsby-cms-demo.netlify.app/)
 
 ### Prerequisites
 
