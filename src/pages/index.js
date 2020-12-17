@@ -6,10 +6,8 @@ import {
   Link,
   Text,
   Box,
-  useMediaQuery,
   useColorMode,
   useColorModeValue,
-  Button,
 } from "@chakra-ui/react";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
@@ -27,18 +25,20 @@ import ModeButton from "../components/mode-button";
 import { RoughNotation } from "react-rough-notation";
 
 export default ({ data }) => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode } = useColorMode();
   const { posts, handleSearchQuery } = useSearchBar(data);
-  const [filteredPosts, setFilteredPosts] = React.useState(posts);
+  const [filteredPosts, setFilteredPosts] = React.useState([]);
   const { categories, handleCategoryQuery } = useCategory(data.allMdx.nodes);
-  const mouseRef = React.useRef();
-  const [isMobile, setIsMobile] = React.useState(false);
-  const [isLargerThan375] = useMediaQuery("(min-width: 375px)");
-  const windowExists = typeof window !== "undefined";
+
   // Get a unique list of all the categories from the forntmatter
   const categoriesList = [
     ...new Set(data.allMdx.nodes.map((post) => post.frontmatter.category)),
   ];
+
+  React.useEffect(() => {
+    gsap.to("body", { visibility: "visible" });
+    setFilteredPosts(shuffle(posts))
+  }, []);
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
   // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
@@ -54,44 +54,6 @@ export default ({ data }) => {
     setFilteredPosts(result);
   }, [categories, posts]);
 
-  React.useEffect(() => {
-    gsap.to("body", { visibility: "visible" });
-
-    if (windowExists && isLargerThan375 === false) {
-      setIsMobile(true);
-    }
-    setIsMobile(false);
-  }, [isLargerThan375, windowExists]);
-
-  React.useEffect(() => {
-    if (windowExists && isLargerThan375) {
-      // Code from https://greensock.com/forums/topic/22406-follow-mouse/?do=findComment&comment=105851
-
-      gsap.set(mouseRef.current, { xPercent: -50, yPercent: -50 });
-
-      let position = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-      let mouse = { x: position.x, y: position.y };
-      let speed = 0.1;
-
-      let xSet = gsap.quickSetter(mouseRef.current, "x", "px");
-      let ySet = gsap.quickSetter(mouseRef.current, "y", "px");
-
-      window.addEventListener("mousemove", (e) => {
-        mouse.x = e.x;
-        mouse.y = e.y;
-      });
-
-      gsap.ticker.add(() => {
-        let dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
-
-        position.x += (mouse.x - position.x) * dt;
-        position.y += (mouse.y - position.y) * dt;
-        xSet(position.x);
-        ySet(position.y);
-      });
-    }
-  }, []);
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -151,10 +113,7 @@ export default ({ data }) => {
       </Box>
 
       <Grid
-        templateColumns={[
-          "max-content auto 100px 50px 50px",
-          "max-content auto 100px 50px 50px",
-        ]}
+        templateColumns={"max-content auto 100px 50px 50px"}
         templateRows="auto"
         w="100%"
         placeItems="center"
@@ -171,7 +130,6 @@ export default ({ data }) => {
             bgColor={textBox}
             height="min-content"
             mt={[2, 5]}
-            // my={5}
             px={2}
             style={{
               transform: isDarkMode ? "rotate(5deg)" : null,
@@ -307,3 +265,23 @@ export const query = graphql`
     }
   }
 `;
+
+// 100% ripped from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}

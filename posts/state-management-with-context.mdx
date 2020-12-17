@@ -1,0 +1,82 @@
+---
+title: State management with context
+category: React
+description: A simple alternative to redux as global state management
+---
+
+You don't always have to reach for the big guns when deciding on a state management solution for your React app. Sometimes everything you need is right in front of you. Using a combination of context and reducer you can create a solid and easy to use state management system that should cover most of your use cases.
+
+### my-context.js
+
+```jsx
+// Create a your context using a reducer to manage the state
+// Wrap your root component in the exported provider
+import React from "react";
+
+export const StateContext = React.createContext(null);
+export const DispatchContext = React.createContext(null);
+
+const initialValues = {
+  name: "",
+  email: "",
+  location: "",
+  description: "",
+  website: "",
+};
+
+const reducer = (state, action) => {
+  const { type, payload } = action;
+  return { ...state, [type]: payload };
+};
+
+const Provider = ({ children }) => {
+  const [state, dispatch] = React.useReducer(reducer, initialValues);
+
+  return (
+    <DispatchContext.Provider value={dispatch}>
+      <StateContext.Provider value={state}>{children}</StateContext.Provider>
+    </DispatchContext.Provider>
+  );
+};
+export default Provider;
+```
+
+## Wrap The Root
+
+### Gatsby - gatsby-ssr.js && gatsby-browser.js
+
+```jsx
+export const wrapRootElement = ({ element }) => <Provider>{element}</Provider>;
+```
+
+### Normal React app
+
+```jsx
+ReactDOM.render(
+  <React.StrictMode>
+    <Provider>
+      <App />
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
+
+### Usage - some-file.js
+
+```jsx
+const dispatch = React.useContext(DispatchContext);
+const state = React.useContext(StateContext);
+
+// Update state =>
+dispatch({ type: "name", payload: e.target.value });
+
+// Or
+dispatch({ type: "power", payload: 'Strength of a bear!' });
+
+// Access state =>
+<p>{state.name}</p>;
+<p>{state.power}</p>;
+```
+
+TA-DA!

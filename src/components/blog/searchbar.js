@@ -1,10 +1,8 @@
 import React from "react";
 import { Input, Flex, useColorModeValue } from "@chakra-ui/react";
 
-const SearchBar = ({ isDarkMode, handleSearchQuery }) => {
+const SearchBar = ({ handleSearchQuery }) => {
   const bg = useColorModeValue("rgba(255,255,255, 0.9)", "dark.bg");
-  const textBox = useColorModeValue("rgba(255,255,255, 0.9)", "dark.black");
-  const text = useColorModeValue("brand.black", "dark.lightGrey");
   return (
     <Flex
       justify="center"

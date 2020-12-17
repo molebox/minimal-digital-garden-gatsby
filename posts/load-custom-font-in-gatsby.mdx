@@ -1,0 +1,25 @@
+---
+title: Load a custom font in Gatsby
+category: Gatsby
+description: How to load that awesome new font you downloaded
+---
+
+To load a custom font in a Gatsby project you will need to create a `gatsby-ssr.js` file and use the `onRenderBody` function. This will allow you to append a link to the sites head. 
+
+### gatsby-ssr.js
+
+```js
+const React = require("react");
+export const onRenderBody = ({ setHeadComponents }) => {
+  setHeadComponents([
+    <link
+      rel="stylesheet"
+      href="https://indestructibletype.com/fonts/Jost.css"
+      type="text/css"
+      charset="utf-8"
+    />
+  ]);
+};
+
+// Can then be accessed like: font-family: Jost in your code
+```
