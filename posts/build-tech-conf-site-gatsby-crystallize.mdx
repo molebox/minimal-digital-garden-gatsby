@@ -1,0 +1,1561 @@
+---
+title: Build a tech conf site with Gatsby + Crystalize (Headless GraphQL CMS)
+category: Tutorial
+description: A tutorial to utilize the Crystallize graphql API as a headless CMS
+---
+
+In this tutorial we will learn how to utilize the Crystallize graphql API as a headless CMS for our pretend tech conference website, [The Conf Vault](https://gatsby-crystallize-example.netlify.app/). 
+
+All the source code for this article can be found here: [github.com/molebox/gatsby-crystallize-conf-example](https://github.com/molebox/gatsby-crystallize-conf-example). Feel free to fork and play around with it, it can often times help to have the source code open when following a tutorial.
+
+---
+
+I've been really impressed with what Crystallize has to offer, at first it was quite the mind shift thinking about modelling my data but I really like the process of using Figma to brainstorm the models then being able to directly translate them into actual models in the Crystallize UI. 
+
+Crystallize provide the tools with which to visually present content and I found the whole process much more aligned with how I tend to think about projects before starting them. Due to the nature of the composable shapes, we as creators can put together feature rich stories with the aim of driving home our brands story, be that our personal brand or business.
+
+Although mainly marketed as an ecommerce PIM, Crystallize is certainly capable of much more, let's take a look...
+
+We will learn: 
+
+- Why Crystallize?
+- Content modelling (with Figma 🤯)
+- Querying and pulling data into a Gatsby site with Apollo
+- Deploy to Netlify and set up webhooks!
+- BONUS: Make it pretty! Add some gsap animations, some colors, throw some box shadows on it... 🤗
+
+*This article assumes prior knowledge of React and the Jamstack ecosystem.*
+
+## Why Crystallize?
+
+As a Jamstack developer you are most likely familier with the concept of the headless Content Management System (CMS), a place for you to enter and store data from which a frontend will request and use it. Differentiating between them mostly comes down to how you want to interact with your stored data, via a GUI or CLI, and how to access that data, via REST or Graphql (gql) endpoints.
+
+Marketing itself as a super fast headless CMS for Product Information Management (PIM, we're racking up those abbreviations!), it aims to enable the user to combine rich story telling, structured content and ecommerce as a single solution. But it doesn't only have to used for ecommerce solutions. Crystallize is flexible enough so that we can utilize its structured content models and create anything we like, then using it's graphql API we can access our stored data from any device, be that computer or mobile.
+
+The UI is also super easy to hand off to a client so that they can enter in data themselves, which is a massive plus when considering which CMS to go with while working with clients.
+
+## Content Modelling
+
+When we whiteboard or brainstorm ideas they are very rarely linear, they don't tend to fit in square boxes, at least that is, until we manipulate those ideas to fit a given structure, one provided to us by our choice of CMS for example. Of course, a totally generic solution to modelling our content would also be very time consuming for a user to put together. Give them a set of premade tools with just the right amount of generics however and they can create what they want, in whatever shapes they please.
+
+> The content model serves as documentation and overview and connects information architects, designers, developers and business stakeholders.
+
+The fine folks at Crystallize have created a design system using Figma and given everyone access to it via a Figma file you can [download](https://crystallize.com/blog/content-modeling-using-figma-design-system). I put together a model for our tech conf site which you can download [here](https://www.figma.com/file/gywqAn9uh3J2vjwcfIOdVr/The-Conf-Vault-Content-Model?node-id=0%3A1).
+
+<Figma title="" url="file/gywqAn9uh3J2vjwcfIOdVr/The-Conf-Vault-Content-Model?node-id=0%3A1"/>
+
+Looking at the content model, we have 3 shapes, `Event`, `Schedule` and `Speaker`. These are in the format of Documents. Each one is comprised of components which make up the structure of that model. The Event shape has a relationship with both the schedule and speaker shapes. This is because an event has both a schedule and speakers. The schedule shape also has a relationship with the speakers shape. These relationships will allow us to query on a single node but access it's corrasponding relationship nodes. For example, if we query for an event, we will in turn be able to access the speakers at that event.
+
+*Note that the modelling you do in Figma can't be exported and used in the Crystallize UI, you will have to manually re-create the models.*
+
+## Show me the crystals... 💎
+
+Head over to [crystallize.com](https://crystallize.com/) and create a new account, once in create a new tenent and then you will be presented with a page similar to the following:
+
+<Image src="" alt=""/>
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8f0a89b-2339-49ee-81a8-6c467b07e2b1/logged-in.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8f0a89b-2339-49ee-81a8-6c467b07e2b1/logged-in.png)
+
+On the left hand side you can open the menu to reveal your options. With your Figma file open too,  start creating the shapes and their components. Begin with the folders. 3 folders should do the trick, `Speakers`, `Conferences` and `Schedules`. Now create the 3 document shapes, Event, Schedule and Speaker. Each of our document shapes will be made up of components, following our content model in Figma, add the components to the newly created shapes.
+
+Once done open the catalogue tab (the one at the top) and inside the `Conference` folder create a new document of type `Event`.
+
+### An Event
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecd41f0a-0ae7-4068-9c6f-a24357605704/new-event.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecd41f0a-0ae7-4068-9c6f-a24357605704/new-event.png)
+
+Don't worry about adding anything to the schedule relationship just yet, we'll need to create a schedule first for that to make any sense! The same applies to the speakers relationships.
+
+Once you have created all your events do the same for the speakers and schedules. Now the schedules are done you can add the speaker relations to those, then coming back to the events, you can add both the schedule and speaker relations, and the circle of life is complete!
+
+### A Speaker
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/83c47d8d-a532-479d-8d48-7ceb197a6bc1/speaker.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/83c47d8d-a532-479d-8d48-7ceb197a6bc1/speaker.png)
+
+### A Schedule
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e87e7bf-4a13-4868-bd55-0b5cc1abc87e/schedule.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e87e7bf-4a13-4868-bd55-0b5cc1abc87e/schedule.png)
+
+## Fetching data using Apollo Client
+
+Being a Jamstack dev there are quite a few solutions to the age old question of *"Which frontend should I use for my headless CMS...?"* We'll be going with Gatsby today. I prefer to spin up Gatsby sites from an empty folder, if you are well versed then feel free to use a starter or template. We'll be needing some additional packages to those that form a basic Gatsby site, from the command line (I will be using yarn but npm is fine too) add the following packages:
+
+```bash
+yarn add @apollo/client isomorphic-fetch
+```
+
+---
+
+There are a couple of ways we could connect our Cystallize API with our Gatsby site. Crystallize has a [gatsby boilerplate](https://github.com/CrystallizeAPI/crystallize-gatsby-boilerplate) which uses the `gatsby-source-graphql` plugin, I would have expected there to be a source plugin for sourcing data from Crystallize which would have meant abstracting away from the `gatsby-source-graphql` and transforming the source nodes. Instead, we'll be super on trend and use Apollo to interact with and fetch our data. 
+
+### wrap-root.js
+
+In Gatsby there are two files that can be created and used in order to access certain points of the build process. We'll be creating a third file which will be imported into both. This is purely a personal choice that reduces code duplication, though it has become somewhat of a standard in the Gatsby community.
+
+ 
+
+```jsx
+const React = require("react");
+// We need this as fetch only runs in the browser
+const fetch = require("isomorphic-fetch");
+const {
+  ApolloProvider,
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+} = require("@apollo/client");
+
+// create the http link to fetch the gql results
+const httpLink = createHttpLink({
+  uri: "https://api.crystallize.com/rich-haines/catalogue",
+  fetch,
+});
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: httpLink,
+  fetch,
+});
+
+export const wrapRootElement = ({ element }) => (
+    <ApolloProvider client={client}>{element}</ApolloProvider>
+);
+```
+
+We create a http link to our gql endpoint and pass it to the Apollo client, before passing the client to the provider and wrapping our app.
+
+This file will be imported into and exported from both the `gatsby-ssr.js` and `gatsby-browser.js` files like so:
+
+```jsx
+import { wrapRootElement as wrap } from './wrap-root';
+
+export const wrapRootElement = wrap
+```
+
+---
+
+Let's now add some scripts to our `package.json` so that we can run our site.
+
+```json
+{
+  "name": "gatsby-conf-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Rich Haines",
+  "license": "MIT",
+  "scripts": {
+    "dev": "gatsby develop",
+    "build": "gatsby build",
+    "clean": "gatsby clean",
+    "z": "gatsby clean && gatsby develop",
+    "pretty": "prettier --write \"src/**/*js\""
+  },
+  "dependencies": {
+		...deps
+  },
+  "devDependencies": {
+    ...devDeps
+  }
+}
+```
+
+Often times when developing Gatsby sites you will need to remove the cache, setting up a simple script to both clear the cache and run our site in gatsby develop mode will save time and headaches later. hence `yarn z`, the name is arbitrary.
+
+## Show me the data!
+
+Now that we have Apollo setup we can head back over to the Crystallize UI and navigate to the `Catalogue Explorer` tab which can be found in the left tab menu. Click `Fetch tree at root` and run the query. You should see your 3 folders returned. If we inspect the query on the left of the explorer we can see that it's in fact 1 query with many fragments. These fragments split up the requests into bite size chunks that can then be spread into other fragments or the query. 
+
+A neat feature which I really like with Crystallize is the ability to test out queries directly from the shape, with provided base query and fragments to get you going. If you head to your catalogue and open up an event, then click the gql symbol which sits along the top bar an explorer will open up, it should look something like this:
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8424431e-f9b9-43c2-b629-9165180ca93d/event-query.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8424431e-f9b9-43c2-b629-9165180ca93d/event-query.png)
+
+This is nice and allows you to play about with different fragments and see what you would get back from your query should you use it in production. Not content with offering 2 different ways to test our queries, Crystallize provides a 3rd. A url with your tenent id which looks like the following: `https://api.crystallize.com/your-tenent-id-here/catalogue`. 
+
+This is a clean slate with tabs to save each query.  From whatever gql explorer you choose, open the `Docs` tab located on the right. From here you can see what you can query and how each interface is nested or relates to another. Click `catalogue` and you can see that it returns a `Item`, when we click the `Item` we can see all of the properties we can query for. 
+
+The interesting part of this is the `children` property, which itself returns an `Item`. This nesting goes as far as your data is nested but is powerful and enables us to query nested children without having to specify specific properties. 
+
+For our index/home page we will be querying for the root paths to our 3 folders, these will be passed on to components which will use that path to themselves query for specific data. 
+
+### GetRootPaths
+
+```graphql
+query GetRootPaths {
+  catalogue(language: "en", path: "/") {
+    children {
+      path
+      shape {
+        name
+      }
+      children {
+        path
+        shape {
+          name
+        }
+      }
+    }
+  }
+}
+```
+
+We set the path param to that of the root directory, that is, the tenent. From here we ask for the first child and that's first child. So that is 2 levels deep. We request the path and the name of the shape. We know that our 3 shapes are called Conferences, Speakers and Schedules. Those should be our top level data types. Then we would expect to see the paths and shapes of the documents within the 3 folders. What is returned is the following:
+
+```graphql
+{
+  "data": {
+    "catalogue": {
+      "children": [
+        {
+          "path": "/conferences",
+          "shape": {
+            "name": "Conferences"
+          },
+          "children": [
+            {
+              "path": "/conferences/oh-my-dayz",
+              "shape": {
+                "name": "Event"
+              }
+            },
+            {
+              "path": "/conferences/crystal-conf-yeah",
+              "shape": {
+                "name": "Event"
+              }
+            }
+          ]
+        },
+        {
+          "path": "/speakers",
+          "shape": {
+            "name": "Speakers"
+          },
+          "children": [
+            {
+              "path": "/speakers/speaker",
+              "shape": {
+                "name": "Speaker"
+              }
+            },
+            {
+              "path": "/speakers/speaker-1",
+              "shape": {
+                "name": "Speaker"
+              }
+            },
+            {
+              "path": "/speakers/speaker-2",
+              "shape": {
+                "name": "Speaker"
+              }
+            }
+          ]
+        },
+        {
+          "path": "/schedules",
+          "shape": {
+            "name": "Schedules"
+          },
+          "children": [
+            {
+              "path": "/schedules/oh-my-dayz-schedule",
+              "shape": {
+                "name": "Schedule"
+              }
+            },
+            {
+              "path": "/schedules/crystal-conf-schedule",
+              "shape": {
+                "name": "Schedule"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+Sure enough we see the expected data. Let's move back to the frontend and add this query to our code.
+
+Open the `index.js` file located in the pages folder of your Gatsby project.
+
+### index.js
+
+```jsx
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+
+export default function Index() {
+  const { loading, error, data } = useQuery(GET_ROOT_PATHS);
+
+  if (loading) {
+    return <h1>loading....</h1>;
+  }
+  if (error) {
+    return <h1>error....</h1>;
+  }
+
+  const conferencePaths = data.catalogue.children[0].children.map(
+    (node) => node.path
+  );
+
+  return (
+    <div>
+      {conferencePaths.map((path, index) => (
+        <p key={index}>{path}</p>
+      ))}
+    </div>
+  );
+}
+
+const GET_ROOT_PATHS = gql`
+  query GetRootPaths {
+    catalogue(language: "en", path: "/") {
+      children {
+        path
+        shape {
+          name
+        }
+        children {
+          path
+          shape {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+```
+
+Apollo provides us with a lovely way to query and handle our data. We pass our query into the `useQuery` hook, in return we get 2 states (loading, error) and our data. We do a simple check to makes sure our data isn't loading or has an error then we filter out the conference paths and simply display them on the screen. We'll be coming back to this page soon, but let's first use a query that accepts some parameters.
+
+### The Event
+
+We'll pass each conference path down to an event component which in turn will use that path as a query param to request data about that event. Let's see how that looks in practice. In your `components` folder, inside the `src` folder (assuming you set your project up this way) create a new file and name it `event.js`
+
+### event.js
+
+```jsx
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+
+const Event = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_CONFERENCE, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <h1>loading....</h1>;
+  }
+  if (error) {
+    return <h1>error....</h1>;
+  }
+
+  let title = data.catalogue.components[0].content.text;
+  let logo = data.catalogue.components[1].content.images[0].variants[0].url;
+  let codeOfConduct = data.catalogue.components[2].content.json;
+  let speakersPath = data.catalogue.components[4].content.items.map(
+    (node) => node.path
+  );
+  let schedulePath = data.catalogue.components[3].content.items[0].path;
+
+  return (
+    <div>
+	      <h1>{title}</h1>
+				<img src={logo}/>
+        {speakersPath.map((path, index) => (
+          <Speaker key={index} path={path} />
+        ))}
+        <Schedule path={schedulePath} />
+        <CoD cod={codeOfConduct} />
+    </div>
+  );
+};
+
+export default Event;
+
+const GET_CONFERENCE = gql`
+  query GetConference($path: String!) {
+    catalogue(language: "en", path: $path) {
+      name
+      path
+      components {
+        content {
+          ...richText
+          ...imageContent
+          ...singleLineText
+          ...paragraphsCollection
+          ...propertiesTable
+          ...relations
+        }
+      }
+    }
+  }
+
+  fragment singleLineText on SingleLineContent {
+    text
+  }
+
+  fragment richText on RichTextContent {
+    json
+    html
+    plainText
+  }
+
+  fragment image on Image {
+    url
+    altText
+    key
+    variants {
+      url
+      width
+      key
+    }
+  }
+
+  fragment imageContent on ImageContent {
+    images {
+      ...image
+    }
+  }
+
+  fragment paragraphsCollection on ParagraphCollectionContent {
+    paragraphs {
+      title {
+        ...singleLineText
+      }
+      body {
+        ...richText
+      }
+      images {
+        ...image
+      }
+    }
+  }
+
+  fragment propertiesTable on PropertiesTableContent {
+    sections {
+      ... on PropertiesTableSection {
+        title
+        properties {
+          key
+          value
+        }
+      }
+    }
+  }
+
+  fragment relations on ItemRelationsContent {
+    items {
+      name
+      path
+      components {
+        content {
+          ...richText
+          ...imageContent
+          ...singleLineText
+          ...paragraphsCollection
+        }
+      }
+    }
+  }
+`;
+```
+
+The query was put together in the gql explorer, the order of the fragments is important as some of them rely on one another and they can't be defined before they are used. The basic logic behind the query is that we pass in a path to a conference from which we want to recieve back the components that make up the data for that shape. The components are split into fragments so that our query doesn't become bloated. Notice the `relations` fragment. It returns the same data as our query plus it's own path and name. Nearly recursive, of course, to understand recursion one must first understand recursion....
+
+Our `Speaker` and `Schedule` components follow much the same way of thinking. The `CoD` and indeed some other components, uses a complimentory library supplied by Crystallize to help with displaying it's rich text data, which is returned as either `html` , `json` or plain text. Let's install it and learn how to use it.
+
+```bash
+yarn add @crystallize/content-transformer
+```
+
+Now in our components folder create a new file named `content-transform.js` 
+
+### content-transform.js
+
+```jsx
+import React from "react";
+import CrystallizeContent from "@crystallize/content-transformer/react";
+
+const ContentTransform = (props) => {
+  const overrides = {
+    paragraph({ metadata, renderNode, ...rest }) {
+      return (
+        <p style={{fontSize: props.fontSize}}>
+          {renderNode(rest)}
+        </p>
+      );
+    },
+  };
+
+  return <CrystallizeContent {...props} overrides={overrides} />;
+};
+
+export default ContentTransform;
+```
+
+This package basically allows us to pass in overrides for how it displays certain elements. In the above example, taken from our app, the paragraph tag is overriden with the font size prop passed in. In practice this is used like so:
+
+### CoD
+
+```jsx
+import React from "react";
+import ContentTransform from "./content-transform";
+
+const CoD = ({ cod }) => {
+  return (
+    <div>
+      <ContentTransform {...cod} />
+    </div>
+  );
+};
+
+export default CoD;
+```
+
+And thats it. If we were to pass in the font size prop we could do so like this:
+
+```jsx
+ <ContentTransform fontSize="100px" {...cod} />
+```
+
+It's an elegant way to help display rich text data. 
+
+As mentioned, our `Speaker` and `Schedule` components are much the same. Let's take them both at the same time.
+
+### speaker.js
+
+```jsx
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+import ContentTransform from "./content-transform";
+
+const Speaker = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_SPEAKER, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <h1>loading...</h1>;
+  }
+  if (error) {
+   return <h1>error...</h1>;
+  }
+
+  let image = data.catalogue.components[1].content.images[0].variants[0].url;
+  let name = data.catalogue.components[0].content.json;
+  let company = data.catalogue.components[2].content.text;
+  let bio = data.catalogue.components[3].content.json;
+  let twitter = data.catalogue.components[4].content.text;
+
+  return (
+    <div>
+      <img src={image} />
+        <ContentTransform fontSize="xl" {...name} />
+      <p>
+        {company}
+      </p>
+        <ContentTransform {...bio} />
+      <p>
+        {twitter}
+      </p>
+    </div>
+  );
+};
+
+export default Speaker;
+
+const GET_SPEAKER = gql`
+  query GetSpeaker($path: String!) {
+    catalogue(language: "en", path: $path) {
+      ...item
+      name
+      components {
+        content {
+          ...richText
+          ...singleLineText
+          ...imageContent
+        }
+      }
+    }
+  }
+
+  fragment item on Item {
+    name
+    type
+    path
+    children {
+      name
+    }
+  }
+
+  fragment singleLineText on SingleLineContent {
+    text
+  }
+
+  fragment richText on RichTextContent {
+    json
+    html
+    plainText
+  }
+
+  fragment image on Image {
+    url
+    altText
+    key
+    variants {
+      url
+      width
+      key
+    }
+  }
+
+  fragment imageContent on ImageContent {
+    images {
+      ...image
+    }
+  }
+`;
+```
+
+### schedule.js
+
+```jsx
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+
+const Schedule = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_SCHEDULE, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <h1>loading...</h1>;
+  }
+  if (error) {
+   return <h1>error...</h1>;
+  }
+
+  let title = data.catalogue.components[0].content.sections[0].title;
+  let schedule = data.catalogue.components[0].content.sections[0].properties;
+
+  return (
+    <div>
+        <h1>{title}</h1>
+      <table cellPadding={6}>
+        <thead>
+          <tr>
+            <th>
+              <p>
+                Speaker
+              </p>
+            </th>
+            <th>
+              <p>
+                Subject...
+              </p>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {schedule.map((node, index) => (
+            <tr key={index}>
+              <td>
+                <p>
+                  {node.key}
+                </p>
+              </td>
+              <td>
+                <p>
+                  {node.value}
+                </p>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default Schedule;
+
+const GET_SCHEDULE = gql`
+  query GetSchedule($path: String!) {
+    catalogue(language: "en", path: $path) {
+      ...item
+      components {
+        content {
+          ...propertiesTable
+        }
+      }
+    }
+  }
+
+  fragment item on Item {
+    name
+    type
+    path
+    children {
+      name
+    }
+  }
+
+  fragment propertiesTable on PropertiesTableContent {
+    sections {
+      ... on PropertiesTableSection {
+        title
+        properties {
+          key
+          value
+        }
+      }
+    }
+  }
+`;
+```
+
+Our schedule component makes use of the properties table in the Crystallize backend. This is translated to key value pairs which work perfectly when used in an actual `HTML` table.
+
+## Deploy when content updates using webhooks
+
+Our site isn't much to look at, in fact it's downright ugly! But we'll worry about that later, let's first get this baby deployed and setup a web hook so that our static site rebuilds every time we publish changes from our Crystallize backend.
+
+ 
+
+*This section assumes you have a Netlify account setup, if not create an account if you wish to follow along with this section.*
+
+Create an `netlify.toml` file at the projects root.
+
+```yaml
+[build]
+    command = "yarn build"
+    functions = "functions"
+    publish = "public"
+```
+
+Next, create a new site from the repository you created earlier, I hope you have been commiting your code! Netlify will use the settings from the .toml file we just created. In the netlify dashboard head to the `Deploys` tab and then the `Deploy Settings`, scroll down until you find the build hooks section. Add a new build hook, naming it whatever you like, perhaps `NETLIFY_BUILD_ON_PUBLISH` makes the most sense as that's what it's going to do. You will be presented with a url, copy it to the clipboard and head on over to the Crystallize UI. From the tabs on the left click the little Captain Hook icon then add a new web hook
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90419680-27ac-4011-9bc9-0cc2bba6976a/webhook.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90419680-27ac-4011-9bc9-0cc2bba6976a/webhook.png)
+
+Here we have selected publish as the event we want to trigger our build hook. Paste the url you copied from the netlify dahsboard into the URL section and change it from GET to POST, then hit save. Now make a small change to your data, add a shape, remove a full stop, whatever. Then open the netlify dahsboard, go to the deploy section and watch as your site rebuilds!
+
+## BONUS!
+
+Our site quite frankly, looks terrible. Let's straighten that out. I'm going to show the code for each component plus a few extras, they each use Chakra-UI which allows inline styling via props.
+
+Let's install some additional packages
+
+```bash
+yarn add @chakra-ui/react @emotion/react @emotion/styled framer-motion gsap gatsby-plugin-google-fonts react-rough-notation
+yarn add prettier -D
+```
+
+*Unfortunately Chakra requires us to install framer motion (as of v1) even though we will be adding some animations using gsap. I can forgive this as working with Chakra will enable us to utilize performant and accessibility first components and speed up our development time when creating our UI.*
+
+Inside the `src` folder create a new file called `theme.js` this is where we will define our apps colors, fonts and font sizes.
+
+### theme.js
+
+```jsx
+import { extendTheme } from "@chakra-ui/react";
+
+export const theme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        visibility: "hidden",
+      },
+    },
+  },
+  fonts: {
+    heading: "Open Sans",
+    body: "Jost",
+  },
+  fontSizes: {
+    xs: "12px",
+    sm: "14px",
+    md: "16px",
+    lg: "18px",
+    xl: "20px",
+    "2xl": "24px",
+    "3xl": "28px",
+    "4xl": "36px",
+    "5xl": "74px",
+    "6xl": "100px",
+    "7xl": "130px",
+  },
+  colors: {
+    brand: {
+      bg: "#008ca5",
+      offBlack: "#000213",
+      offWhite: "#f6f8fa",
+      accent: "#e93f79",
+    },
+  },
+  config: {
+    useSystemColorMode: false,
+    initialColorMode: "light",
+  },
+});
+```
+
+Notice we have set the bodies visibility to hidden? We will be using some gsap animations soon and this will stop our animations from flashing on page mount.
+
+Now we will need to add the `ChakraProvider` to the `wrap-root.js` file, import the theme and pass it into the `ChakraProvider` like so: 
+
+```jsx
+export const wrapRootElement = ({ element }) => (
+  <ChakraProvider resetCSS theme={theme}> // <===== HERE
+    <ApolloProvider client={client}>{element}</ApolloProvider>
+  </ChakraProvider>
+);
+```
+
+Next we want to add a way to access our fonts from google. We have already installed the package so create a `gatsby-config.js` file and add the following:
+
+```jsx
+module.exports = {
+    plugins:[
+        {
+            resolve: `gatsby-plugin-google-fonts`,
+            options: {
+              fonts: [
+                `Jost`,
+                `Open Sans`,
+                `source sans pro\:300,400,400i,700` // you can also specify font weights and styles
+              ],
+              display: 'swap'
+            }
+          },
+    ]
+}
+```
+
+It's important to add the `display: 'swap'` as this will swap out our font for the system font while the page loads, helping with performance.
+
+In the components folder create two new files, `layout.js` and `section.js` . Then create a new folder called `state` and add `loading.js` and `error.js` files to it.
+
+### layout.js
+
+```jsx
+import React from "react";
+import { Flex, Box } from "@chakra-ui/react";
+
+const Layout = ({ children }) => {
+  return (
+    <Box bgColor="brand.bg" h="100%" minH="100vh" w="100%" overflow="hidden">
+      <Flex direction="column" m="0 auto" bgColor="brand.bg" p={3}>
+        {children}
+      </Flex>
+    </Box>
+  );
+};
+
+export default Layout;
+```
+
+### section.js
+
+```jsx
+import { Flex } from "@chakra-ui/react";
+import React from "react";
+
+const Section = ({ children, fullPage }) => {
+  return (
+    <Flex
+      as="section"
+      h={`${fullPage ? "100vh" : "100%"}`}
+      direction="column"
+      maxW="1440px"
+      m="0 auto"
+    >
+      {children}
+    </Flex>
+  );
+};
+
+export default Section;
+```
+
+### state/loading.js
+
+```jsx
+import React from "react";
+import Section from "./../section";
+import { Flex, Spinner } from "@chakra-ui/react";
+
+const Loading = () => {
+  return (
+    <Section>
+      <Flex justify="center" align="center">
+        <Spinner size="xl" />
+      </Flex>
+    </Section>
+  );
+};
+
+export default Loading;
+```
+
+### state/error.js
+
+```jsx
+import React from "react";
+import Section from "../section";
+import { Flex, Text } from "@chakra-ui/react";
+
+const Error = () => {
+  return (
+    <Section>
+      <Flex justify="center" align="center">
+        <Text>You broke it! Try turning it on and off again...</Text>
+      </Flex>
+    </Section>
+  );
+};
+
+export default Error;
+```
+
+At the moment we have a bunch of files just hanging loose in the components folder, let's organize them into something more manageble. Create a `event` folder and a `hero` folder. Move the `event.js` , `schedule.js`, `cod.js`, `content-transform.js` and `speaker.js` files to the event folder. Still inside the event folder create `container.js` , `heading.js` and `buy-ticket-button.js`
+
+### container.js
+
+```jsx
+import React from "react";
+import { Box } from "@chakra-ui/react";
+
+const Container = ({ children, ...rest }) => (
+  <Box my={6} {...rest}>
+    {children}
+  </Box>
+);
+
+export default Container;
+```
+
+### heading.js
+
+```jsx
+import React from "react";
+import { Text } from "@chakra-ui/react";
+
+const Heading = ({ children }) => (
+    <Text fontSize="2xl" m={0} textAlign="center" fontFamily="heading">
+      {children}
+    </Text>
+);
+
+export default Heading;
+```
+
+### buy-ticket-button.js
+
+```jsx
+import React from "react";
+import { Button } from "@chakra-ui/react";
+
+const BuyTicketButton = () => {
+  return (
+    <Button
+      bg="brand.accent"
+      h="70px"
+      w="250px"
+      px={2}
+      transition="all .25s ease-in-out"
+      boxShadow="-5px 5px #000"
+      borderRadius={0}
+      variant="outline"
+      textTransform="uppercase"
+      fontSize="lg"
+      _active={{
+        boxShadow: "-2px 2px #000",
+        transform: "translate(-2px, 2px)",
+      }}
+      _hover={{
+        boxShadow: "-2px 2px #000",
+        transform: "translate(-2px, 2px)",
+      }}
+    >
+      Buy a Ticket!
+    </Button>
+  );
+};
+
+export default BuyTicketButton;
+```
+
+Cool. Now let's update our previously created components.
+
+### event.js
+
+```jsx
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+import Section from "../section";
+import { Flex, Text, Grid, Image, Box } from "@chakra-ui/react";
+import Error from "../state/error";
+import Loading from "../state/loading";
+import Speaker from "./speaker";
+import Schedule from "./schedule";
+import CoD from "./cod";
+import BuyTicketButton from "./buy-ticket-button";
+import Container from "./container";
+import Heading from './heading';
+
+const Event = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_CONFERENCE, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error />;
+  }
+
+  let title = data.catalogue.components[0].content.text;
+  let logo = data.catalogue.components[1].content.images[0].variants[0].url;
+  let codeOfConduct = data.catalogue.components[2].content.json;
+  let speakersPath = data.catalogue.components[4].content.items.map(
+    (node) => node.path
+  );
+  let schedulePath = data.catalogue.components[3].content.items[0].path;
+
+  return (
+    <Section>
+      <Grid
+        templateColumns="10% 1fr 10%"
+        autoRows="auto"
+        w={["95%", "1440px"]}
+        m="2em auto"
+        bgColor="brand.offWhite"
+        gap={5}
+        boxShadow="-3px 3px #000"
+      >
+        <Flex
+          gridColumn={2}
+          gridRow={1}
+          justify="space-evenly"
+          align="center"
+        >
+          <Box
+            bgColor="brand.offBlack"
+            p={6}
+            lineHeight={1}
+            transform="rotate(-5deg)"
+            boxShadow="-3px 3px #e93f79"
+          >
+            <Text
+              fontFamily="heading"
+              fontSize={["xl", "5xl"]}
+              color="brand.offWhite"
+              fontWeight={700}
+            >
+              {title}
+            </Text>
+          </Box>
+          <Image src={logo} boxSize={100} boxShadow="-3px 3px #e93f79" />
+        </Flex>
+        <Container gridRow={2} gridColumn={2} border="solid 1px" p={2} boxShadow="-3px 3px #000">
+          <Heading>The Speakers</Heading>
+          <Flex
+            gridRow={2}
+            gridColumn={2}
+            p={2}
+            justify="center"
+            align="center"
+            wrap="wrap"
+            m="1em auto"
+            maxW="1000px"
+          >
+            {speakersPath.map((path, index) => (
+              <Speaker key={index} path={path} />
+            ))}
+          </Flex>
+        </Container>
+        <Container gridRow={3} gridColumn={2}>
+          <Schedule path={schedulePath} />
+        </Container>
+        <Container gridRow={4} gridColumn={2}>
+          <CoD cod={codeOfConduct} />
+        </Container>
+        <Container mx="auto" mb={6} gridRow={5} gridColumn={2}>
+          <BuyTicketButton />
+        </Container>
+      </Grid>
+    </Section>
+  );
+};
+
+...query
+```
+
+### schedule.js
+
+```jsx
+import React from "react";
+import { Box, Flex, Text } from "@chakra-ui/react";
+import Loading from "../state/loading";
+import Error from "../state/error";
+import { useQuery, gql } from "@apollo/client";
+import Heading from "./heading";
+import Container from "./container";
+
+const Schedule = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_SCHEDULE, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error />;
+  }
+
+  let title = data.catalogue.components[0].content.sections[0].title;
+  let schedule = data.catalogue.components[0].content.sections[0].properties;
+
+  return (
+    <Flex
+      justify="center"
+      p={2}
+      mx="auto"
+      w={["300px", "1000px"]}
+      direction="column"
+    >
+      <Container>
+        <Heading>{title}</Heading>
+      </Container>
+      <Box as="table" cellPadding={6} mb={6}>
+        <Box as="thead">
+          <Box as="tr">
+            <Box as="th" align="left" colSpan="-1">
+              <Text
+                fontSize={["md", "xl"]}
+                fontWeight={600}
+                fontFamily="heading"
+              >
+                Speaker
+              </Text>
+            </Box>
+            <Box as="th" align="left">
+              <Text
+                fontSize={["md", "xl"]}
+                fontWeight={600}
+                fontFamily="heading"
+              >
+                Subject...
+              </Text>
+            </Box>
+          </Box>
+        </Box>
+
+        <Box as="tbody">
+          {schedule.map((node, index) => (
+            <Box key={index} as="tr">
+              <Box as="td" borderBottom="solid 1px" borderLeft="solid 1px">
+                <Text fontSize={["md", "xl"]} fontFamily="body">
+                  {node.key}
+                </Text>
+              </Box>
+              <Box as="td" borderBottom="solid 1px" borderLeft="solid 1px">
+                <Text fontSize={["md", "xl"]} fontFamily="body">
+                  {node.value}
+                </Text>
+              </Box>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    </Flex>
+  );
+};
+```
+
+Most Chakra component are based on the `Box` component, which itself is polymorphic and can be changed to represent any semantic html element. So in this case we have used it to re-create the html table. The upside of this is that we are able to use the Chakra props while keeping our code semantically correct.
+
+### content-transform.js
+
+```jsx
+import React from "react";
+import CrystallizeContent from "@crystallize/content-transformer/react";
+import { Text } from "@chakra-ui/react";
+
+const ContentTransform = (props) => {
+  const overrides = {
+    paragraph({ metadata, renderNode, ...rest }) {
+      return (
+				<Text fontSize={props.fontSize} my={2}>
+          {renderNode(rest)}
+        </Text>
+      );
+    },
+  };
+
+  return <CrystallizeContent {...props} overrides={overrides} />;
+};
+
+export default ContentTransform;
+```
+
+### speaker.js
+
+```jsx
+import { Flex, Image, Text, Box } from "@chakra-ui/react";
+import React from "react";
+import { useQuery, gql } from "@apollo/client";
+import Loading from "../state/loading";
+import Error from "../state/error";
+import ContentTransform from "./content-transform";
+import { RoughNotation } from "react-rough-notation";
+
+const Speaker = ({ path }) => {
+  const { loading, error, data } = useQuery(GET_SPEAKER, {
+    variables: {
+      path: path,
+    },
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error />;
+  }
+
+  let image = data.catalogue.components[1].content.images[0].variants[0].url;
+  let name = data.catalogue.components[0].content.json;
+  let company = data.catalogue.components[2].content.text;
+  let bio = data.catalogue.components[3].content.json;
+  let twitter = data.catalogue.components[4].content.text;
+
+  return (
+    <Flex direction="column" p={2} align="center" minH="300px">
+      <Image mb={3} src={image} borderRadius="full" boxSize={100} />
+      <RoughNotation type="highlight" strokeWidth={2} padding={0} show={true} color="#e93f79">
+        <ContentTransform fontSize="xl" {...name} />
+      </RoughNotation>
+      <Text fontSize="md" fontWeight={600} my={3}>
+        {company}
+      </Text>
+      <Box maxW="300px" align="center">
+        <ContentTransform {...bio} />
+      </Box>
+      <Text fontWeight={600} fontSize="md" my={3}>
+        {twitter}
+      </Text>
+    </Flex>
+  );
+};
+```
+
+### cod.js
+
+```jsx
+import { Flex } from "@chakra-ui/react";
+import React from "react";
+import ContentTransform from "./content-transform";
+import Heading from "./heading";
+import Container from "./container";
+
+const CoD = ({ cod }) => {
+  return (
+    <Flex
+      mb={3}
+      direction="column"
+      align="center"
+      justify="center"
+      p={2}
+      m="2em auto"
+      boxShadow="-3px 3px #000"
+      border="solid 1px"
+      w={["300px", "1000px"]}
+    >
+      <Container>
+        <Heading>Code of Conduct</Heading>
+      </Container>
+      <ContentTransform {...cod} />
+    </Flex>
+  );
+};
+
+export default CoD;
+```
+
+If you now run `yarn z` your website will look a damn site nicer, but it's lacking some movement. Let's spice things up with some snazzy animations. In the hero folder create 2 new files `hero.js` and `square.js`
+
+### square.js
+
+```jsx
+import { Box } from "@chakra-ui/react";
+import React from "react";
+
+const Square = ({ color, shadowColor, className }) => {
+  return (
+    <Box
+      className={className}
+      bgColor={color}
+      w="30px"
+      h="30px"
+      boxShadow={`-3px 3px ${shadowColor}`}
+      borderRadius={0}
+    />
+  );
+};
+
+export default Square;
+```
+
+### hero.js
+
+```jsx
+import React from "react";
+import gsap from "gsap";
+import { Flex, Grid, Text } from "@chakra-ui/react";
+import Square from "./square";
+import Section from "../section";
+
+const Hero = () => {
+  // create (9x4) Square elements and attach the Square class
+  const topSquaresLeft = Array.from(Array(36)).map((_, index) => {
+    return (
+      <Square
+        key={`${index}-topLeft`}
+        className="topLeft"
+        color="#000213"
+        shadowColor="#fff"
+      />
+    );
+  });
+  // create (5x4) Square elements and attach the Square class
+  const topSquaresRight = Array.from(Array(20)).map((_, index) => {
+    return (
+      <Square
+        key={`${index}-topRight`}
+        className="topRight"
+        color="#e93f79"
+        shadowColor="#000"
+      />
+    );
+  });
+  const bottomSquaresLeft = Array.from(Array(36)).map((_, index) => {
+    return (
+      <Square
+        key={`${index}-bottomLeft`}
+        className="bottomLeft"
+        color="#000213"
+        shadowColor="#fff"
+      />
+    );
+  });
+  // create (5x4) Square elements and attach the Square class
+  const bottomSquaresRight = Array.from(Array(20)).map((_, index) => {
+    return (
+      <Square
+        key={`${index}-bottomLeft`}
+        className="bottomRight"
+        color="#e93f79"
+        shadowColor="#000"
+      />
+    );
+  });
+
+  React.useEffect(() => {
+    gsap.to("body", { visibility: "visible" });
+
+    let TL = gsap.timeline();
+    TL.from(".topLeft", {
+      y: window.innerHeight * 1,
+      x: window.innerWidth * -1,
+      duration: 0.5,
+      ease: "back.out(1.3)",
+      stagger: {
+        grid: [9, 4],
+        from: "random",
+        amount: 1.5,
+      },
+    });
+    TL.from(
+      ".topRight",
+      {
+        y: window.innerHeight * -1,
+        x: window.innerWidth * 1,
+        duration: 0.6,
+        ease: "back.out(1.4)",
+        stagger: {
+          grid: [5, 4],
+          from: "random",
+          amount: 1.5,
+        },
+      },
+      "-=1.2"
+    );
+    TL.from(
+      ".title",
+      {
+        opacity: 0,
+        duration: 1,
+      },
+      "-=1.2"
+    );
+    TL.from(
+      ".bottomLeft",
+      {
+        y: window.innerHeight * -1,
+        x: window.innerWidth * 1,
+        duration: 0.7,
+        ease: "back.out(1.5)",
+        stagger: {
+          grid: [9, 4],
+          from: "random",
+          amount: 1.5,
+        },
+      },
+      "-=1.2"
+    );
+    TL.from(
+      ".bottomRight",
+      {
+        y: window.innerHeight * 1,
+        x: window.innerWidth * -1,
+        duration: 0.8,
+        ease: "back.out(1.6)",
+        stagger: {
+          grid: [5, 4],
+          from: "random",
+          amount: 1.5,
+        },
+      },
+      "-=1.2"
+    );
+  }, []);
+
+  return (
+    <Section fullPage>
+      <Flex m="0 auto">
+        <Grid
+          w="100%"
+          templateColumns="repeat(9, 80px)"
+          templateRows="repeat(4, 80px)"
+          placeItems="center"
+          display={["none", "grid"]}
+        >
+          {topSquaresLeft.map((Square) => Square)}
+        </Grid>
+        <Grid
+          w="100%"
+          templateColumns="repeat(5, 80px)"
+          templateRows="repeat(4, 80px)"
+          placeItems="center"
+          display={["none", "grid"]}
+        >
+          {topSquaresRight.map((Square) => Square)}
+        </Grid>
+      </Flex>
+      <Flex p={5} align="center" justify="center" w="100%">
+        <Text
+          textTransform="uppercase"
+          fontFamily="heading"
+          fontSize="6xl"
+          fontWeight={700}
+          color="brand.offWhite"
+          className="title"
+          letterSpacing={[2, 5]}
+          textShadow={[
+            null,
+            "-3px -3px 0px #fff, 3px -3px 0px #fff, -3px 3px 0px #fff, 3px 3px 0px #fff, 4px 4px 0px #000, 5px 5px 0px #000, 6px 6px 0px #000, 7px 7px 0px #000, 8px 8px 0px #000, 9px 9px 0px #000",
+          ]}
+        >
+          The conf vault
+        </Text>
+      </Flex>
+      <Flex m="0 auto">
+        <Grid
+          w="100%"
+          templateColumns="repeat(9, 80px)"
+          templateRows="repeat(4, 80px)"
+          placeItems="center"
+          display={["none", "grid"]}
+        >
+          {bottomSquaresLeft.map((Square) => Square)}
+        </Grid>
+        <Grid
+          w="100%"
+          templateColumns="repeat(5, 80px)"
+          templateRows="repeat(4, 80px)"
+          placeItems="center"
+          display={["none", "grid"]}
+        >
+          {bottomSquaresRight.map((Square) => Square)}
+        </Grid>
+      </Flex>
+    </Section>
+  );
+};
+
+export default Hero;
+```
+
+That's quite alot of information to take in, let's step through it.
+
+- We create an array of 36 elements (a grid of 9x4) and map over the indexes returning the `square` component. It's named `topSquaresLeft`, we then do the same for each corner or the page.
+- In the useEffect hook we set the body visibility to visible. We then create a gsap timeline. (***The inner workings of gsap will not be covered here, their [docs](https://greensock.com/gsap/) are very good and would be a great place to start. I've also written some notes on gettings started with gsap, which you can find at [richardhaines.dev/notes-on-gsap](https://richardhaines.dev/notes-on-gsap/))*** With the timeline we initiate a staggered animation of all the boxes from each corner of the page, during this we animate the opacity of the title so that it gradually reveals itself during the boxes animations.
+- We setup 4 grids and map over each of our arrays of squares.
+
+Finally update the `index.js` file, adding the layout, hero and state components.
+
+```jsx
+import React from "react";
+
+import { useQuery, gql } from "@apollo/client";
+import Hero from "../components/hero/hero";
+import Layout from "./../components/layout";
+import Event from "../components/event/event";
+import Loading from "../components/state/loading";
+import Error from "../components/state/error";
+
+export default function Index() {
+  const { loading, error, data } = useQuery(GET_ROOT_PATHS);
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <Error />;
+  }
+
+  const conferencePaths = data.catalogue.children[0].children.map(
+    (node) => node.path
+  );
+
+  return (
+    <Layout>
+      <Hero />
+      {conferencePaths.map((path, index) => (
+        <Event key={index} path={path} />
+      ))}
+    </Layout>
+  );
+}
+```
+
+Thanks for taking the time to read along, if you have any questions feel free to shoot me a message on Twitter [@studio_hungry](https://twitter.com/studio_hungry)
