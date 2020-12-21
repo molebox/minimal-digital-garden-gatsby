@@ -14,7 +14,7 @@ const SearchBar = ({ handleSearchQuery }) => {
       my={1}
       zIndex="99999"
     >
-      <VisuallyHidden id="search-posts">Search Posts</VisuallyHidden>
+      <VisuallyHidden as="label" id="search-posts">Search Posts</VisuallyHidden>
       <Input
         htmlFor="search-posts"
         fontFamily="body"
