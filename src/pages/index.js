@@ -17,7 +17,6 @@ import CategoryTag from "./../components/blog/category-tag";
 import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import gsap from "gsap";
 import Github from "../assets/github";
 import Twitter from "../assets/twitter";
 import ExternalLink from "./../components/external-link";
@@ -36,7 +35,6 @@ export default ({ data }) => {
   ];
 
   React.useEffect(() => {
-    gsap.to("body", { visibility: "visible" });
     setFilteredPosts(shuffle(posts))
   }, []);
 

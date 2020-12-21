@@ -6,7 +6,6 @@ import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
-import gsap from "gsap";
 import WordCount from "../assets/word-count";
 import ReadingTime from "./../assets/reading-time";
 
@@ -15,9 +14,6 @@ const PostTemplate = ({ data, pageContext }) => {
   const { title, description, canonical } = frontmatter;
   const { previous, next } = pageContext;
   const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
-  React.useEffect(() => {
-    gsap.to("body", { visibility: "visible" });
-  }, []);
 
   const socialImage = getShareImage({
     title: title,

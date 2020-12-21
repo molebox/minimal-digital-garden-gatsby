@@ -1,3 +1,4 @@
+
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
 import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link  } from "@chakra-ui/react";
@@ -6,12 +7,6 @@ import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
-import ThreeBall from './src/components/3d/three-ball';
-import ThreeBallWobble from './src/components/3d/three-wobble-ball';
-import ThreeBallDistort from './src/components/3d/three-ball-distort';
-import StorkExample from './src/components/3d/stork-example';
-
-import './src/global.css';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -55,10 +50,6 @@ const components = {
       </Layout>
     )
   },
-  ThreeBall,
-  ThreeBallWobble,
-  ThreeBallDistort,
-  StorkExample
 }
 
 export const wrapRootElement = ({ element }) => (

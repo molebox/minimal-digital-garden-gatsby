@@ -42,21 +42,6 @@ module.exports = {
               name: 'assets'
             },
           },
-          // {
-          //   resolve: `gatsby-plugin-prefetch-google-fonts`,
-          //   options: {
-          //     fonts: [
-          //       {
-          //         family: `Jost`,
-          //         variants: [`400`, `500`, `600`, `700`, `800`, `900`]
-          //       },
-          //       {
-          //         family: `Open Sans`,
-          //         variants: [`400`, `500`, `600`, `700`, `800`, `900`]
-          //       },
-          //     ],
-          //   },
-          // },
           {
             resolve: `gatsby-plugin-google-fonts`,
             options: {
@@ -77,7 +62,7 @@ module.exports = {
               background_color: `#ffffff`,
               theme_color: `#ffffff`,
               display: `standalone`,
-              icon: `src/images/favicon.png`
+              icon: `./src/assets/favicon.png`
             },
           },
           {
@@ -87,6 +72,13 @@ module.exports = {
             }
         },
         'gatsby-plugin-react-helmet',
-        'gatsby-plugin-sitemap'
+        'gatsby-plugin-sitemap',
+        {
+          resolve: 'gatsby-plugin-brotli',
+          options: {
+            extensions: ['css', 'html', 'js', 'svg']
+          }
+        },
+        'gatsby-plugin-minify'
     ]
 }

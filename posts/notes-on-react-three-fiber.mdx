@@ -73,17 +73,7 @@ If no sources of lights are provided then the object will be black. Which makes 
 
 ### Spheres with different materials.
 
-The first ball uses the drei helper component Sphere and a wobble material.
-
-<ThreeBallWobble />
-
-The second uses the traditional react-three-fiber mesh and threejs elements.
-
-<ThreeBall />
-
-The third uses a drei Sphere with a distort material attached. A couple of lights are added to give both color to the objects and a sense of space.
-
-<ThreeBallDistort />
+<CodeSandbox codeSandboxId="takeshape-article-3-spheres-el11e" />
 
 ### The code for all three
 
@@ -220,8 +210,6 @@ export default CanvasContainer;
 Working with models is very fun, and fairly painless using the tools the the [Poimandres](https://github.com/pmndrs) team have put together. Generally speaking you are going to be working with GLTF which is a specification for loading 3D content. It accepts both JSON (.gltf) or binary (.glb) formats. Instead of storing a single texture or assets like .jgp or .png, gltf packages up all that is needed to show the 3D content. That could include everything from the mesh, geometry, materials and textures. For more information checkout the Three [docs](https://threejs.org/docs/index.html#examples/en/loaders/GLTFLoader).
 
 You can use a package called [gltfjsx](https://github.com/pmndrs/gltfjsx) which will take a gltf file which has to be stored in your public folder and then read that and create a React component out of it for you. If your gltf model has animations then the package will handle that for you too, creating the animations logic right inside the component. We can take an example, one of the birds from the Three repository examples.
-
-<StorkExample />
 
 The code for this bird is auto generated for us. It looks like this:
 
