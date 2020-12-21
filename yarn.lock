@@ -6353,11 +6353,6 @@ gatsby-plugin-google-analytics@^2.5.0:
     "@babel/runtime" "^7.11.2"
     minimatch "3.0.4"
 
-gatsby-plugin-google-fonts@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-fonts/-/gatsby-plugin-google-fonts-1.0.1.tgz#d71054f7bf207b9a8da227380369e18e6f4e0201"
-  integrity sha512-p1NVkn27GUnDA5qHM+Z4cCcLCJIardzZXMon3640sT4xuL/AZJbsx3HEt2KY/5oZu0UXIkytkxzV2Da4rQeUIg==
-
 gatsby-plugin-manifest@^2.5.2:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-manifest/-/gatsby-plugin-manifest-2.5.2.tgz#38642e205e17086b3eca74b22f2eae07d10efbf8"
@@ -13212,6 +13207,16 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
+
+typeface-jost@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/typeface-jost/-/typeface-jost-1.1.13.tgz#070b1818af96a7267b8c771a438d0406248b44b8"
+  integrity sha512-DGWNiM3fs74NKw8YD0O6Q7iOBciM1rGwVhYQXl+d+6GmBM5jR38O5RTRsfNg4em57DnwO39EEWF0TQN6reo7qQ==
+
+typeface-open-sans@^1.1.13:
+  version "1.1.13"
+  resolved "https://registry.yarnpkg.com/typeface-open-sans/-/typeface-open-sans-1.1.13.tgz#32a09ebd7df59601e01ad81216f98ce641eeafd1"
+  integrity sha512-lVGVHvYl7UJDFB9vN8r7NHw3sVm7Rjeow6b9AeABc/J+2mDaCkmcdVtw3QZnsJW39P+xm5zeggIj9gLHYGn9Iw==
 
 uglify-js@^3.5.1:
   version "3.12.2"
