@@ -149,11 +149,13 @@ export default ({ data }) => {
           icon={<Github />}
           href="https://github.com/molebox"
           gridColumn={4}
+          name="Github link"
         />
         <ExternalLink
           icon={<Twitter />}
           href="https://twitter.com/studio_hungry"
           gridColumn={5}
+          name="Twitter link"
         />
       </Grid>
 

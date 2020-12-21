@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "@chakra-ui/react";
+import { Link, VisuallyHidden } from "@chakra-ui/react";
 
-const ExternalLink = ({ icon, href, ...rest }) => (
+const ExternalLink = ({ icon, name, href, ...rest }) => (
   <Link
     fontSize="xl"
     fontWeight={500}
@@ -12,6 +12,7 @@ const ExternalLink = ({ icon, href, ...rest }) => (
     isExternal
     {...rest}
   >
+    <VisuallyHidden>{name}</VisuallyHidden>
     {icon}
   </Link>
 );
