@@ -4,19 +4,19 @@ category: Tutorial
 description: A tutorial to utilize the Crystallize graphql API as a headless CMS
 ---
 
-In this tutorial we will learn how to utilize the Crystallize graphql API as a headless CMS for our pretend tech conference website, [The Conf Vault](https://gatsby-crystallize-example.netlify.app/). 
+In this tutorial we will learn how to utilize the Crystallize graphql API as a headless CMS for our pretend tech conference website, [The Conf Vault](https://gatsby-crystallize-example.netlify.app/).
 
 All the source code for this article can be found here: [github.com/molebox/gatsby-crystallize-conf-example](https://github.com/molebox/gatsby-crystallize-conf-example). Feel free to fork and play around with it, it can often times help to have the source code open when following a tutorial.
 
 ---
 
-I've been really impressed with what Crystallize has to offer, at first it was quite the mind shift thinking about modelling my data but I really like the process of using Figma to brainstorm the models then being able to directly translate them into actual models in the Crystallize UI. 
+I've been really impressed with what Crystallize has to offer, at first it was quite the mind shift thinking about modelling my data but I really like the process of using Figma to brainstorm the models then being able to directly translate them into actual models in the Crystallize UI.
 
 Crystallize provide the tools with which to visually present content and I found the whole process much more aligned with how I tend to think about projects before starting them. Due to the nature of the composable shapes, we as creators can put together feature rich stories with the aim of driving home our brands story, be that our personal brand or business.
 
 Although mainly marketed as an ecommerce PIM, Crystallize is certainly capable of much more, let's take a look...
 
-We will learn: 
+We will learn:
 
 - Why Crystallize?
 - Content modelling (with Figma 🤯)
@@ -24,7 +24,7 @@ We will learn:
 - Deploy to Netlify and set up webhooks!
 - BONUS: Make it pretty! Add some gsap animations, some colors, throw some box shadows on it... 🤗
 
-*This article assumes prior knowledge of React and the Jamstack ecosystem.*
+_This article assumes prior knowledge of React and the Jamstack ecosystem._
 
 ## Why Crystallize?
 
@@ -42,27 +42,28 @@ When we whiteboard or brainstorm ideas they are very rarely linear, they don't t
 
 The fine folks at Crystallize have created a design system using Figma and given everyone access to it via a Figma file you can [download](https://crystallize.com/blog/content-modeling-using-figma-design-system). I put together a model for our tech conf site which you can download [here](https://www.figma.com/file/gywqAn9uh3J2vjwcfIOdVr/The-Conf-Vault-Content-Model?node-id=0%3A1).
 
-<Figma title="" url="file/gywqAn9uh3J2vjwcfIOdVr/The-Conf-Vault-Content-Model?node-id=0%3A1"/>
+<Figma
+  title=""
+  url="file/gywqAn9uh3J2vjwcfIOdVr/The-Conf-Vault-Content-Model?node-id=0%3A1"
+/>
 
 Looking at the content model, we have 3 shapes, `Event`, `Schedule` and `Speaker`. These are in the format of Documents. Each one is comprised of components which make up the structure of that model. The Event shape has a relationship with both the schedule and speaker shapes. This is because an event has both a schedule and speakers. The schedule shape also has a relationship with the speakers shape. These relationships will allow us to query on a single node but access it's corrasponding relationship nodes. For example, if we query for an event, we will in turn be able to access the speakers at that event.
 
-*Note that the modelling you do in Figma can't be exported and used in the Crystallize UI, you will have to manually re-create the models.*
+_Note that the modelling you do in Figma can't be exported and used in the Crystallize UI, you will have to manually re-create the models._
 
 ## Show me the crystals... 💎
 
 Head over to [crystallize.com](https://crystallize.com/) and create a new account, once in create a new tenent and then you will be presented with a page similar to the following:
 
-<Image src="" alt=""/>
+<img src="/logged-in.PNG" alt="Logged into Crystallize screenshot" />
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8f0a89b-2339-49ee-81a8-6c467b07e2b1/logged-in.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c8f0a89b-2339-49ee-81a8-6c467b07e2b1/logged-in.png)
-
-On the left hand side you can open the menu to reveal your options. With your Figma file open too,  start creating the shapes and their components. Begin with the folders. 3 folders should do the trick, `Speakers`, `Conferences` and `Schedules`. Now create the 3 document shapes, Event, Schedule and Speaker. Each of our document shapes will be made up of components, following our content model in Figma, add the components to the newly created shapes.
+On the left hand side you can open the menu to reveal your options. With your Figma file open too, start creating the shapes and their components. Begin with the folders. 3 folders should do the trick, `Speakers`, `Conferences` and `Schedules`. Now create the 3 document shapes, Event, Schedule and Speaker. Each of our document shapes will be made up of components, following our content model in Figma, add the components to the newly created shapes.
 
 Once done open the catalogue tab (the one at the top) and inside the `Conference` folder create a new document of type `Event`.
 
 ### An Event
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecd41f0a-0ae7-4068-9c6f-a24357605704/new-event.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ecd41f0a-0ae7-4068-9c6f-a24357605704/new-event.png)
+<img src="/new-event.PNG" alt="Logged into Crystallize screenshot" />
 
 Don't worry about adding anything to the schedule relationship just yet, we'll need to create a schedule first for that to make any sense! The same applies to the speakers relationships.
 
@@ -70,15 +71,15 @@ Once you have created all your events do the same for the speakers and schedules
 
 ### A Speaker
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/83c47d8d-a532-479d-8d48-7ceb197a6bc1/speaker.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/83c47d8d-a532-479d-8d48-7ceb197a6bc1/speaker.png)
+<img src="/speaker.PNG" alt="Logged into Crystallize screenshot" />
 
 ### A Schedule
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e87e7bf-4a13-4868-bd55-0b5cc1abc87e/schedule.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1e87e7bf-4a13-4868-bd55-0b5cc1abc87e/schedule.png)
+<img src="/schedule.PNG" alt="Logged into Crystallize screenshot" />
 
 ## Fetching data using Apollo Client
 
-Being a Jamstack dev there are quite a few solutions to the age old question of *"Which frontend should I use for my headless CMS...?"* We'll be going with Gatsby today. I prefer to spin up Gatsby sites from an empty folder, if you are well versed then feel free to use a starter or template. We'll be needing some additional packages to those that form a basic Gatsby site, from the command line (I will be using yarn but npm is fine too) add the following packages:
+Being a Jamstack dev there are quite a few solutions to the age old question of _"Which frontend should I use for my headless CMS...?"_ We'll be going with Gatsby today. I prefer to spin up Gatsby sites from an empty folder, if you are well versed then feel free to use a starter or template. We'll be needing some additional packages to those that form a basic Gatsby site, from the command line (I will be using yarn but npm is fine too) add the following packages:
 
 ```bash
 yarn add @apollo/client isomorphic-fetch
@@ -86,13 +87,11 @@ yarn add @apollo/client isomorphic-fetch
 
 ---
 
-There are a couple of ways we could connect our Cystallize API with our Gatsby site. Crystallize has a [gatsby boilerplate](https://github.com/CrystallizeAPI/crystallize-gatsby-boilerplate) which uses the `gatsby-source-graphql` plugin, I would have expected there to be a source plugin for sourcing data from Crystallize which would have meant abstracting away from the `gatsby-source-graphql` and transforming the source nodes. Instead, we'll be super on trend and use Apollo to interact with and fetch our data. 
+There are a couple of ways we could connect our Cystallize API with our Gatsby site. Crystallize has a [gatsby boilerplate](https://github.com/CrystallizeAPI/crystallize-gatsby-boilerplate) which uses the `gatsby-source-graphql` plugin, I would have expected there to be a source plugin for sourcing data from Crystallize which would have meant abstracting away from the `gatsby-source-graphql` and transforming the source nodes. Instead, we'll be super on trend and use Apollo to interact with and fetch our data.
 
 ### wrap-root.js
 
 In Gatsby there are two files that can be created and used in order to access certain points of the build process. We'll be creating a third file which will be imported into both. This is purely a personal choice that reduces code duplication, though it has become somewhat of a standard in the Gatsby community.
-
- 
 
 ```jsx
 const React = require("react");
@@ -118,7 +117,7 @@ const client = new ApolloClient({
 });
 
 export const wrapRootElement = ({ element }) => (
-    <ApolloProvider client={client}>{element}</ApolloProvider>
+  <ApolloProvider client={client}>{element}</ApolloProvider>
 );
 ```
 
@@ -127,9 +126,9 @@ We create a http link to our gql endpoint and pass it to the Apollo client, befo
 This file will be imported into and exported from both the `gatsby-ssr.js` and `gatsby-browser.js` files like so:
 
 ```jsx
-import { wrapRootElement as wrap } from './wrap-root';
+import { wrapRootElement as wrap } from "./wrap-root";
 
-export const wrapRootElement = wrap
+export const wrapRootElement = wrap;
 ```
 
 ---
@@ -151,7 +150,7 @@ Let's now add some scripts to our `package.json` so that we can run our site.
     "pretty": "prettier --write \"src/**/*js\""
   },
   "dependencies": {
-		...deps
+    ...deps
   },
   "devDependencies": {
     ...devDeps
@@ -163,19 +162,19 @@ Often times when developing Gatsby sites you will need to remove the cache, sett
 
 ## Show me the data!
 
-Now that we have Apollo setup we can head back over to the Crystallize UI and navigate to the `Catalogue Explorer` tab which can be found in the left tab menu. Click `Fetch tree at root` and run the query. You should see your 3 folders returned. If we inspect the query on the left of the explorer we can see that it's in fact 1 query with many fragments. These fragments split up the requests into bite size chunks that can then be spread into other fragments or the query. 
+Now that we have Apollo setup we can head back over to the Crystallize UI and navigate to the `Catalogue Explorer` tab which can be found in the left tab menu. Click `Fetch tree at root` and run the query. You should see your 3 folders returned. If we inspect the query on the left of the explorer we can see that it's in fact 1 query with many fragments. These fragments split up the requests into bite size chunks that can then be spread into other fragments or the query.
 
 A neat feature which I really like with Crystallize is the ability to test out queries directly from the shape, with provided base query and fragments to get you going. If you head to your catalogue and open up an event, then click the gql symbol which sits along the top bar an explorer will open up, it should look something like this:
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8424431e-f9b9-43c2-b629-9165180ca93d/event-query.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8424431e-f9b9-43c2-b629-9165180ca93d/event-query.png)
+<img src="/event-query.PNG" alt="Logged into Crystallize screenshot" />
 
-This is nice and allows you to play about with different fragments and see what you would get back from your query should you use it in production. Not content with offering 2 different ways to test our queries, Crystallize provides a 3rd. A url with your tenent id which looks like the following: `https://api.crystallize.com/your-tenent-id-here/catalogue`. 
+This is nice and allows you to play about with different fragments and see what you would get back from your query should you use it in production. Not content with offering 2 different ways to test our queries, Crystallize provides a 3rd. A url with your tenent id which looks like the following: `https://api.crystallize.com/your-tenent-id-here/catalogue`.
 
-This is a clean slate with tabs to save each query.  From whatever gql explorer you choose, open the `Docs` tab located on the right. From here you can see what you can query and how each interface is nested or relates to another. Click `catalogue` and you can see that it returns a `Item`, when we click the `Item` we can see all of the properties we can query for. 
+This is a clean slate with tabs to save each query. From whatever gql explorer you choose, open the `Docs` tab located on the right. From here you can see what you can query and how each interface is nested or relates to another. Click `catalogue` and you can see that it returns a `Item`, when we click the `Item` we can see all of the properties we can query for.
 
-The interesting part of this is the `children` property, which itself returns an `Item`. This nesting goes as far as your data is nested but is powerful and enables us to query nested children without having to specify specific properties. 
+The interesting part of this is the `children` property, which itself returns an `Item`. This nesting goes as far as your data is nested but is powerful and enables us to query nested children without having to specify specific properties.
 
-For our index/home page we will be querying for the root paths to our 3 folders, these will be passed on to components which will use that path to themselves query for specific data. 
+For our index/home page we will be querying for the root paths to our 3 folders, these will be passed on to components which will use that path to themselves query for specific data.
 
 ### GetRootPaths
 
@@ -366,13 +365,13 @@ const Event = ({ path }) => {
 
   return (
     <div>
-	      <h1>{title}</h1>
-				<img src={logo}/>
-        {speakersPath.map((path, index) => (
-          <Speaker key={index} path={path} />
-        ))}
-        <Schedule path={schedulePath} />
-        <CoD cod={codeOfConduct} />
+      <h1>{title}</h1>
+      <img src={logo} />
+      {speakersPath.map((path, index) => (
+        <Speaker key={index} path={path} />
+      ))}
+      <Schedule path={schedulePath} />
+      <CoD cod={codeOfConduct} />
     </div>
   );
 };
@@ -475,7 +474,7 @@ Our `Speaker` and `Schedule` components follow much the same way of thinking. Th
 yarn add @crystallize/content-transformer
 ```
 
-Now in our components folder create a new file named `content-transform.js` 
+Now in our components folder create a new file named `content-transform.js`
 
 ### content-transform.js
 
@@ -486,11 +485,7 @@ import CrystallizeContent from "@crystallize/content-transformer/react";
 const ContentTransform = (props) => {
   const overrides = {
     paragraph({ metadata, renderNode, ...rest }) {
-      return (
-        <p style={{fontSize: props.fontSize}}>
-          {renderNode(rest)}
-        </p>
-      );
+      return <p style={{ fontSize: props.fontSize }}>{renderNode(rest)}</p>;
     },
   };
 
@@ -522,10 +517,10 @@ export default CoD;
 And thats it. If we were to pass in the font size prop we could do so like this:
 
 ```jsx
- <ContentTransform fontSize="100px" {...cod} />
+<ContentTransform fontSize="100px" {...cod} />
 ```
 
-It's an elegant way to help display rich text data. 
+It's an elegant way to help display rich text data.
 
 As mentioned, our `Speaker` and `Schedule` components are much the same. Let's take them both at the same time.
 
@@ -547,7 +542,7 @@ const Speaker = ({ path }) => {
     return <h1>loading...</h1>;
   }
   if (error) {
-   return <h1>error...</h1>;
+    return <h1>error...</h1>;
   }
 
   let image = data.catalogue.components[1].content.images[0].variants[0].url;
@@ -559,14 +554,10 @@ const Speaker = ({ path }) => {
   return (
     <div>
       <img src={image} />
-        <ContentTransform fontSize="xl" {...name} />
-      <p>
-        {company}
-      </p>
-        <ContentTransform {...bio} />
-      <p>
-        {twitter}
-      </p>
+      <ContentTransform fontSize="xl" {...name} />
+      <p>{company}</p>
+      <ContentTransform {...bio} />
+      <p>{twitter}</p>
     </div>
   );
 };
@@ -643,7 +634,7 @@ const Schedule = ({ path }) => {
     return <h1>loading...</h1>;
   }
   if (error) {
-   return <h1>error...</h1>;
+    return <h1>error...</h1>;
   }
 
   let title = data.catalogue.components[0].content.sections[0].title;
@@ -651,19 +642,15 @@ const Schedule = ({ path }) => {
 
   return (
     <div>
-        <h1>{title}</h1>
+      <h1>{title}</h1>
       <table cellPadding={6}>
         <thead>
           <tr>
             <th>
-              <p>
-                Speaker
-              </p>
+              <p>Speaker</p>
             </th>
             <th>
-              <p>
-                Subject...
-              </p>
+              <p>Subject...</p>
             </th>
           </tr>
         </thead>
@@ -672,14 +659,10 @@ const Schedule = ({ path }) => {
           {schedule.map((node, index) => (
             <tr key={index}>
               <td>
-                <p>
-                  {node.key}
-                </p>
+                <p>{node.key}</p>
               </td>
               <td>
-                <p>
-                  {node.value}
-                </p>
+                <p>{node.value}</p>
               </td>
             </tr>
           ))}
@@ -732,9 +715,7 @@ Our schedule component makes use of the properties table in the Crystallize back
 
 Our site isn't much to look at, in fact it's downright ugly! But we'll worry about that later, let's first get this baby deployed and setup a web hook so that our static site rebuilds every time we publish changes from our Crystallize backend.
 
- 
-
-*This section assumes you have a Netlify account setup, if not create an account if you wish to follow along with this section.*
+_This section assumes you have a Netlify account setup, if not create an account if you wish to follow along with this section._
 
 Create an `netlify.toml` file at the projects root.
 
@@ -747,7 +728,7 @@ Create an `netlify.toml` file at the projects root.
 
 Next, create a new site from the repository you created earlier, I hope you have been commiting your code! Netlify will use the settings from the .toml file we just created. In the netlify dashboard head to the `Deploys` tab and then the `Deploy Settings`, scroll down until you find the build hooks section. Add a new build hook, naming it whatever you like, perhaps `NETLIFY_BUILD_ON_PUBLISH` makes the most sense as that's what it's going to do. You will be presented with a url, copy it to the clipboard and head on over to the Crystallize UI. From the tabs on the left click the little Captain Hook icon then add a new web hook
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90419680-27ac-4011-9bc9-0cc2bba6976a/webhook.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90419680-27ac-4011-9bc9-0cc2bba6976a/webhook.png)
+<img src="/webhook.PNG" alt="The Crystallize webhook screen" />
 
 Here we have selected publish as the event we want to trigger our build hook. Paste the url you copied from the netlify dahsboard into the URL section and change it from GET to POST, then hit save. Now make a small change to your data, add a shape, remove a full stop, whatever. Then open the netlify dahsboard, go to the deploy section and watch as your site rebuilds!
 
@@ -762,7 +743,7 @@ yarn add @chakra-ui/react @emotion/react @emotion/styled framer-motion gsap gats
 yarn add prettier -D
 ```
 
-*Unfortunately Chakra requires us to install framer motion (as of v1) even though we will be adding some animations using gsap. I can forgive this as working with Chakra will enable us to utilize performant and accessibility first components and speed up our development time when creating our UI.*
+_Unfortunately Chakra requires us to install framer motion (as of v1) even though we will be adding some animations using gsap. I can forgive this as working with Chakra will enable us to utilize performant and accessibility first components and speed up our development time when creating our UI._
 
 Inside the `src` folder create a new file called `theme.js` this is where we will define our apps colors, fonts and font sizes.
 
@@ -813,7 +794,7 @@ export const theme = extendTheme({
 
 Notice we have set the bodies visibility to hidden? We will be using some gsap animations soon and this will stop our animations from flashing on page mount.
 
-Now we will need to add the `ChakraProvider` to the `wrap-root.js` file, import the theme and pass it into the `ChakraProvider` like so: 
+Now we will need to add the `ChakraProvider` to the `wrap-root.js` file, import the theme and pass it into the `ChakraProvider` like so:
 
 ```jsx
 export const wrapRootElement = ({ element }) => (
@@ -827,20 +808,20 @@ Next we want to add a way to access our fonts from google. We have already insta
 
 ```jsx
 module.exports = {
-    plugins:[
-        {
-            resolve: `gatsby-plugin-google-fonts`,
-            options: {
-              fonts: [
-                `Jost`,
-                `Open Sans`,
-                `source sans pro\:300,400,400i,700` // you can also specify font weights and styles
-              ],
-              display: 'swap'
-            }
-          },
-    ]
-}
+  plugins: [
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `Jost`,
+          `Open Sans`,
+          `source sans pro\:300,400,400i,700`, // you can also specify font weights and styles
+        ],
+        display: "swap",
+      },
+    },
+  ],
+};
 ```
 
 It's important to add the `display: 'swap'` as this will swap out our font for the system font while the page loads, helping with performance.
@@ -953,9 +934,9 @@ import React from "react";
 import { Text } from "@chakra-ui/react";
 
 const Heading = ({ children }) => (
-    <Text fontSize="2xl" m={0} textAlign="center" fontFamily="heading">
-      {children}
-    </Text>
+  <Text fontSize="2xl" m={0} textAlign="center" fontFamily="heading">
+    {children}
+  </Text>
 );
 
 export default Heading;
@@ -1204,7 +1185,7 @@ const ContentTransform = (props) => {
   const overrides = {
     paragraph({ metadata, renderNode, ...rest }) {
       return (
-				<Text fontSize={props.fontSize} my={2}>
+        <Text fontSize={props.fontSize} my={2}>
           {renderNode(rest)}
         </Text>
       );
@@ -1251,7 +1232,13 @@ const Speaker = ({ path }) => {
   return (
     <Flex direction="column" p={2} align="center" minH="300px">
       <Image mb={3} src={image} borderRadius="full" boxSize={100} />
-      <RoughNotation type="highlight" strokeWidth={2} padding={0} show={true} color="#e93f79">
+      <RoughNotation
+        type="highlight"
+        strokeWidth={2}
+        padding={0}
+        show={true}
+        color="#e93f79"
+      >
         <ContentTransform fontSize="xl" {...name} />
       </RoughNotation>
       <Text fontSize="md" fontWeight={600} my={3}>
@@ -1518,7 +1505,7 @@ export default Hero;
 That's quite alot of information to take in, let's step through it.
 
 - We create an array of 36 elements (a grid of 9x4) and map over the indexes returning the `square` component. It's named `topSquaresLeft`, we then do the same for each corner or the page.
-- In the useEffect hook we set the body visibility to visible. We then create a gsap timeline. (***The inner workings of gsap will not be covered here, their [docs](https://greensock.com/gsap/) are very good and would be a great place to start. I've also written some notes on gettings started with gsap, which you can find at [richardhaines.dev/notes-on-gsap](https://richardhaines.dev/notes-on-gsap/))*** With the timeline we initiate a staggered animation of all the boxes from each corner of the page, during this we animate the opacity of the title so that it gradually reveals itself during the boxes animations.
+- In the useEffect hook we set the body visibility to visible. We then create a gsap timeline. (**_The inner workings of gsap will not be covered here, their [docs](https://greensock.com/gsap/) are very good and would be a great place to start. I've also written some notes on gettings started with gsap, which you can find at [richardhaines.dev/notes-on-gsap](https://richardhaines.dev/notes-on-gsap/))_** With the timeline we initiate a staggered animation of all the boxes from each corner of the page, during this we animate the opacity of the title so that it gradually reveals itself during the boxes animations.
 - We setup 4 grids and map over each of our arrays of squares.
 
 Finally update the `index.js` file, adding the layout, hero and state components.

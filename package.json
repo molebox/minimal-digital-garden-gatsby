@@ -43,8 +43,6 @@
     "typeface-open-sans": "^1.1.13"
   },
   "devDependencies": {
-    "gatsby-plugin-webpack-bundle-analyser-v2": "^1.1.18",
-    "prettier": "^2.1.2",
-    "replace-in-file": "6.1.0"
+    "prettier": "^2.1.2"
   }
 }
