@@ -14,12 +14,11 @@ const SearchBar = ({ handleSearchQuery }) => {
       my={1}
       zIndex="99999"
     >
-      <VisuallyHidden as="label" id="search-posts">Search Posts</VisuallyHidden>
+      <VisuallyHidden as="label" htmlFor="search-posts">Search Posts</VisuallyHidden>
       <Input
-        htmlFor="search-posts"
         fontFamily="body"
         type="text"
-        id="blog-searchbar"
+        id="search-posts"
         placeholder="Search posts.."
         onChange={handleSearchQuery}
         variant="flushed"
