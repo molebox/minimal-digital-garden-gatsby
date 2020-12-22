@@ -1,20 +1,30 @@
-import React from "react";
-import { Box, Text, useColorModeValue } from "@chakra-ui/react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 
 const Title = () => {
-  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
   return (
-    <Box bgColor={titleBox} wrap="wrap" maxW={1000} lineHeight={1} my={6} p={6}>
-      <Text
-        as="h1"
-        fontSize={["5xl", "7xl"]}
-        fontWeight={800}
-        fontFamily="heading"
-        color="brand.black"
+    <header
+      sx={{
+        bgColor: "titleBox",
+        display: 'flex',
+        wrap: "wrap",
+        maxWidth: "1000px",
+        lineHeight: 1,
+        my: 6,
+        padding: 6,
+      }}
+    >
+      <h1
+        sx={{
+          fontSize: ["74px", "130px"],
+          fontWeight: 800,
+          fontFamily: "heading",
+          color: "text",
+        }}
       >
         Digital Garden
-      </Text>
-    </Box>
+      </h1>
+    </header>
   );
 };
 

@@ -1,5 +1,6 @@
-import React from "react";
-import { Text, Flex, useColorModeValue } from "@chakra-ui/react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
+import React from 'react';
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "./../components/layout";
@@ -13,7 +14,6 @@ const PostTemplate = ({ data, pageContext }) => {
   const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
   const { title, description, canonical } = frontmatter;
   const { previous, next } = pageContext;
-  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
 
   const socialImage = getShareImage({
     title: title,
@@ -51,35 +51,67 @@ const PostTemplate = ({ data, pageContext }) => {
         />
         <Header previous={previous} next={next} opacity={0.7} />
 
-        <Flex
-          bgColor={titleBox}
-          wrap="wrap"
-          maxW={["300px", "600px"]}
-          p={3}
-          my={6}
+        <section
+          sx={{
+            bgColor: "titleBox",
+            display: "flex",
+            wrap: "wrap",
+            maxWidth: ["300px", "600px"],
+            padding: 3,
+            my: 6,
+          }}
         >
-          <Text
-            as="h1"
-            fontSize={["4xl", "6xl"]}
-            color="brand.black"
-            fontFamily="heading"
-            fontWeight={800}
-            lineHeight={1}
-            my={5}
+          <h1
+            sx={{
+              fontSize: ["36px", "100px"],
+              color: "text",
+              fontFamily: "heading",
+              fontWeight: 800,
+              lineHeight: 1,
+              my: 5,
+            }}
           >
             {title}
-          </Text>
-        </Flex>
-        <Flex>
-          <Flex p={3} align="center">
+          </h1>
+        </section>
+        <section
+          sx={{
+            display: "flex",
+          }}
+        >
+          <div
+            sx={{
+              padding: 3,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <WordCount />
-            <Text fontSize="xl">{wordCount.words} words</Text>
-          </Flex>
-          <Flex p={3} align="center">
+            <p
+              sx={{
+                fontSize: "20px",
+              }}
+            >
+              {wordCount.words} words
+            </p>
+          </div>
+          <div
+            sx={{
+              padding: 3,
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <ReadingTime />
-            <Text fontSize="xl">{timeToRead} minutes</Text>
-          </Flex>
-        </Flex>
+            <p
+              sx={{
+                fontSize: "20px",
+              }}
+            >
+              {timeToRead} minutes
+            </p>
+          </div>
+        </section>
 
         <MDXRenderer>{body}</MDXRenderer>
       </Layout>

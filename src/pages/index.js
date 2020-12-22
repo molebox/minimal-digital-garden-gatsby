@@ -10,7 +10,7 @@ import getShareImage from "@jlengstorf/get-share-image";
 import Title from "../components/home/title";
 import Subtitle from "../components/home/subtitle";
 import PostsIndex from "../components/home/posts-index";
-import Categories from '../components/home/categories';
+import Categories from "../components/home/categories";
 
 export default ({ data }) => {
   const { colorMode } = useColorMode();

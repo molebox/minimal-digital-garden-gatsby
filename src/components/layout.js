@@ -1,14 +1,29 @@
-import React from "react";
-import { Flex, Box, useColorModeValue } from "@chakra-ui/react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 
 const Layout = ({ children }) => {
-  const bg = useColorModeValue("brand.bg", "dark.bg");
   return (
-    <Box bgColor={bg} h="100%" minH="100vh" w="100%">
-      <Flex direction="column" maxW="1000px" m="0 auto" bgColor={bg} p={3}>
+    <main
+      sx={{
+        bgColor: "bg",
+        height: "100%",
+        minHeight: "100vh",
+        width: "100%",
+      }}
+    >
+      <section
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "1000px",
+          margin: "0 auto",
+          bgColor: "bg",
+          padding: 3,
+        }}
+      >
         {children}
-      </Flex>
-    </Box>
+      </section>
+    </main>
   );
 };
 

@@ -1,11 +1,6 @@
-import React from "react";
-import {
-  Box,
-  Grid,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+/** @jsx jsx */
+import { jsx, useColorMode } from "theme-ui";
+
 import { RoughNotation } from "react-rough-notation";
 import ModeButton from "./mode-button";
 import ExternalLink from "./../external-link";
@@ -14,16 +9,17 @@ import Twitter from "../../assets/twitter";
 
 const Subtitle = () => {
   const { colorMode } = useColorMode();
-  const textBox = useColorModeValue("brand.bg", "dark.black");
-  const text = useColorModeValue("brand.black", "dark.lightGrey");
   const isDarkMode = colorMode === "dark";
   return (
-    <Grid
-      templateColumns={"max-content auto 100px 50px 50px"}
-      templateRows="auto"
-      w="100%"
-      placeItems="center"
-      my={4}
+    <section
+      sx={{
+        display: "grid",
+        templateColumns: "max-content auto 100px 50px 50px",
+        templateRows: "auto",
+        width: "100%",
+        placeItems: "center",
+        my: 4,
+      }}
     >
       <RoughNotation
         type="underline"
@@ -31,25 +27,27 @@ const Subtitle = () => {
         color="#000"
         show={!isDarkMode}
       >
-        <Box
-          gridColumn={1}
-          bgColor={textBox}
-          height="min-content"
-          mt={[2, 5]}
-          px={2}
-          style={{
+        <div
+          sx={{
+            gridColumn: 1,
+            bgColor: "textBox",
+            height: "min-content",
+            mt: [2, 5],
+            px: 2,
             transform: isDarkMode ? "rotate(5deg)" : null,
           }}
         >
-          <Text
-            fontSize={["md", "xl"]}
-            fontWeight={500}
-            fontFamily="heading"
-            color={text}
+          <p
+            sx={{
+              fontSize: ["16px", "20px"],
+              fontWeight: 500,
+              fontFamily: "heading",
+              color: "pText",
+            }}
           >
             By Rich Haines
-          </Text>
-        </Box>
+          </p>
+        </div>
       </RoughNotation>
 
       <ModeButton />
@@ -65,7 +63,7 @@ const Subtitle = () => {
         gridColumn={5}
         name="Twitter link"
       />
-    </Grid>
+    </section>
   );
 };
 

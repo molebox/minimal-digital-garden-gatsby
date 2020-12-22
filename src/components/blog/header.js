@@ -1,16 +1,13 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
+import React from 'react'
 import gsap from "gsap";
-import { Flex, Grid, useColorModeValue } from "@chakra-ui/react";
 import NavigationLink from "./navigation-link";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const Header = ({ previous, next, ...rest }) => {
   const headerRef = React.useRef(null);
-  const bg = useColorModeValue("rgba(255,255,255, 0.9)", "dark.bg");
-
-  const isBrowser = typeof window !== undefined;
-
   React.useEffect(() => {
     if (typeof window !== undefined) {
       gsap.registerPlugin(ScrollTrigger);
@@ -34,44 +31,64 @@ const Header = ({ previous, next, ...rest }) => {
     }
   }, []);
 
-  return isBrowser ? (
-    <Grid
-      as="header"
-      templateColumns={["1fr 1fr 1fr"]}
-      autoRows="auto"
-      w="100%"
-      justify="space-evenly"
-      align="center"
-      bg={bg}
+  return (
+    <header
+      sx={{
+        display: "grid",
+        templateColumns: "repeat(3, 1fr)",
+        autoRows: "auto",
+        width: "100%",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        background: "bg",
+        opacity: 0.9,
+        position: "sticky",
+        top: 0,
+        height: "100px",
+        zIndex: 999,
+        overflow: "hidden",
+        ...rest,
+      }}
       ref={headerRef}
-      position="sticky"
-      top={0}
-      h={100}
-      zIndex={999}
-      overflowX="hidden"
-      {...rest}
     >
-      <Flex
-        gridColumn={1}
-        gridRow={1}
-        alignItems="center"
-        justifyContent="center"
+      <div
+        sx={{
+          gridColumn: 1,
+          gridRow: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       >
         <NavigationLink to="/">home</NavigationLink>
-      </Flex>
+      </div>
 
-      <Flex gridColumn={2} alignItems="center" justifyContent="center">
+      <div
+        sx={{
+          gridColumn: 2,
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
         {previous !== null ? (
           <NavigationLink to={`/${previous.slug}`}>previous</NavigationLink>
         ) : null}
-      </Flex>
-      <Flex gridColumn={3} alignItems="center" justifyContent="center">
+      </div>
+      <div
+        sx={{
+          gridColumn: 3,
+          alignItems: "center",
+          justifyContent: "center",
+          display: "flex",
+        }}
+      >
         {next !== null ? (
           <NavigationLink to={`/${next.slug}`}>next</NavigationLink>
         ) : null}
-      </Flex>
-    </Grid>
-  ) : null;
+      </div>
+    </header>
+  );
 };
 
 export default Header;

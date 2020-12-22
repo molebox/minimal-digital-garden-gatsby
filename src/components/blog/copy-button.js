@@ -1,19 +1,21 @@
-import React from "react";
-import { useClipboard } from "@chakra-ui/react";
-import { Button } from "@chakra-ui/react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
+import useClipboard from "react-use-clipboard";
 
 export default function CopyButton({ value }) {
-  const { onCopy, hasCopied } = useClipboard(value);
+  const { isCopied, setCopied } = useClipboard(value);
   return (
-    <Button
-      color="brand.lightGrey"
+    <button
+      sx={{
+        color: "lightGrey",
+        textTransform: "uppercase",
+        fontWeight: 600,
+      }}
       aria-label="Copy text"
-      textTransform="uppercase"
-      fontWeight={600}
       role="button"
-      onClick={onCopy}
+      onClick={setCopied}
     >
-      {hasCopied ? "Yay!" : "Grab It"}
-    </Button>
+      {isCopied ? "Yay!" : "Grab It"}
+    </button>
   );
 }

@@ -1,83 +1,89 @@
-import React from "react";
-import {
-  Box,
-  Flex,
-  Link,
-  Text,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+/** @jsx jsx */
+import { Link, jsx, useColorMode } from "theme-ui";
 import { Link as GatsbyLink } from "gatsby";
 
 const PostsIndex = ({ filteredPosts }) => {
   const { colorMode } = useColorMode();
-  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
-  const textBox = useColorModeValue("brand.bg", "dark.black");
-  const text = useColorModeValue("brand.black", "dark.lightGrey");
-  const excerptText = useColorModeValue("brand.lightGrey", "brand.black");
   const isDarkMode = colorMode === "dark";
 
   return filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
     <Link
+      sx={{
+        padding: 4,
+        borderBottom: "solid 2px",
+        my: 6,
+        _hover: {
+          backgroundColor: !isDarkMode ? "offWhite" : null,
+          cursor: "pointer",
+        },
+      }}
       className={`post`}
       key={id}
       as={GatsbyLink}
       to={fields.slug}
-      p={4}
-      borderBottom="solid 2px"
-      my={6}
-      _hover={{
-        backgroundColor: !isDarkMode ? "brand.offWhite" : null,
-        cursor: "pointer",
-      }}
     >
-      <Flex
-        bgColor={titleBox}
-        p={6}
-        direction="column"
-        wrap="wrap"
-        maxW={500}
-        lineHeight={1}
-        mb={5}
+      <div
+        sx={{
+          bgColor: "titleBox",
+          padding: 6,
+          display: "flex",
+          flexDirection: "column",
+          wrap: "wrap",
+          maxWidth: 500,
+          lineHeight: 1,
+          mb: 5,
+        }}
       >
-        <Text
-          fontSize={["4xl", "5xl"]}
-          fontWeight={900}
-          fontFamily="heading"
-          color="brand.black"
+        <h2
+          sx={{
+            fontSize: ["36px", "74px"],
+            fontWeight: 900,
+            fontFamily: "heading",
+            color: "text",
+          }}
         >
           {frontmatter.title}
-        </Text>
-      </Flex>
-      <Box
-        bgColor={textBox}
-        px={2}
-        wrap="wrap"
-        maxW="max-content"
-        style={{
+        </h2>
+      </div>
+      <div
+        sx={{
+          bgColor: "textBox",
+          px: 2,
+          wrap: "wrap",
+          maxWidth: "max-content",
           transform: isDarkMode ? "rotate(-5deg)" : null,
         }}
       >
-        <Text
-          fontSize={["xl", "2xl"]}
-          fontWeight={500}
-          fontFamily="heading"
-          color={text}
-          my={5}
+        <p
+          sx={{
+            fontSize: ["20px", "24px"],
+            fontWeight: 500,
+            fontFamily: "heading",
+            color: "pText",
+            my: 5,
+          }}
         >
           {frontmatter.description}
-        </Text>
-      </Box>
-      <Box my={2} p={2}>
-        <Text
-          fontSize={["md", "xl"]}
-          fontWeight={500}
-          fontFamily="heading"
-          color={excerptText}
+        </p>
+      </div>
+      <div
+        sx={{
+          my: 2,
+          padding: 2,
+        }}
+      >
+        <p
+          sx={{
+            fontSize: ["16px", "20px"],
+            fontWeight: 500,
+            fontFamily: "heading",
+            color: "excerptText",
+            my: 5,
+          }}
         >
           {excerpt}
-        </Text>
-      </Box>
+        </p>
+      </div>
     </Link>
   ));
 };

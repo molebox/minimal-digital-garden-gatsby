@@ -24,7 +24,7 @@ const theme = {
   colors: {
     brand: {
       bg: "#ffffff",
-      black: "#000000",
+      text: "#000000",
       lightGrey: "#707070",
       darkGrey: "#1f2127",
       offWhite: "#f6f8fa",
@@ -32,7 +32,7 @@ const theme = {
     },
     dark: {
       bg: "#e2a114",
-      black: "#000000",
+      text: "#000000",
       lightGrey: "#dee2d7",
     },
   },

@@ -1,16 +1,18 @@
-import React from "react";
-import { Link, VisuallyHidden } from "@chakra-ui/react";
+/** @jsx jsx */
+import { Link, jsx } from "theme-ui";
+import VisuallyHidden from './elements/visually-hidden';
 
 const ExternalLink = ({ icon, name, href, ...rest }) => (
   <Link
-    fontSize="xl"
-    fontWeight={500}
-    fontFamily="heading"
-    color="brand.black"
-    my={5}
+    sx={{
+      fontSize: "20px",
+      fontWeight: 500,
+      fontFamily: "heading",
+      color: "text",
+      my: 5,
+      ...rest,
+    }}
     href={href}
-    isExternal
-    {...rest}
   >
     <VisuallyHidden>{name}</VisuallyHidden>
     {icon}

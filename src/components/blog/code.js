@@ -1,7 +1,7 @@
-import React from "react";
+/** @jsx jsx */
+import { jsx } from "theme-ui";
 import Highlight, { defaultProps } from "prism-react-renderer";
 import theme from "prism-react-renderer/themes/vsDark";
-import { Flex, Grid, Spacer } from "@chakra-ui/react";
 import TypeScript from "./../../assets/typescript";
 import JavaScript from "./../../assets/javascript";
 import Bash from "./../../assets/bash";
@@ -42,27 +42,37 @@ const Code = ({ children, className }) => {
       language={language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <Flex position="relative" direction="column" my={6}>
-          <Grid
-            h="50px"
-            bg="brand.darkGrey"
-            mb="-20px"
-            borderTop="solid 2px"
-            borderTopColor="brand.black"
-            borderLeft="solid 2px"
-            borderLeftColor="brand.black"
-            borderRight="solid 2px"
-            borderRightColor="brand.black"
-            borderBottom="solid 1px"
-            borderBottomColor="brand.black"
-            templateColumns="auto 100px 80px"
-            alignItems="center"
-            justifyItems="center"
+        <div
+          sx={{
+            position: "relative",
+            display: "flex",
+            flexDirection: "column",
+            my: 6,
+          }}
+        >
+          <div
+            sx={{
+              height: "50px",
+              background: "darkGrey",
+              mb: "-20px",
+              borderTop: "solid 2px",
+              borderTopColor: "text",
+              borderLeft: "solid 2px",
+              borderLeftColor: "text",
+              borderRight: "solid 2px",
+              borderRightColor: "text",
+              borderBottom: "solid 1px",
+              borderBottomColor: "text",
+              display: "grid",
+              templateColumns: "auto 100px 80px",
+              alignItems: "center",
+              justifyItems: "center",
+            }}
           >
-            <Spacer />
+            <div />
             {showLanguage()}
             <CopyButton value={children.trim()} />
-          </Grid>
+          </div>
           <pre
             className={className}
             style={{
@@ -93,7 +103,7 @@ const Code = ({ children, className }) => {
               </div>
             ))}
           </pre>
-        </Flex>
+        </div>
       )}
     </Highlight>
   );

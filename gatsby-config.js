@@ -68,6 +68,7 @@ module.exports = {
             extensions: ['css', 'html', 'js', 'svg']
           }
         },
-        'gatsby-plugin-minify'
+        'gatsby-plugin-minify',
+        'gatsby-plugin-theme-ui'
     ]
 }
