@@ -1,5 +1,10 @@
 import React from "react";
-import { Input, Flex, useColorModeValue, VisuallyHidden } from "@chakra-ui/react";
+import {
+  Input,
+  Flex,
+  useColorModeValue,
+  VisuallyHidden,
+} from "@chakra-ui/react";
 
 const SearchBar = ({ handleSearchQuery }) => {
   const bg = useColorModeValue("rgba(255,255,255, 0.9)", "dark.bg");
@@ -14,7 +19,9 @@ const SearchBar = ({ handleSearchQuery }) => {
       my={1}
       zIndex="99999"
     >
-      <VisuallyHidden as="label" htmlFor="search-posts">Search Posts</VisuallyHidden>
+      <VisuallyHidden as="label" htmlFor="search-posts">
+        Search Posts
+      </VisuallyHidden>
       <Input
         fontFamily="body"
         type="text"

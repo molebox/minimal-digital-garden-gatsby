@@ -1,27 +1,16 @@
 import React from "react";
-import { Link as GatsbyLink, graphql } from "gatsby";
-import {
-  Flex,
-  Grid,
-  Link,
-  Text,
-  Box,
-  useColorMode,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { graphql } from "gatsby";
+import { useColorMode } from "@chakra-ui/react";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "./../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
-import CategoryTag from "./../components/blog/category-tag";
-import AllCategoryTag from "./../components/blog/all-category-tag";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import Github from "../assets/github";
-import Twitter from "../assets/twitter";
-import ExternalLink from "./../components/external-link";
-import ModeButton from "../components/mode-button";
-import { RoughNotation } from "react-rough-notation";
+import Title from "../components/home/title";
+import Subtitle from "../components/home/subtitle";
+import PostsIndex from "../components/home/posts-index";
+import Categories from '../components/home/categories';
 
 export default ({ data }) => {
   const { colorMode } = useColorMode();
@@ -35,7 +24,7 @@ export default ({ data }) => {
   ];
 
   React.useEffect(() => {
-    setFilteredPosts(shuffle(posts))
+    setFilteredPosts(shuffle(posts));
   }, []);
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
@@ -51,7 +40,6 @@ export default ({ data }) => {
 
     setFilteredPosts(result);
   }, [categories, posts]);
-
 
   const socialImage = getShareImage({
     title: "Rich Haines Digital Garden",
@@ -73,10 +61,6 @@ export default ({ data }) => {
     version: "v1605269202",
   });
 
-  const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
-  const textBox = useColorModeValue("brand.bg", "dark.black");
-  const text = useColorModeValue("brand.black", "dark.lightGrey");
-  const excerptText = useColorModeValue("brand.lightGrey", "brand.black");
   const isDarkMode = colorMode === "dark";
 
   return (
@@ -91,158 +75,19 @@ export default ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      <Box
-        bgColor={titleBox}
-        wrap="wrap"
-        maxW={1000}
-        lineHeight={1}
-        my={6}
-        p={6}
-      >
-        <Text
-          as="h1"
-          fontSize={["5xl", "7xl"]}
-          fontWeight={800}
-          fontFamily="heading"
-          color="brand.black"
-        >
-          Digital Garden
-        </Text>
-      </Box>
+      <Title />
 
-      <Grid
-        templateColumns={"max-content auto 100px 50px 50px"}
-        templateRows="auto"
-        w="100%"
-        placeItems="center"
-        my={4}
-      >
-        <RoughNotation
-          type="underline"
-          strokeWidth={2}
-          color="#000"
-          show={!isDarkMode}
-        >
-          <Box
-            gridColumn={1}
-            bgColor={textBox}
-            height="min-content"
-            mt={[2, 5]}
-            px={2}
-            style={{
-              transform: isDarkMode ? "rotate(5deg)" : null,
-            }}
-          >
-            <Text
-              fontSize={["md", "xl"]}
-              fontWeight={500}
-              fontFamily="heading"
-              color={text}
-            >
-              By Rich Haines
-            </Text>
-          </Box>
-        </RoughNotation>
-
-        <ModeButton />
-        <ExternalLink
-          icon={<Github />}
-          href="https://github.com/molebox"
-          gridColumn={4}
-          name="Github link"
-        />
-        <ExternalLink
-          icon={<Twitter />}
-          href="https://twitter.com/studio_hungry"
-          gridColumn={5}
-          name="Twitter link"
-        />
-      </Grid>
+      <Subtitle />
 
       <SearchBar
         isDarkMode={isDarkMode}
         handleSearchQuery={handleSearchQuery}
       />
-      <Grid
-        templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
-        gap={5}
-        templateRows={["auto", "1fr"]}
-        alignItems="center"
-        justifyContent={["space-evenly"]}
-        h="auto"
-      >
-        <AllCategoryTag handleCategoryQuery={handleCategoryQuery} />
-        {categoriesList.map((cat, index) => (
-          <CategoryTag
-            key={cat + index}
-            category={cat}
-            handleCategoryQuery={handleCategoryQuery}
-          />
-        ))}
-      </Grid>
-      {filteredPosts.map(({ id, frontmatter, fields, excerpt }) => (
-        <Link
-          className={`post`}
-          key={id}
-          as={GatsbyLink}
-          to={fields.slug}
-          p={4}
-          borderBottom="solid 2px"
-          my={6}
-          _hover={{
-            backgroundColor: !isDarkMode ? "brand.offWhite" : null,
-            cursor: "pointer",
-          }}
-        >
-          <Flex
-            bgColor={titleBox}
-            p={6}
-            direction="column"
-            wrap="wrap"
-            maxW={500}
-            lineHeight={1}
-            mb={5}
-          >
-            <Text
-              fontSize={["4xl", "5xl"]}
-              fontWeight={900}
-              fontFamily="heading"
-              color="brand.black"
-            >
-              {frontmatter.title}
-            </Text>
-          </Flex>
-          <Box
-            bgColor={textBox}
-            px={2}
-            wrap="wrap"
-            maxW="max-content"
-            style={{
-              transform: isDarkMode ? "rotate(-5deg)" : null,
-            }}
-          >
-            <Text
-              fontSize={["xl", "2xl"]}
-              fontWeight={500}
-              fontFamily="heading"
-              color={text}
-              my={5}
-            >
-              {frontmatter.description}
-            </Text>
-          </Box>
-          <Box my={2} p={2}>
-            <Text
-              fontSize={["md", "xl"]}
-              fontWeight={500}
-              fontFamily="heading"
-              color={excerptText}
-            >
-              {excerpt}
-            </Text>
-          </Box>
-        </Link>
-      ))}
+      <Categories
+        categoriesList={categoriesList}
+        handleCategoryQuery={handleCategoryQuery}
+      />
+      <PostsIndex filteredPosts={filteredPosts} />
     </Layout>
   );
 };
@@ -268,11 +113,12 @@ export const query = graphql`
 
 // 100% ripped from https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
+  var currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
 
   // While there remain elements to shuffle...
   while (0 !== currentIndex) {
-
     // Pick a remaining element...
     randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex -= 1;
