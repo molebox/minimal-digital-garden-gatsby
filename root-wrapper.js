@@ -34,7 +34,7 @@ const components = {
   li: (props) => <ListItem fontFamily="body" fontSize="xl">{props.children}</ListItem>,
   p: (props) => <Text my={2} fontSize="xl" fontFamily="body">{props.children}</Text>,
   img: (props) => (
-    <Image m="0 auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
+    <Image border="solid 2px" m="1em auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
   ),
   a: (props) => (
       <RoughNotation multiline type="underline" color="#1f2127" show={true}>
