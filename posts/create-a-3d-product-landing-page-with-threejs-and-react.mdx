@@ -1,0 +1,765 @@
+---
+title: Create a 3D product landing page with ThreeJs and React
+category: Tutorial
+description: Learn how to make a 3D product landing page
+canonical: https://www.takeshape.io/articles/create-a-3d-product-landing-page-with-threejs-and-react/
+---
+
+We are going to be creating a product landing page which will utilize 3D models and particle effects to take product showcasing to a whole new level. The goal of this tutorial is to introduce you to the concepts of working with a 3D environment in the browser, while using modern tooling, to create your own highly performant 3D sites.
+
+The final project can be viewed at [3d-product-page.netlify.app/](https://3d-product-page.netlify.app/)
+
+And the final code can be viewed at [github.com/molebox/3d-product-page](https://github.com/molebox/3d-product-page)
+
+This tutorial assumes some basic knowledge of the following:
+
+- React
+- JavaScript
+- CSS
+- The command line
+
+## What tools are we using?
+
+### Snowpack
+
+We are going to be using [snowpack](https://www.snowpack.dev/) as our build tool. Its a modern tool that is similar to Webpack, but takes a slightly different approach. Instead of bundling our entire application and recompiling on every code change and save, snowpack only rebuilds single files where the changes have been made. This results in a very fast development process. The term used by the snowpack team is **unbundled development** where individual files are loaded to the browser during development with ESM syntax. 
+
+### Chakra-ui
+
+Our application will be written in React and use [Chakra-ui](https://chakra-ui.com/) for styling. Chakra is an accessibility first component library which comes with superb defaults and enables us to build accessible, modular components at speed. Think of styled components with easy theming and composability.
+
+### Threejs and react-three-fiber
+
+We will be utilizing Threejs by way of a wonderful React library called [react-three-fiber](https://github.com/pmndrs/react-three-fiber), which allows us to easily interact with Three using common React techniques. The library is a renderer for Three, using it we can skip a lot of mundane work such as scene creation and concentrate on composing our components in a declarative way with props and states. 
+
+The renderer allows us to use all of the Three classes, objects and properties as elements in our markup. All classes constructors arguments can be accessed via an `args` prop. A simple mesh with a box class can be seen below. Don't worry if you don't understand what this means, we will go over everything shortly.
+
+```jsx
+<mesh visible position={[1, 2, 3]} rotation={[0, 0, 0]}>
+  <boxGeometry attach="geometry" args={[1, 1, 1]} />
+  <meshStandardMaterial attach="material" color="red"/>
+</mesh>
+```
+
+### MDX
+
+Our page will be rendered in [MDX](https://mdxjs.com/), a format which allows us to write JSX and include React components in markdown files. It's a wonderful development experience and one I hope you will fall in love with once we reach the end of the tutorial. 
+
+## Install the fun
+
+I have created a handy snowpack template that creates a project with snowpack, chakra and MDX all installed. It also comes with React Router v6 but we wont be using that so will remove that boilerplate. 
+
+Open a new terminal and navigate to your desired project folder and run the following which will create our new project. Change `my-new-app` to your apps name.
+
+```bash
+npx create-snowpack-app my-new-app --template snowpack-mdx-chakra
+```
+
+Next we can install our projects dependencies.
+
+```bash
+npm i @chakra-ui/react @emotion/react @emotion/styled framer-motion react-three-fiber three @react-three/drei react-particles-js
+```
+
+Now that we have our dependencies installed we can begin to tear out some of the stuff we wont need. Our landing page will encompass a single page so we can open the `mdx-routes.js` file and remove the `Nav` component and the page-two route from the `MDXRoutes` component. We'll return to this file later to add some styling but for now we can move on.
+
+Inside the pages folder delete page-two and remove the contents from page-one. Inside the components folder delete the emoji component and add a new folder called 3d. And that's it, we are now ready to begin coding some sick 3D landing page goodness!
+
+## The layout
+
+Open the `mdx-layout.js` file located in the components folder. This will wrap our whole app, in our case our one landing page. Our page will consist of a css grid, we'll use grid areas to get a nice visual representation of how our page will layout. Remove what is currently in there and add the following.
+
+```jsx
+import React from 'react';
+import { Flex, Grid } from '@chakra-ui/react';
+
+const desktop = `
+'edge   .       .         .'
+'edge   text    product   .'
+`;
+
+/**
+ * The base layout for the MDX pages. You can configure this to set how your pages layout should be.
+ */
+const MDXLayout = ({ children }) => {
+  return (
+    <Grid
+      templateColumns="10% 1fr 1fr 10%"
+      templateRows="10% 1fr 1fr"
+      templateAreas={desktop}
+      bg="brand.background"
+      h="100vh"
+    >
+      {children}
+    </Grid>
+  );
+};
+
+export default MDXLayout;
+```
+
+Using Chakras Grid component we set the amount of columns to have a responsive padding of 10% of the viewport width on each side of two flexible one fractional units of space. This basically means that the meat of our page will live in the two fractional columns, with each taking up as much space as they need before they hit the 10% padding on each side. Our rows follow the same logic except we save 10% for our header row and the rest takes up as much space as needed. As you can see, we have a background color set on the bg (background) prop. But where does that value come from and what does it mean?
+
+Open the `theme.js` file located in the `src` folder. This is our global theme for our app. We are importing the default theme from Chakra, which itself uses the Tailwind default preset. We are then overriding the colors with our own brand colors. The font sizes are also being overridden to allow us to use slightly different sizes to the default. Go ahead and copy the following colors object into the file instead of the current one.
+
+```bash
+colors: {
+    ...theme.colors,
+    brand: {
+      red: '#ed1c24',
+      lightGrey: '#D6D6D6',
+      background: '#090d12',
+      text: '#FFFfff',
+    },
+  },
+```
+
+## Components in MDX
+
+MDX is just markdown that you can write JSX in. So that means that we can write normal markdown like so:
+
+```markdown
+# This is a header!
+```
+
+But we can also add to that React components We can even compose React components right in the MDX file! Let's open up the `index.js` file in the `src` folder and check out how we can add components to our MDX file without using imports.
+
+Let's break down what's going on in here. If we scroll to the bottom we can see an `MDXProvider` wrapping our app. It accepts a components prop into which we have passed a components object declared above. The components object allows us to map React components to markdown elements as well as passing in custom components for use in our MDX files. As you can see, this template has set this all up for us by mapping some basic markdown elements to some Chakra components. Where there is no object key we have passed in a custom component which can be used in the MDX file without importing it as you would in a normal js or jsx file. 
+
+MDX accepts a special key called `wrapper` which will wrap the entire file with whatever is passed to it. In our case it will take our previously created layout component along with it's grid and use that to wrap our MDX file. Now that we know where the components are coming from when using them in our MDX file, let's go ahead and write some React in markdown!
+
+## The header
+
+Opening up the `page-one.mdx` file located in the pages folder, add the following.
+
+```markdown
+<Flex gridArea="edge" gridRow="1" justify="center" align="center" ml={6} as="header">
+  <Image
+    w="100px"
+    src="https://www.transparentpng.com/thumb/nike-logo/Blc12i-red-nike-logo-clipart-png-photos.png"
+    alt="Red Nike Swoosh Logo"
+  />
+</Flex>
+```
+
+We are using the Flex component provided to us from Chakra via the `MDXProvider`. This component allows us to quickly apply flex box props to the base element, a div. Even though the component is based upon a div we can give it semantic meaning by utilizing the `as` props and setting it the header. If we check our layout file again and look at our grid areas we can see that we have `edge` on the first and second rows. So we have set the grid area to edge and the row to 1. 
+
+This places our component in the top left hand corner of the page. We have given it a margin-left (ml) so that it doesn't hit the edge. As you can see from the code block above, we are inserting an image. If you navigate to [this](https://www.transparentpng.com/search.php?q=nike) url you will see that it's a Nike swish (swoosh, tick? I dunno)
+
+## The copy
+
+Let's add some copy to our page. This will be in the first column of our two middle columns. It will hold the title to our page and some copy about the Nike Air Jordan 1's, the product we are showcasing. Directly below the first Flex code block in the `page-one.mdx` file add the following: 
+
+```jsx
+<Flex
+gridArea="text"
+justify="center"
+direction="column"
+h="100%"
+maxH="500px"
+w="90%"
+p={6}
+>
+	<Flex>
+	  <Text color="brand.lightGrey" fontSize="6xl">
+			Air Jordan 1
+	  </Text>
+	</Flex>
+	<Box h="80%" position="relative" zIndex="101">
+		<Text my={6} fontWeight={300} color="brand.text" fontSize="xl" borderTop="solid 1px" pt={6}>
+		The Air Jordan that was first produced for Michael Jordan in 1984 was designed by Peter C. Moore. The red and black colorway of the Nike Air Ship, the prototype for the Jordan I, was later outlawed by then-NBA Commissioner David Stern for having very little white on them (this rule, known as the "51 percent" rule, was repealed in the late 2000s).
+		</Text>
+		<Text my={6} fontWeight={300} color="brand.text" fontSize="xl" borderBottom="solid 1px" pb={6}>
+		After the Nike Air Ship was banned, Michael Jordan and Nike introduced the Jordan I in colorways with more white, such as the "Chicago" and "Black Toe" colorways. They used the Nike Air Ship's ban as a promotional tool in advertisements, hinting that the shoes gave an unfair competitive advantage. The Air Jordan I was originally released from 1985 to 1986, with re-releases (known as "retros") in 1994, 2001–2004, and 2007 to the present. Along with the introduction of the Retro Air Jordan line up's, the brand has elevated to a household notoriety with star-struck collaborations and unique limited releases.
+		</Text>
+	</Box>
+</Flex>
+```
+
+Here we have added another Flex container component, given the grid area of text and some other positional properties. Inside we have added our title and two paragraphs or copy, describing the trainers.
+
+Next we are going to get a bit fancy and create a custom component to display some text on a vertical axis. As we will be re-using this component we will create it with some defaults but allow for customization. Inside the components folder create a new file called `custom-text.js` and add the following.
+
+```jsx
+import React from 'react';
+import styled from '@emotion/styled';
+
+const Custom = styled.p`
+  transform: ${(props) => (props.vertical ? 'rotate(270deg)' : 'none')};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '20px')};
+  letter-spacing: 10px;
+  cursor: default;
+  -webkit-text-stroke: 2px ${(props) => (props.color ? props.color : '#5C5C5C')};
+  -webkit-text-fill-color: transparent;
+`;
+
+const CustomText = ({ text, fontSize, color, vertical }) => {
+  return (
+    <Custom fontSize={fontSize} color={color} vertical={vertical}>
+      {text}
+    </Custom>
+  );
+};
+
+export default CustomText;
+```
+
+We could have used [text-orientation](https://developer.mozilla.org/en-US/docs/Web/CSS/text-orientation) here but I found it wasn't flexible enough for this use case so instead decided to use a good old fashioned transform on the text. We use a styled component so that we can add a text effect (-webkit-text-stroke) which isn't available as a prop with a Chakra Text component. This effect allows us to give the text an stroked outline. It takes the color provided as a prop or just uses the set default grey color. Finally our component accepts some size and orientation props, as well as the actual text it is to display. Next we need to add our new component to the components object which is passed into the `MDXProvider`
+
+```jsx
+const components = {
+  wrapper: (props) => <MDXLayout {...props}>{props.children}</MDXLayout>,
+  //...lots of stuff
+  p: (props) => <Text {...props}>{props.children}</Text>,
+  Text,
+  Box,
+  Flex,
+  Heading,
+  Grid: (props) => <Grid {...props}>{props.children}</Grid>,
+  Link,
+  Image,
+  SimpleGrid,
+  Stack,
+	// Here is our new component!
+  CustomText,
+};
+```
+
+We'll use this new component to display some vertical text alongside out copy. Below the copy add the following.
+
+```jsx
+<Flex gridArea="edge" gridRow="2" justify="center" align="center">
+  <Box>
+    <CustomText vertical text="Innovation" fontSize="100px" />
+  </Box>
+</Flex>
+```
+
+If you now run `npm run start` from the root of the project you should see a red Nike tick in the top left, a title of Air Jordan 1 and some copy below it. To the left of that cop you should see the work Innovation written vertically with an grey outline. It's not much to look at so far, let's spice things up a little with a 3D model!
+
+## The third dimension
+
+Before we dive into adding a 3D model to our page let's take a little time to understand how we are going to do that. This isn't some deep dive into Threejs, WebGL and how the react-three-fiber renderer works, rather we will look at what you can use and why you should use it. 
+
+For us to render a 3D model on the page we will need to create a Three scene, attach a camera, some lights, use a mesh to create a surface for our model to live on and finally render all that to the page. We could go vanilla js here and type out all that using Three and it's classes and objects, but why bother when we can use react-three-fiber and rather lovely abstraction library call drei (Three in German).
+
+We can import a canvas from react-three-fiber which takes care of adding a scene to our canvas. It also lets us configure the camera and numerous other things via props. It's just a React component at the end of the day, all be it one that does a ton of heavy lifting for us. We'll use our canvas to render our model on. The canvas component renders Three elements, not DOM elements. It provides access to Three classes and objects via it's context so any children rendered within it will have access to Three.
+
+Our canvas can go anywhere on our page but it's important to remember that it will take up the height and width or it's nearest parent container. This is important to remember as if you wanted to display your canvas on the whole screen you would have to do something of a css reset like this:
+
+```css
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+```
+
+In order to render something, like a shape, to our canvas we need to use a mesh. A mesh is like a base skeleton that an object is made from, like a wireframe. to create a basic shape, such as a sphere, we would have to attach a geometry so that the wireframe can form into a shape, and a material so that it no longer looks just like a wireframe. I like to think of it like chicken wire. You can have a flat piece of chicken wire which you then form into a shape (geometry attached). You can then cover that chicken wire in some material such as a cloth (material attached). To decide where to place an object on the canvas we can use the position prop on the mesh, this prop takes an array as [x, y, z] which follows the logical axis with z as depth.
+
+Each Three class takes constructor arguments which enable you to modify it's appearance. To pass these constructor arguments to our Three element we use the args prop which again uses the array syntax.  Let's look at an example of this. The box geometry class accepts 3 main arguments, width, height and depth. These can be used like so with react-three-fiber
+
+```jsx
+// Threejs:
+const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+
+// react-three-fiber:
+<boxGeometry args={[1,1,1]}/>
+```
+
+When creating objects or models it's important to remember to provide the scene with a light source, otherwise the only thing you will be able to see is a black outline of whatever it is you are trying to render. This makes sense if you think about it. You wouldn't be able to see a shape in a dark room, add a light source of any kind and that shape suddenly takes form and has a surface with colors and contours.
+
+An oldie but a goodie, article in [smashing magazine](https://www.smashingmagazine.com/2013/09/introduction-to-polygonal-modeling-and-three-js/) that outlines some of the light you can use in Three.
+
+- Point. Possibly the most commonly used, the point light works much like a light bulb and affects all objects in the same way as long as they are within its predefined range. These can mimic the light cast by a ceiling light.
+
+[https://codesandbox.io/s/takeshape-article-point-light-d4vgo?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-point-light-d4vgo?fontsize=14&hidenavigation=1&theme=dark)
+
+- Spot. The spot light is similar to the point light but is focused, illuminating only the objects within its cone of light and its range. Because it doesn’t illuminate everything equally as the point light does, objects will cast a shadow and have a “dark” side.
+
+[https://codesandbox.io/s/takeshape-article-point-light-forked-qldo2?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-point-light-forked-qldo2?fontsize=14&hidenavigation=1&theme=dark)
+
+- Ambient. This adds a light source that affects all objects in the scene equally. Ambient lights, like sunlight, are used as a general light source. This allows objects in shadow to be viewable, because anything hidden from direct rays would otherwise be completely dark. Because of the general nature of ambient light, the source position does not change how the light affects the scene.
+
+[https://codesandbox.io/s/takeshape-article-spot-light-forked-y4lw7?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-spot-light-forked-y4lw7?fontsize=14&hidenavigation=1&theme=dark)
+
+- Hemisphere. This light source works much like a pool-table light, in that it is positioned directly above the scene and the light disperses from that point only.
+
+[https://codesandbox.io/s/takeshape-article-ambient-light-forked-rh4g0?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-ambient-light-forked-rh4g0?fontsize=14&hidenavigation=1&theme=dark)
+
+- Directional. The directional light is also fairly similar to the point and spot lights, in that it affects everything within its cone. The big difference is that the directional light does not have a range. It can be placed far away from the objects because the light persists infinitely.
+
+[https://codesandbox.io/s/takeshape-article-directional-light-69zoo?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-directional-light-69zoo?fontsize=14&hidenavigation=1&theme=dark)
+
+- Area. Emanating directly from an object in the scene with specific properties, area light is extremely useful for mimicking fixtures like overhanging florescent light and LCD backlight. When forming an area light, you must declare its shape (usually rectangular or circular) and dimension in order to determine the area that the light will cover.
+
+[https://codesandbox.io/s/takeshape-article-directional-light-forked-i1dhj?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-directional-light-forked-i1dhj?fontsize=14&hidenavigation=1&theme=dark)
+
+We can view the following example which uses the react-three-fiber Three elements and also outlines examples or doing the same thing but with the drei helper library. 
+
+```jsx
+<Canvas>
+      <mesh
+        visible // object gets render if true
+        userData={{ test: "hello" }} // An object that can be used to store custom data about the Object3d
+        position={[0, 0, 0]} // The position on the canvas of the object [x,y,x]
+        rotation={[0, 0, 0]} // The rotation of the object
+        castShadow // Sets whether or not the object cats a shadow
+        // There are many more props.....
+      >
+        {/* A spherical shape*/}
+        <sphereGeometry attach="geometry" args={[1, 16, 200]} />
+        {/* A standard mesh material*/}
+        <meshStandardMaterial
+          attach="material" // How the element should attach itself to its parent
+          color="#7222D3" // The color of the material
+          transparent // Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects. When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.
+          roughness={0.1} // The roughness of the material - Defaults to 1
+          metalness={0.1} // The metalness of the material - Defaults to 0
+        />
+      </mesh>
+      {/*An ambient light that creates a soft light against the object */}
+      <ambientLight intensity={0.5} />
+      {/*An directional light which aims form the given position */}
+      <directionalLight position={[10, 10, 5]} intensity={1} />
+      {/*An point light, basically the same as directional. This one points from under */}
+      <pointLight position={[0, -10, 5]} intensity={1} />
+
+      {/* We can use the drei Sphere which has a simple API. This sphere has a wobble material attached to it */}
+      <Sphere visible position={[-3, 0, 0]} args={[1, 16, 200]}>
+        <MeshWobbleMaterial
+          attach="material"
+          color="#EB1E99"
+          factor={1} // Strength, 0 disables the effect (default=1)
+          speed={2} // Speed (default=1)
+          roughness={0}
+        />
+      </Sphere>
+
+      {/* This sphere has a distort material attached to it */}
+      <Sphere visible position={[3, 0, 0]} args={[1, 16, 200]}>
+        <MeshDistortMaterial
+          color="#00A38D"
+          attach="material"
+          distort={0.5} // Strength, 0 disables the effect (default=1)
+          speed={2} // Speed (default=1)
+          roughness={0}
+        />
+      </Sphere>
+    </Canvas>
+```
+
+[https://codesandbox.io/s/takeshape-article-3-spheres-el11e?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/takeshape-article-3-spheres-el11e?fontsize=14&hidenavigation=1&theme=dark)
+
+## The model
+
+Now that we have an understanding of what to use let's create a component for a our product model. Inside the 3d folder create a new file called `model.js` and add the following.
+
+```jsx
+import React from 'react';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from 'react-three-fiber';
+import ModelLights from './model-lights';
+
+const Model = ({ scenePath, position, rotation }) => {
+  const gltf = useGLTF(scenePath, true);
+  const mesh = React.useRef();
+  useFrame(
+    () => (
+      (mesh.current.rotation.x += rotation[0]),
+      (mesh.current.rotation.y += rotation[1])
+    ),
+  );
+  return (
+    <mesh ref={mesh} position={position}>
+      <ModelLights/>
+      <primitive object={gltf.scene} dispose={null} />
+    </mesh>
+  );
+};
+
+export default Model;
+```
+
+Our component is fairly generic due to the props it takes. The scene path refers to the path to the gltf file that houses the model. The position props which is passed down to the mesh positions the model on the canvas, and the rotation sets the rotation of the model But what is gltf? In a nutshell, it's a specification for loading 3D content. It accepts both JSON (.gltf) or binary (.glb) formats. Instead of storing a single texture or assets like .jgp or .png, gltf packages up all that is needed to show the 3D content. That could include everything from the mesh, geometry, materials and textures. For more information checkout the Three [docs](https://threejs.org/docs/#examples/en/loaders/GLTFLoader).
+
+To load our model files we use a [helper hook from drei](https://github.com/pmndrs/drei#usegltf) (useGLTF) which uses useLoader and GTLFLoader under the hood. We use the useFrame hook to run a rotation effect on the model using a ref which we connect to the mesh. The mesh we rotate on the X axis and position according to the provided props.
+
+We use a primitive placeholder and attach the model scene and finally pass in a separate lights component which we will soon create.
+
+For our model we will be downloading a free 3D model from Sketchfab. Create a free account and head to this link to download the [Nike Air Jordan 1's model](https://sketchfab.com/3d-models/air-jordan-1-a4b434181fbb48008ad460722fd53725). You will want to download the Autoconverted format (glTF), which is the middle option. To access our model files in our application open the public folder at our projects root and add a new folder called shoes, inside this folder paste over the textures folder, scene.bin and scene.gltf files. Now that we have created our product model component and downloaded the model files we need to create the canvas that the model shall live in on our page. Inside the 3d folder create a new file called `canvas-container.js` and add the following.
+
+```jsx
+import React, { Suspense } from 'react';
+import { Canvas } from 'react-three-fiber';
+import { Box } from '@chakra-ui/core';
+
+/**
+ * A container with a set width to hold the canvas.
+ */
+const CanvasContainer = ({
+  width,
+  height,
+  position,
+  fov,
+  children,
+  ...rest
+}) => {
+  return (
+    <Box {...rest} h={height} w={width} zIndex="999">
+      <Canvas
+        colorManagement
+        camera={{
+          position,
+          fov,
+        }}
+      >
+        <Suspense fallback={null}>{children}</Suspense>
+      </Canvas>
+    </Box>
+  );
+};
+
+export default CanvasContainer;
+```
+
+Our new component has a container div (Box) which takes props for it's width, height and anything else we might fancy passing in. It's z-index is set to a high value as we will be placing some text beneath if. The canvas has a camera set with a field of view (where the higher the number the further away the view). We wrap the children in a `Suspense` so that the application doesn't crash while it's loading. 
+
+Now create a new file in the same folder called `product.js` and add the following code.
+
+```jsx
+import React from 'react';
+import Model from './model';
+import { OrbitControls } from '@react-three/drei';
+import CanvasContainer from './canvas-container';
+
+/**
+ * A trainers model
+ */
+const Product = () => {
+  return (
+    <CanvasContainer height={800} width={800} position={[20, 30, 20]} fov={75}>
+      <Model
+        scenePath="shoes/scene.gltf"
+        position={[0, 10, 0]}
+        rotation={[0, 0.005, 0]}
+      />
+      <OrbitControls />
+    </CanvasContainer>
+  );
+};
+
+export default Product;
+```
+
+We want to let our user interact with out model. Importing the orbital controls from drei allows the user to zoom in/out and spin around the model all with their mouse letting them view it from any angle, a cool touch.
+
+But we won't be able to see anything if we don't add any lights to our canvas. Inside the 3d folder create a new file called model-lights and add the following.
+
+```jsx
+import React from 'react';
+
+const ModelLights = () => (
+  <>
+    <directionalLight position={[10, 10, 5]} intensity={2} />
+    <directionalLight position={[-10, -10, -5]} intensity={1} />
+  </>
+);
+
+export default ModelLights;
+```
+
+Now it's time to add these bad boys to the MDX file. Add the `Product` component to the components object the same way we did with the `CustomText` component.
+
+Now add the following below the Flex component that sets the innovation text.
+
+```jsx
+<Flex
+  gridArea="product"
+  justify="center"
+  direction="column"
+  h="100%"
+  position="relative"
+>
+  <Product />
+  <Box
+    position="absolute"
+    right="-15%"
+    bottom="25%"
+  >
+    <CustomText vertical color="#ed1c24" text="Jordan" fontSize="200px" />
+  </Box>
+  <Box position="absolute" bottom="0" right="35%">
+  <CustomText color="#5C5C5C" text="Air" fontSize="200px" />
+</Box>
+
+<Box position="absolute" top="-50%" right="20%" zIndex="100">
+  <CustomText color="#ed1c24" text="1" fontSize="800px" />
+</Box>
+
+</Flex>
+```
+
+Setting the grid area to product places our model in the correct row and column of our grid. We give the Flex component a position of relative as we want to absolutely position the text that is underneath the model. This gives our page a sense of depth that is accentuated by the 3D model. If we run our development server again we should we the shoes spinning around to the right of the copy! 
+
+## Add some glitter
+
+Our page is looking pretty dope but there are a few more finishing touches that would make it sparkle just that little brighter. Head over to Sktechfab again and download this [basketball model](https://sketchfab.com/3d-models/basket-bullet-10-lb-d18692ce01d74c368ab953812e3b80d0). Inside the 3d folder create a new file called `basketball.js` and add the following.
+
+```jsx
+import React, { Suspense } from 'react';
+import Model from './model';
+import CanvasContainer from './canvas-container';
+
+/**
+ * A basketball model
+ */
+const Basketball = () => {
+  return (
+    <CanvasContainer
+      ml={5}
+      height={100}
+      width={100}
+      position={[0, 20, 20]}
+      fov={50}
+    >
+      <Model
+        scenePath="basketball/scene.gltf"
+        position={[0, 17, 17]}
+        rotation={[0.025, 0.025, 0]}
+      />
+    </CanvasContainer>
+  );
+};
+
+export default Basketball;
+```
+
+Utilizing out generic canvas and model components we are able to create a new component that will render a basketball to the page.  We are going to position this basketball to the left of the Air Jordan title text. Noice. Add the new Basketball component to the component s object like we have done before and open the MDX file and add the new component under the title text.
+
+```jsx
+<Flex>
+  <Text color="brand.lightGrey" fontSize="6xl">
+    Air Jordan 1
+  </Text>
+// Im the new component!
+<Basketball/>
+</Flex>
+```
+
+Sweet! It's almost complete. Subtle animations that aren't obvious to the user straight away are a nice addition to any website. Let's add a glitch effect to our title text which only runs when the site visitor hovers their mouse over the text.
+
+Inside the components folder create a new file called `glitch-text.js` and add the following.
+
+```jsx
+import React from 'react';
+import styled from '@emotion/styled';
+
+const Container = styled.div`
+  position: relative;
+
+  &:hover {
+    &:before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      left: 2px;
+      text-shadow: -1px 0 #d6d6d6;
+      background: #090d12;
+
+      overflow: hidden;
+      animation: noise-anim-2 5s infinite linear alternate-reverse;
+    }
+
+    &:after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      left: -2px;
+      text-shadow: -1px 0 #d6d6d6;
+      background: #090d12;
+      overflow: hidden;
+      animation: noise-anim 1s infinite linear alternate-reverse;
+    }
+
+    @keyframes noise-anim {
+      0% {
+        clip-path: inset(100% 0 1% 0);
+      }
+      5% {
+        clip-path: inset(45% 0 41% 0);
+      }
+      10% {
+        clip-path: inset(8% 0 18% 0);
+      }
+      15% {
+        clip-path: inset(94% 0 7% 0);
+      }
+      20% {
+        clip-path: inset(23% 0 69% 0);
+      }
+      25% {
+        clip-path: inset(21% 0 28% 0);
+      }
+      30% {
+        clip-path: inset(92% 0 3% 0);
+      }
+      35% {
+        clip-path: inset(2% 0 35% 0);
+      }
+      40% {
+        clip-path: inset(80% 0 1% 0);
+      }
+      45% {
+        clip-path: inset(75% 0 9% 0);
+      }
+      50% {
+        clip-path: inset(37% 0 3% 0);
+      }
+      55% {
+        clip-path: inset(59% 0 3% 0);
+      }
+      60% {
+        clip-path: inset(26% 0 67% 0);
+      }
+      65% {
+        clip-path: inset(75% 0 19% 0);
+      }
+      70% {
+        clip-path: inset(84% 0 2% 0);
+      }
+      75% {
+        clip-path: inset(92% 0 6% 0);
+      }
+      80% {
+        clip-path: inset(10% 0 58% 0);
+      }
+      85% {
+        clip-path: inset(58% 0 23% 0);
+      }
+      90% {
+        clip-path: inset(20% 0 59% 0);
+      }
+      95% {
+        clip-path: inset(50% 0 32% 0);
+      }
+      100% {
+        clip-path: inset(69% 0 9% 0);
+      }
+    }
+  }
+`;
+
+export default ({ children }) => {
+  return <Container data-text={children}>{children}</Container>;
+};
+```
+
+Our new component uses a styled div component to set its internal css. We state that the following effect shall only run when the element is hovered and then use the pseudo elements to insert some glitchy goodness. The pseudo content is the text passed in as children, we animate some clip paths via some keyframes and give the effect that the text is moving. Add this new component to the components object as `GlitchText` and then wrap the title text in the new component in the MDX markup.
+
+```jsx
+<Text color="brand.lightGrey" fontSize="6xl">
+  <GlitchText>Air Jordan 1</GlitchText>
+</Text>
+```
+
+[https://codesandbox.io/s/xenodochial-currying-01f3f?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/xenodochial-currying-01f3f?fontsize=14&hidenavigation=1&theme=dark)
+
+## Finishing touches
+
+We've come so far and we have covered some steep terrain. We have taken a broad overview of working with 3D components and models in React, looked at designing layouts using css grid. Utilized a component library to make our life easier and explored how to create cool, interactive markdown pages with MDX. Our product page is basically complete, anyone who came across this on the interwebs would certainly be more drawn in than your run of the mill static product pages. But there is one last thing I would like you to add, something subtle to make the page pop. Let's add some particles! 
+
+We have already installed the package so create a new file inside the component folder called background and add the following.
+
+```jsx
+import React from 'react';
+import Particles from 'react-particles-js';
+
+const Background = () => (
+  <div
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+    }}
+  >
+    <Particles
+      params={{
+        particles: {
+          number: {
+            value: 25,
+          },
+          size: {
+            value: 3,
+          },
+        },
+        interactivity: {
+          events: {
+            onhover: {
+              enable: true,
+              mode: 'repulse',
+            },
+          },
+        },
+      }}
+    />
+  </div>
+);
+```
+
+This will serve as our background to our site. We have absolutely positioned the parent container of the particles so that they take up the whole of the page. Next open the routes file and add a Box component and the new `Background` component. 
+
+```jsx
+import React from 'react';
+import { Box, CSSReset } from '@chakra-ui/core';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import PageOne from '../pages/page-one.mdx';
+import Background from './background';
+
+/**
+ * The routes for the app. When adding new pages add a new route and a corresponding nav link in the Nav component above. Import the new page and add it to the route.
+ */
+export const MDXRoutes = () => (
+  <Router>
+    <CSSReset />
+    <Box
+      position="relative"
+      top={0}
+      left={0}
+      width="100%"
+      height="100%"
+      zIndex="99999"
+    >
+      <Background />
+      <Routes>
+        <Route path="/" element={<PageOne />} />
+      </Routes>
+    </Box>
+  </Router>
+);
+```
+
+Start up the development server marvel at your handy work! Great job. If everything went according to plan then your site should look just like the demo site  [3d-product-page.netlify.app/](https://3d-product-page.netlify.app/)
+
+## Recap
+
+- Learnt about react-three-fiber, drei and Threejs
+- Learnt how to add a canvas to a page and render a shape
+- Learnt how to render a 3D model to a page
+- Used some super modern (this will age well...) tooling
+
+We accomplished quite a lot during this tutorial and hopefully there are some take homes that can be used on other projects you create. If you have any questions shoot me a message on Twitter [@studio_hungry](https://twitter.com/studio_hungry), I'd be more than happy to have a chinwag about your thoughts and would love to see what you create with your new found 3D knowledge!
