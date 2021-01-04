@@ -26,6 +26,7 @@ const PostsIndex = ({ filteredPosts }) => {
       p={4}
       borderBottom="solid 2px"
       my={6}
+
       _hover={{
         backgroundColor: !isDarkMode ? "brand.offWhite" : null,
         cursor: "pointer",
@@ -33,7 +34,7 @@ const PostsIndex = ({ filteredPosts }) => {
     >
       <Flex
         bgColor={titleBox}
-        p={6}
+        
         direction="column"
         wrap="wrap"
         maxW={600}
@@ -41,10 +42,11 @@ const PostsIndex = ({ filteredPosts }) => {
         mb={5}
       >
         <Text
-          fontSize={["4xl", "5xl"]}
+          fontSize={["3xl", "4xl"]}
           fontWeight={900}
           fontFamily="heading"
           color="brand.black"
+          p={isDarkMode ? 6 : 2}
         >
           {frontmatter.title}
         </Text>

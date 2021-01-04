@@ -60,7 +60,7 @@ const PostTemplate = ({ data, pageContext }) => {
         >
           <Text
             as="h1"
-            fontSize={["4xl", "6xl"]}
+            fontSize={["4xl", "5xl"]}
             color="brand.black"
             fontFamily="heading"
             fontWeight={800}

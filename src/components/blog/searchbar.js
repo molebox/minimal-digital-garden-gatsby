@@ -16,7 +16,7 @@ const SearchBar = ({ handleSearchQuery }) => {
       top={0}
       bg={bg}
       h={100}
-      my={1}
+      my={4}
       zIndex="99999"
     >
       <VisuallyHidden as="label" htmlFor="search-posts">
