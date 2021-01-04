@@ -11,8 +11,9 @@ const Title = () => {
         fontWeight={800}
         fontFamily="heading"
         color="brand.black"
+        lineHeight={1.2}
       >
-        A Blog, Yeah!
+        It's a Blog, Yeah!
       </Text>
     </Box>
   );

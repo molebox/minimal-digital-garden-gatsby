@@ -36,7 +36,7 @@ const PostsIndex = ({ filteredPosts }) => {
         p={6}
         direction="column"
         wrap="wrap"
-        maxW={500}
+        maxW={600}
         lineHeight={1}
         mb={5}
       >
