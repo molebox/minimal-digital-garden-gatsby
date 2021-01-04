@@ -12,7 +12,7 @@ const Title = () => {
         fontFamily="heading"
         color="brand.black"
       >
-        Digital Garden
+        A Blog, Yeah!
       </Text>
     </Box>
   );
