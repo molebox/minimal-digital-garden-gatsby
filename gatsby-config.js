@@ -45,8 +45,8 @@ module.exports = {
           {
             resolve: `gatsby-plugin-manifest`,
             options: {
-              name: `Rich Haines Digital Garden`,
-              short_name: `Rich Haines Digital Garden`,
+              name: `Rich Haines Blog`,
+              short_name: `Rich Haines Blog`,
               start_url: `/`,
               background_color: `#ffffff`,
               theme_color: `#ffffff`,

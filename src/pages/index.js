@@ -42,7 +42,7 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   const socialImage = getShareImage({
-    title: "Rich Haines Digital Garden",
+    title: "Rich Haines Blog",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
@@ -66,7 +66,7 @@ export default ({ data }) => {
   return (
     <Layout>
       <SEO
-        title="Rich Haines Digital Garden"
+        title="Rich Haines Blog"
         titleTemplate=""
         titleSeparator=""
         description="My articles, tutorials and thoughts. Under one roof."
