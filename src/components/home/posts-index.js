@@ -26,7 +26,6 @@ const PostsIndex = ({ filteredPosts }) => {
       p={4}
       borderBottom="solid 2px"
       my={6}
-
       _hover={{
         backgroundColor: !isDarkMode ? "brand.offWhite" : null,
         cursor: "pointer",
@@ -34,7 +33,6 @@ const PostsIndex = ({ filteredPosts }) => {
     >
       <Flex
         bgColor={titleBox}
-        
         direction="column"
         wrap="wrap"
         maxW={600}

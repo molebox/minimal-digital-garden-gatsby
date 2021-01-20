@@ -18,7 +18,7 @@ const theme = {
     "3xl": "28px",
     "4xl": "36px",
     "5xl": "74px",
-    "title": "85px",
+    title: "85px",
     "6xl": "100px",
     "7xl": "130px",
   },
