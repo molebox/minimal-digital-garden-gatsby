@@ -9,6 +9,7 @@ import ReactSVG from "./../../assets/react-svg";
 import CopyButton from "./copy-button";
 import HTML from "../../assets/html";
 import CSS from "./../../assets/css";
+import SQL from "./../../assets/sql";
 
 const Code = ({ children, className }) => {
   const language = className.replace(/language-/, "");
@@ -29,6 +30,8 @@ const Code = ({ children, className }) => {
         return <HTML />;
       case "css":
         return <CSS />;
+      case "sql":
+        return <SQL />;
       default:
         break;
     }
