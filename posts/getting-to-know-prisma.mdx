@@ -1,0 +1,52 @@
+---
+title: Getting to know Prisma - WIP
+category: Whatever
+description: So I've got a new job, best get to know the product then.
+---
+
+I'll soon be starting a new job (or by the time you read this, maybe I've already started!) on the docs team at Prisma as a technical writer. That means I get paid to play around with Prisma and write about it, pretty sweet gig. Going into this role I have about 2% knowledge of what Prisma is and can do. The reason I put that number so low is that I haven't yet played around with it and I'm fairly certain that I'm about 98% off knowing everything about it!
+
+So, I start in 1 month and want to get learning, that, after all, is the fun part of the job, learning how things work then writing about it. I'll be documenting as I go so consider this my notes as I learn how Prisma works. I'm coming at this from the perspective of a developer, not someone who hasn't coded before, and my notes will reflect that. This won't be a walk-through, but I'm hopeful that someone out there will happen across it and find it useful.
+
+## What is Prisma?
+
+What better place to start than a quick rundown of what Prisma actually is, this is super high level and by no means a deep dive. My understanding is that Prisma is like a layer you place on top of your database which gives type safe ways to interact with your data. Your database is SQL based (think Postgres, MySQL). The client is a query builder for Node and TypeScript. You instantiate a new instance of the PrismaClient class and then it has a bunch of super handy methods for you to use to manipulate and interact with your data. It looks like Prisma has its own data model structure which is used to define the shape of your tables in a schema file.
+
+### example schema.prisma file
+
+```sql
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "postgresql"
+}
+generator client {
+  provider = "prisma-client-js"
+}
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+  posts     Post[]
+}
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+> That example is taken from the awesome docs. Handy tip, Prisma has a vscode extension which will give you intellisense when writing your schema file, real nice. 
+
+So the models map to the tables in your database. You define what each column should be for data type and can set default values.
+
+WIP...................
