@@ -3,7 +3,8 @@ import { Grid } from "@chakra-ui/react";
 import AllCategoryTag from "./../blog/all-category-tag";
 import CategoryTag from "./../blog/category-tag";
 
-const Categories = ({ categoriesList, handleCategoryQuery }) => {
+const Categories = ({ categoriesList, handleCategoryQuery, numberOfPosts }) => {
+  console.log({ categoriesList });
   return (
     <Grid
       templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
@@ -18,6 +19,7 @@ const Categories = ({ categoriesList, handleCategoryQuery }) => {
         <CategoryTag
           key={cat + index}
           category={cat}
+          numberOfPosts={numberOfPosts}
           handleCategoryQuery={handleCategoryQuery}
         />
       ))}

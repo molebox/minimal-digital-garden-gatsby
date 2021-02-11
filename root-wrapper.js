@@ -38,7 +38,7 @@ const components = {
   ),
   a: (props) => (
       <RoughNotation multiline type="underline" color="#1f2127" show={true}>
-        <Link isExternal href={props.href}>
+        <Link style={{textDecoration: 'none'}} isExternal href={props.href}>
         {props.children}
         </Link>
       </RoughNotation>

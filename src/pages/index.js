@@ -85,6 +85,7 @@ export default ({ data }) => {
       />
       <Categories
         categoriesList={categoriesList}
+        numberOfPosts={filteredPosts.length}
         handleCategoryQuery={handleCategoryQuery}
       />
       <PostsIndex filteredPosts={filteredPosts} />

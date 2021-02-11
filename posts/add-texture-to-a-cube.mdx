@@ -1,6 +1,6 @@
 ---
 title: Add texture to a cube
-category: 3D
+category: Tutorial
 description: Add texture to a cube in three js using react-three-fiber
 ---
 
@@ -26,10 +26,10 @@ Open the index.css and remove the default styling and add this simple reset.
 html,
 body,
 #root {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
 ```
 
@@ -40,19 +40,19 @@ We need to do this as our Canvas will be our main child element and it will take
 Create a components folder inside of src and add a new component named whatever you like. I will be using a picture of me for this example so will name it me-cube.js.
 
 ```jsx
-import React from "react";
-import { useTexture } from "@react-three/drei";
+import React from 'react';
+import { useTexture } from '@react-three/drei';
 
 const MeCube = () => {
-  // Load the texture. This is a single texture that will be placed on all 6 sides of the cube
-  const [militaryTexture] = useTexture(["/me.jpg"]);
+	// Load the texture. This is a single texture that will be placed on all 6 sides of the cube
+	const [militaryTexture] = useTexture(['/me.jpg']);
 
-  return (
-    <mesh visible position={[0, 0, 0]} rotation={[10, 20, 0]}>
-      <boxGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshBasicMaterial attach="material" map={militaryTexture} />
-    </mesh>
-  );
+	return (
+		<mesh visible position={[0, 0, 0]} rotation={[10, 20, 0]}>
+			<boxGeometry attach="geometry" args={[1, 1, 1]} />
+			<meshBasicMaterial attach="material" map={militaryTexture} />
+		</mesh>
+	);
 };
 
 export default MeCube;
@@ -71,28 +71,28 @@ Our mesh node has a visible prop which say we should be able to see it in the ca
 Remove all the content from inside the returned App function. Replace it with a Canvas imported from react-three-fiber. THe Canvas takes a some props, add colorManagement to handle the colors for us and camera to position the camera. The camera prop allows us to not only position the camera but also the point of view from which we view the objects within the cameras viewport. The cameras position array takes the same values as the mesh, geometry and material meshes: [x, y, z] => horizontal, vertical, depth.
 
 ```jsx
-import { OrbitControls } from "@react-three/drei";
-import React, { Suspense } from "react";
-import { Canvas } from "react-three-fiber";
-import MeCube from "./components/me-cube";
-import "./styles.css";
+import { OrbitControls } from '@react-three/drei';
+import React, { Suspense } from 'react';
+import { Canvas } from 'react-three-fiber';
+import MeCube from './components/me-cube';
+import './styles.css';
 
 export default function App() {
-  return (
-    <Canvas
-      colorManagement
-      camera={{
-        position: [0, 0, 5],
-        fov: 75,
-      }}
-    >
-      <color attach="background" args={["#1d1d1d"]} />
-      <Suspense fallback={null}>
-        <MeCube />
-      </Suspense>
-      <OrbitControls />
-    </Canvas>
-  );
+	return (
+		<Canvas
+			colorManagement
+			camera={{
+				position: [0, 0, 5],
+				fov: 75,
+			}}
+		>
+			<color attach="background" args={['#1d1d1d']} />
+			<Suspense fallback={null}>
+				<MeCube />
+			</Suspense>
+			<OrbitControls />
+		</Canvas>
+	);
 }
 ```
 

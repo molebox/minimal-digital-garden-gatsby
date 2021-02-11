@@ -25,6 +25,10 @@ const AllCategoryTag = ({ handleCategoryQuery, ...rest }) => {
         boxShadow: "-2px 2px #000",
         cursor: "pointer",
       }}
+      _focus={{
+        backgroundColor: "brand.lightGrey",
+        color: "brand.bg",
+      }}
       className="cat-tag"
     >
       All
