@@ -6,6 +6,7 @@ import {
   Text,
   useColorMode,
   useColorModeValue,
+  VisuallyHidden,
 } from "@chakra-ui/react";
 import { Link as GatsbyLink } from "gatsby";
 import { RoughNotation } from "react-rough-notation";
@@ -72,6 +73,7 @@ const Subtitle = () => {
         name="Twitter link"
       />
       <Link as={GatsbyLink} href="/rss.xml" gridColumn={[5, 6]}>
+      <VisuallyHidden>Rich Haines RSS Feed</VisuallyHidden>
         <RSS />
       </Link>
     </Grid>
