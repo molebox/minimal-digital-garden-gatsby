@@ -4,13 +4,6 @@ import defaultTheme from "@chakra-ui/theme";
 
 const theme = {
   ...defaultTheme,
-  styles: {
-    global: {
-      html: {
-        marginLeft: "calc(100vw - 100%)",
-      },
-    },
-  },
   fonts: {
     heading: "Open Sans",
     body: "Jost",

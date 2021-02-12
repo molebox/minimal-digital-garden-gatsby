@@ -2,15 +2,18 @@ import React from "react";
 import {
   Box,
   Grid,
+  Link,
   Text,
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Link as GatsbyLink } from "gatsby";
 import { RoughNotation } from "react-rough-notation";
 import ModeButton from "./mode-button";
 import ExternalLink from "./../external-link";
 import Github from "../../assets/github";
 import Twitter from "../../assets/twitter";
+import RSS from "../../assets/rss";
 
 const Subtitle = () => {
   const { colorMode } = useColorMode();
@@ -19,7 +22,10 @@ const Subtitle = () => {
   const isDarkMode = colorMode === "dark";
   return (
     <Grid
-      templateColumns={"max-content auto 100px 50px 50px"}
+      templateColumns={[
+        "max-content repeat(4, 1fr)",
+        "max-content auto 100px 50px 50px 50px",
+      ]}
       templateRows="auto"
       w="100%"
       placeItems="center"
@@ -56,15 +62,18 @@ const Subtitle = () => {
       <ExternalLink
         icon={<Github />}
         href="https://github.com/molebox"
-        gridColumn={4}
+        gridColumn={[3, 4]}
         name="Github link"
       />
       <ExternalLink
         icon={<Twitter />}
         href="https://twitter.com/studio_hungry"
-        gridColumn={5}
+        gridColumn={[4, 5]}
         name="Twitter link"
       />
+      <Link as={GatsbyLink} href="/rss.xml" gridColumn={[5, 6]}>
+        <RSS />
+      </Link>
     </Grid>
   );
 };

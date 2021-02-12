@@ -68,6 +68,51 @@ module.exports = {
             extensions: ['css', 'html', 'js', 'svg']
           }
         },
-        'gatsby-plugin-minify'
+        'gatsby-plugin-minify',
+        {
+          resolve: `gatsby-plugin-feed-mdx`,
+          options: {
+            query: `
+              {
+                site {
+                  siteMetadata {
+                    siteUrl
+                  }
+                }
+              }
+            `,
+            feeds: [
+              {
+                serialize: ({ query: { site, allMdx } }) => {
+                  return allMdx.edges.map(edge => {
+                    return Object.assign({}, edge.node.frontmatter, {
+                      description: edge.node.excerpt,
+                      url: site.siteMetadata.siteUrl + "/" + edge.node.fields.slug,
+                      custom_elements: [{ "content:encoded": edge.node.html }]
+                    });
+                  });
+                },
+                query: `
+                  {
+                    allMdx {
+                      edges {
+                        node {
+                          excerpt
+                          html
+                          fields { slug }
+                          frontmatter {
+                            title
+                          }
+                        }
+                      }
+                    }
+                  }
+                `,
+                output: "/rss.xml",
+                title: "Rich Haines Blog RSS Feed",
+              }
+            ]
+          }
+        }
     ]
 }
