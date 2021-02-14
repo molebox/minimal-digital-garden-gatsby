@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Tag } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 
 const CategoryTag = ({
   category,
@@ -14,17 +14,6 @@ const CategoryTag = ({
   const handleClick = () => {
     getCategory(category);
   };
-
-  // React.useEffect(() => {
-  //   if (typeof window !== undefined) {
-  //     if (btnRef.current && btnRef.current === document.activeElement) {
-  //       setShowTag(true)
-  //     } else {
-  //       setShowTag(false)
-  //     }
-  //   }
-
-  // }, [showTag])
 
   return (
     <Button
@@ -57,22 +46,6 @@ const CategoryTag = ({
       className="cat-tag"
       position="relative"
     >
-      {/* {showTag ? (
-      <Tag
-      sx={{
-        position: 'absolute',
-        top: -3,
-        right: -3,
-        zIndex: 99999999,
-        backgroundColor: 'black',
-        color: 'white'
-      }}
-      size="sm"
-      variant="solid"
-      >
-      {numberOfPosts}
-      </Tag>
-      ) : null} */}
       {category}
     </Button>
   );

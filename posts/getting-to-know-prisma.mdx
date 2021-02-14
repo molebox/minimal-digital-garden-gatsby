@@ -1,17 +1,18 @@
 ---
-title: Getting to know Prisma - WIP
+title: Getting to know Prisma
 category: Whatever
 description: So I've got a new job, best get to know the product then.
-published: false
+published: true
 ---
 
-I'll soon be starting a new job (or by the time you read this, maybe I've already started!) on the docs team at Prisma as a technical writer. That means I get paid to play around with Prisma and write about it, pretty sweet gig. Going into this role I have about 2% knowledge of what Prisma is and can do. The reason I put that number so low is that I haven't yet played around with it and I'm fairly certain that I'm about 98% off knowing everything about it!
+I'll soon be starting a new job (or by the time you read this, maybe I've already started!) on the docs team at Prisma as a technical writer. That means I get paid to play around with Prisma and write about it, pretty sweet gig.
 
-So, I start in 1 month and want to get learning, that, after all, is the fun part of the job, learning how things work then writing about it. I'll be documenting as I go so consider this my notes as I learn how Prisma works. I'm coming at this from the perspective of a developer, not someone who hasn't coded before, and my notes will reflect that. This won't be a walk-through, but I'm hopeful that someone out there will happen across it and find it useful.
+So, I start in 1 month and want to get learning, that, after all, is the fun part of the job, learning how things work then sharing the experience. I'll be documenting as I go so consider this my notes as I learn how Prisma works. I'm coming at this from the perspective of a developer, not someone who hasn't coded before, and my notes will reflect that. This won't be a walk-through, but I'm hopeful that someone out there will happen across it and find it useful.
 
 ## What is Prisma?
 
-What better place to start than a quick rundown of what Prisma actually is, this is super high level and by no means a deep dive. My understanding is that Prisma is like a layer you place on top of your database which gives type safe ways to interact with your data. Your database is SQL based (think Postgres, MySQL). The client is a query builder for Node and TypeScript. You instantiate a new instance of the PrismaClient class and then it has a bunch of super handy methods for you to use to manipulate and interact with your data. It looks like Prisma has its own data model structure which is used to define the shape of your tables in a schema file.
+What better place to start than a quick rundown of what Prisma actually is, this is super high level and by no means a deep dive. Prisma is a layer you place on top of your database which gives type safe ways to interact with your data. Your database is SQL based (think Postgres, MySQL). The Prisma client is a query builder for Node and TypeScript. To use it you instantiate a new instance of the PrismaClient class. It has a bunch of super handy methods for you to use to manipulate and interact with your data. 
+
 
 ### example schema.prisma file
 
@@ -48,6 +49,67 @@ enum Role {
 
 > That example is taken from the awesome docs. Handy tip, Prisma has a vscode extension which will give you intellisense when writing your schema file, real nice. 
 
-So the models map to the tables in your database. You define what each column should be for data type and can set default values.
+So the models map to the tables in your database. You define what each column should be for data type and can set default values. It's from here that you also define the relationships each column or table has to another column or table. 
 
-WIP...................
+## Interact with your data
+
+Jumping back a second to take a look at how to use the client. This code block is from the [introductory tutorial in the Prisma docs](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-typescript-postgres)
+
+```js
+// Import the PrismaClient constructor from the @prisma/client node module
+import {PrismaClient} from '@prisma/client';
+
+// Instantiate PrismaClient
+const prisma = new PrismaClient();
+
+// Define an async function called main to send queries to the database
+async function main() {
+    // write Prisma Client queries here...
+
+    const post = await prisma.post.update({
+        where: { id: 1 },
+        data: { published: true }
+    });
+
+    console.log({post})
+
+    // Create a user
+    await prisma.user.create({
+        data: {
+            name: 'Alice',
+            email: 'alice@prisma.io',
+            posts: {
+                create: {title: 'Hello World'}
+            },
+            profile: {
+                create: { bio: 'I like Soup'}
+            }, 
+        },  
+    })
+
+    const allUsers = await prisma.user.findMany({
+        // Choose which nodes to fetch. What should be included in the returned data?
+        include: {
+            posts: true,
+            profile: true
+        }
+    });
+    console.dir(allUsers, { depth: null })
+}
+
+// Call the main function
+main()
+    .catch((e) => {
+        console.log({e});
+        throw e;
+    })
+    .finally(async () => {
+        // Close the database connections when the script terminates
+        await prisma.$disconnect();
+    })
+```
+The methods on the client let you use object syntax for querying your data. It feels very intuitive to write the queries this way. The `create()` method uses a nested query which is made possible by the defined relationships in the schema. In the `findMany()` method you choose which nodes to include in the returned data by using the key `includes` and then setting some boolean values. Lovely!
+
+## Put some knowledge to work
+
+I'm currently building a blogging CMS for my wife and was going to go with a headless solution for storing data. I've now had a re-think though and think it would be a great opportunity to use Prisma and test out some of the stuff it can do. My CMS frontend code is currently in Nextjs though Im by no means tied to that solution. The idea for the CMS is that the user will be able to write their blog posts in a sort of rich text format. This data will then be saved to a database and can be fetched using either REST or GraphQL to be shown on their frontend of choice. All this ties in nicely with Prisma and I should be able to create an authenticated backend service that will ideally live alongside the CMS code. 

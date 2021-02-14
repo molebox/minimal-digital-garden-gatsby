@@ -1,15 +1,21 @@
 import React from "react";
-import { Flex } from "@chakra-ui/react";
-import { TwitterShareButton } from "react-share";
+import { Flex, Link } from "@chakra-ui/react";
 
-const ShareOnTwitter = ({ slug }) => {
+const ShareOnTwitter = () => {
   return (
     <Flex>
-      <TwitterShareButton
-        round={false}
-        size={32}
-        url={`https://richardhaines.dev/${slug}`}
-      />
+      <Link
+        as="a"
+        isExternal
+        href="https://twitter.com/share?ref_src=twsrc%5Etfw"
+        className="twitter-share-button"
+        data-text="Just read this awesome article"
+        data-via="studio_hungry"
+        data-lang="en"
+        data-show-count="false"
+      >
+        Share on Twitter
+      </Link>
     </Flex>
   );
 };

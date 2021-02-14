@@ -25,7 +25,7 @@ export default ({ data }) => {
 
   React.useEffect(() => {
     setFilteredPosts(shuffle(posts));
-  }, []);
+  }, [posts]);
 
   // Check if the categories array is the same length as the filtered by search posts array, if it is it means the user has reset the
   // category search by hitting "All". Otherwise, if the categories array length is less than the search posts, they have filtered on
@@ -106,7 +106,6 @@ export const query = graphql`
           title
           category
           description
-          published
         }
         fields {
           slug
