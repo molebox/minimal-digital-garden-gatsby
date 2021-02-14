@@ -3,7 +3,7 @@ import { graphql } from "gatsby";
 import { useColorMode } from "@chakra-ui/react";
 import Layout from "./../components/layout";
 import SearchBar from "../components/blog/searchbar";
-import { useSearchBar } from "../../posts/useSearchbar";
+import { useSearchBar } from "../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
@@ -95,7 +95,10 @@ export default ({ data }) => {
 
 export const query = graphql`
   query BlogIndexQuery {
-    allMdx(sort: { fields: [frontmatter___category], order: ASC }) {
+    allMdx(
+      sort: { fields: [frontmatter___category], order: ASC }
+      filter: { frontmatter: { published: { eq: true } } }
+    ) {
       nodes {
         id
         excerpt(pruneLength: 200)
@@ -103,6 +106,7 @@ export const query = graphql`
           title
           category
           description
+          published
         }
         fields {
           slug

@@ -73,7 +73,7 @@ const Subtitle = () => {
         name="Twitter link"
       />
       <Link as={GatsbyLink} href="/rss.xml" gridColumn={[5, 6]}>
-      <VisuallyHidden>Rich Haines RSS Feed</VisuallyHidden>
+        <VisuallyHidden>Rich Haines RSS Feed</VisuallyHidden>
         <RSS />
       </Link>
     </Grid>

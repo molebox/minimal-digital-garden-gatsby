@@ -7,6 +7,7 @@ import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
+import ShareOnTwitter from './src/components/blog/share-on-twitter';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -50,6 +51,7 @@ const components = {
       </Layout>
     )
   },
+  ShareOnTwitter
 }
 
 export const wrapRootElement = ({ element }) => (
