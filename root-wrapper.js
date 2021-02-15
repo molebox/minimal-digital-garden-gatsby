@@ -1,13 +1,12 @@
 
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
-import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link  } from "@chakra-ui/react";
+import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link, Flex  } from "@chakra-ui/react";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
-import ShareOnTwitter from './src/components/blog/share-on-twitter';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -27,9 +26,19 @@ const components = {
     </Text>
   ),
   blockquote: (props) => (
+    <Flex
+    align="start"
+    justify="center"
+    borderLeft="solid 2px"
+    borderBottom="solid 2px"
+    boxShadow="-2px 2px #000"
+    p={3}
+    my={2}
+    >
     <Text my={2} fontFamily="body" fontStyle="italic">
       {props.children}
     </Text>
+    </Flex>
   ),
   ul: (props) => <UnorderedList my={2}>{props.children}</UnorderedList>,
   li: (props) => <ListItem fontFamily="body" fontSize="xl">{props.children}</ListItem>,
@@ -51,7 +60,6 @@ const components = {
       </Layout>
     )
   },
-  ShareOnTwitter
 }
 
 export const wrapRootElement = ({ element }) => (
