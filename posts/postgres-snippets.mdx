@@ -1,0 +1,56 @@
+---
+title: Postgres Snippets
+category: Snippets
+description: Some handy snippets I find myself googling
+published: true
+---
+
+> This document assumes you have postgres installed locally and are running psql. Always add a semicolon to the end of all commands.
+
+## Login
+
+To login to to psql:
+
+```bash
+psql -U postgres;
+```
+
+To login to psql and a database:
+
+```bash
+psql -U postgres -d myDatabase;
+```
+
+## Create a Database
+
+psql works by allowing you to write SQL commands write in the command line. The database name needs to be camelCase To that end, to create a new database:
+
+```bash
+CREATE DATABASE myDatabase;
+```
+
+## List out stuff
+
+To show all databases:
+
+```bash
+\l;
+```
+
+To move into a database:
+
+```bash
+\c myDatabase;
+```
+
+To show all tables in a database:
+
+```bash
+\d+;
+```
+
+If you have data in your database you can view all rows with the SQL command:
+
+```sql
+SELECT * FROM myDatabase;
+```
