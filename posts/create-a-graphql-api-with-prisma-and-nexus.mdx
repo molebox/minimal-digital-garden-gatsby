@@ -1,0 +1,262 @@
+---
+title: Create a GraphQL API with Prisma and Nexus
+category: Tutorial
+description: A tutorial that introduces you to creating a graphql api using modern tooling
+published: false
+---
+
+## What you will build
+
+You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competences within companies within different industries. For example, if you take the IT sector. The database will have information on different companies in an specified area, those companies will have different trades (**Software**, **Hardware**, **Internal Systems**) within the IT sector such as a hardware or software company. Each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
+
+> During the course of the tutorial you will add data to the database via graphql mutations, but this will not be an exhaustive list of companies, nor will it represent actual real life data.
+
+Once complete you will have learnt how to setup your own graphql api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first graphql schemas.
+
+## What is Prisma and Nexus?
+
+[Prisma](https://www.prisma.io/) is an ORM (Object-Relational-Mapping) layer that sits on top of your database. It ships with a query builder which allows you to write type safe queries as JavaScript (or TypeScript) objects. It's built to work with TypeScript, has it's own vscode extension and offers a lovely abstraction over SQL databases. For a full (and in depth) rundown of what Prisma is you can check out their docs page, [Why Prisma?](https://www.prisma.io/docs/concepts/overview/why-prisma/).
+
+[Nexus](https://nexusjs.org/) is a declarative, code first approach to writing graphql schemas. It's created by a team at Prisma and works seamlessly with it. Nexus allows you to house your schema and resolver logic in one place and write it with one common language such as JavaScript or TypeScript. You'll learn more about this approach during the tutorial. If you wish to read further you can checkout their excellent docs page [Why Nexus?](https://nexusjs.org/docs/getting-started/why-nexus).
+
+## Setup the project
+
+Create a new directory in your project location of choice and begin by installing the required packages.
+
+> This tutorial will use NPM to run the application, you can use Yarn if you wish.
+
+```bash
+npm init -y
+npm i --save-dev prisma ts-node-dev typescript
+npm i @prisma/client apollo-server graphql nexus
+```
+
+Next create a `tsconfig.json` file at your projects root and add the following boilerplate:
+
+```json
+{
+	"compilerOptions": {
+		"target": "ES2018",
+		"module": "commonjs",
+		"lib": ["esnext"],
+		"strict": true,
+		"rootDir": ".",
+		"outDir": "dist",
+		"sourceMap": true,
+		"esModuleInterop": true
+	}
+}
+```
+
+Finally add some build scripts to the `package.json`
+
+```json
+"dev": "ts-node-dev --transpile-only --no-notify api/app.ts",
+"build": "tsc"
+```
+
+Now that everything is installed you'll need to create some files and folders. All the code will live in an `api` folder at the projects root. The structure will look like this:
+
+- api
+  - graphql
+    - index.ts
+  - app.ts
+  - context.ts
+  - db.ts
+  - schema.ts
+  - server.ts
+
+## Setup the database
+
+This tutorial uses [Postgres](https://www.postgresql.org/) as it's database. If you don't already have an instance of Postgres installed on your machine you can grab it from the [download](https://www.postgresql.org/download/) page on their site. The default postgres installation comes with the user `postgres`. This tutorial will assume that user from here onwards, though you can swap that out for your own user if you wish. This tutorial will also use `psql` for interacting with the database at certain times. `psql` is a tool for writing SQL queries from the command line, it comes with the installation of Postgres.
+
+Once you have it installed login and create a new database.
+
+```sql
+// Login
+psql -U postgres;
+
+// Create database
+CREATE DATABASE companyCompetenceDatabase;
+
+// Confirm database creation
+\l;
+```
+
+## Adding the Prisma schema data models
+
+To setup Prisma you must first invoke the CLI by running `npx prisma` then `npx primsa init`. A new folder will be created at the projects root called `prisma` which will house a `schema.prisma` file. A `.env` file will also be created and pre-populated with a placeholder connection string.
+
+The `DATABASE_URL` is the connection string that will be used to hook up to your Postgres database. In the `.env` file change the placeholder to the following, replacing the password for your own, the user for your own if you have a different one and the database name if you choose a different name.
+
+```bash
+DATABASE_URL="postgresql://postgres:test1234@localhost:5432/companycompetencedatabase?schema=public"
+```
+
+> Note that although you gave the name of the database in camelCase when creating it, Postgres converts that to all lower case once the database is created. I have left the creation string as camelCase for readability.
+
+Inside `schema.prisma` add the following models below the client generator.
+
+```prisma
+
+// 1-n with trade and role
+// company can have many roles
+// company can have many trades
+model Company {
+  id            Int      @id @default(autoincrement())
+  name          String
+  contactPerson String
+  bio           String
+  email         String
+  website       String
+  industry      Industry @relation(fields: [industryId], references: [id]) // the relation field used by prisma client, does NOT exist in the db
+  industryId    Int // the foreign key, exists in the db
+  trades        Trade[]
+  roles         Role[]
+}
+
+// 1-n with company - industry can have many companies
+model Industry {
+  id        Int       @id @default(autoincrement())
+  name      String
+  companies Company[]
+}
+
+// n-1 with company, a company can have many trades
+model Trade {
+  id        Int     @id @default(autoincrement())
+  name      String
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+}
+
+// 1-n with skill, n-1 with company
+// a role can have many skills
+// a company can have many roles
+model Role {
+  id        Int     @id @default(autoincrement())
+  name      String
+  skills    Skill[]
+  company   Company @relation(fields: [companyId], references: [id])
+  companyId Int
+}
+
+// 1-n with role
+model Skill {
+  id     Int    @id @default(autoincrement())
+  name   String
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId Int
+}
+```
+
+Let's dive into what all this means. The Prisma data modal is a schema that maps to your database schema. In it you define the shape of your data and any relationships that may exist between tables. If you have never worked with `SQL` databases some of fields may seem confusing. Let's break them down.
+
+In `SQL` land relationships between tables are defined by foreign keys. These are ids that map to other tables. In the example above you can see that the `Trade` model has a field called `companies` which has a type of `Company[]`, indicating that it represents an array, or list, of companies. Checking the `Company` model it has its own `id` field and another id field called `tradeId`. The second id field is a foreign key and indicates to the database a one-to-many relationship between the `Trade` and `Company` tables, where a trade can have many companies but a company will relate to one trade. Lots. Of. Words. And most probably quite confusing still.
+
+A more explicit example of a one-many relationship can be viewed below:
+
+```prisma
+
+model One  {
+  id        Int @id @default(autoincrement()) // Primary key
+  hasMany   Many[]
+}
+
+model Many  {
+  id                Int @id @default(autoincrement()) // Primary key
+  oneRelationField  One @relation(field: [foreignKey], references: [id]) // Not in db, used by prisma to describe relation
+  foreignKey        Int // The foreign key, this is in the db
+}
+
+```
+
+The `foreignKey` references the id on the `One` model, this tells the database that the primary key from `One` is used as the foreignKey on `Many`. The foreignKey is designed to allow multiple instances of the value from which it references. Only the foreign key is used in the actual database table, the `oneRelationField` is used by Prisma when creating relations.
+
+Now that you have created your data model you can run a migration and map the models to the database schema. The following command creates a new SQL migration file named `init` and runs the migration against the database. This creates the tables in the format described by the models.
+
+```bash
+npx prisma migrate dev --name init --preview-feature
+```
+
+## Using the Nexus objectType
+
+The traditional way to setup a graphql schema is to create a `typeDefs` file and declare the schema types and queries. At least thats how it's done in Apollo world. Inside the `typeDefs` file you would create the the graphql types (which look quite similar to the Prisma Schema Language (PSL)) and queries inside an exported template string on a graphql tag, an example how this might look can be seen below:
+
+```graphql
+
+exports.typeDefs = gql`
+type Query {
+	allCharacters: [Character]!
+	characterById(_id: ID!): Character
+	characterByName(name: String!): Character
+}
+
+type Character {
+	_id: ID
+	name: String!
+	house: String
+	patronus: String
+	bloodStatus: String
+	role: String
+	school: String
+	deathEater: Boolean
+	dumbledoresArmy: Boolean
+	orderOfThePheonix: Boolean
+	ministryOfMagic: Boolean
+	alias: String
+	wand: String
+	boggart: String
+	animagus: String
+}
+`
+```
+
+This file would then be added to every time you wanted to introduce a new data type or query definition, this works so long as the number of data models is small but is not very modular and wouldn't be easy to scale if you were to introduce multiple new data types and queries. Another way to accomplish defining your graphql types and schema is to use Nexus and to take a code first approach by giving each type its own file and using the `objectType` function. Inside `api/graphql` create a new file called `company.ts` and add the following:
+
+```typescript
+import { objectType } from 'nexus';
+
+export const Company = objectType({
+	name: 'Company',
+	definition(t) {
+		t.nonNull.int('id');
+		t.nonNull.string('name');
+		t.nonNull.string('contactPerson');
+		t.nonNull.string('bio');
+		t.nonNull.string('email');
+		t.nonNull.string('website');
+		t.int('industryId');
+		t.nonNull.list.nonNull.field('trades', {
+			type: 'Trade',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.trades();
+			},
+		});
+	},
+});
+```
+
+## Creating the server
+
+Open the `server.ts` file and add the following:
+
+```typescript
+import { ApolloServer } from 'apollo-server';
+import { schema } from './schema';
+import { context } from './context';
+
+export const server = new ApolloServer({ schema, context });
+```
+
+Here you are instantiating the ApolloServer instance and exporting it and passing in the schema and context.
+
+## Understanding the GraphQL context object
+
+## Running our queries and mutations in the Playground
+
+## Conclusion

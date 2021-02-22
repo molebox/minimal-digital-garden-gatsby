@@ -34,6 +34,7 @@ const components = {
     boxShadow="-2px 2px #000"
     p={3}
     my={2}
+    bgColor="brand.offWhite"
     >
     <Text my={2} fontFamily="body" fontStyle="italic">
       {props.children}
@@ -60,6 +61,7 @@ const components = {
       </Layout>
     )
   },
+  bold: (props) => <Text my={2} fontSize="xl" fontFamily="body" fontWeight={300}>{props.children}</Text>,
 }
 
 export const wrapRootElement = ({ element }) => (
