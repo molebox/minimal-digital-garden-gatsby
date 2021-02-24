@@ -2,14 +2,12 @@
 title: Create a GraphQL API with Prisma and Nexus
 category: Tutorial
 description: A tutorial that introduces you to creating a graphql api using modern tooling
-published: false
+published: true
 ---
 
 ## What you will build
 
 You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competences within companies within different industries. For example, if you take the IT sector. The database will have information on different companies in an specified area, those companies will have different trades (**Software**, **Hardware**, **Internal Systems**) within the IT sector such as a hardware or software company. Each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
-
-> During the course of the tutorial you will add data to the database via graphql mutations, but this will not be an exhaustive list of companies, nor will it represent actual real life data.
 
 Once complete you will have learnt how to setup your own graphql api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first graphql schemas.
 
@@ -29,6 +27,22 @@ Create a new directory in your project location of choice and begin by installin
 npm init -y
 npm i --save-dev prisma ts-node-dev typescript
 npm i @prisma/client apollo-server graphql nexus
+```
+
+The article uses the following versions:
+
+```json
+  "devDependencies": {
+    "prisma": "^2.17.0",
+    "ts-node-dev": "^1.1.1",
+    "typescript": "^4.1.5"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.17.0",
+    "apollo-server": "^2.21.0",
+    "graphql": "^15.5.0",
+    "nexus": "^1.0.0"
+  }
 ```
 
 Next create a `tsconfig.json` file at your projects root and add the following boilerplate:
@@ -173,6 +187,8 @@ model Many  {
 
 The `foreignKey` references the id on the `One` model, this tells the database that the primary key from `One` is used as the foreignKey on `Many`. The foreignKey is designed to allow multiple instances of the value from which it references. Only the foreign key is used in the actual database table, the `oneRelationField` is used by Prisma when creating relations.
 
+---
+
 Now that you have created your data model you can run a migration and map the models to the database schema. The following command creates a new SQL migration file named `init` and runs the migration against the database. This creates the tables in the format described by the models.
 
 ```bash
@@ -181,7 +197,7 @@ npx prisma migrate dev --name init --preview-feature
 
 ## Using the Nexus objectType
 
-The traditional way to setup a graphql schema is to create a `typeDefs` file and declare the schema types and queries. At least thats how it's done in Apollo world. Inside the `typeDefs` file you would create the the graphql types (which look quite similar to the Prisma Schema Language (PSL)) and queries inside an exported template string on a graphql tag, an example how this might look can be seen below:
+The traditional way to setup a graphql schema is to build a schema using the `GraphQL Schema Language` which is written as a template string. A resolver is also created to resolve the endpoint and return whatever data is requested. In Apollo this is done by creating a `typeDefs` file and declaring the schema types and queries. Inside the `typeDefs` file you would create the the graphql types (which look quite similar to the Prisma Schema Language (PSL)) and queries inside an exported template string on a graphql tag, an example how this might look can be seen below:
 
 ```graphql
 
@@ -212,7 +228,9 @@ type Character {
 `
 ```
 
-This file would then be added to every time you wanted to introduce a new data type or query definition, this works so long as the number of data models is small but is not very modular and wouldn't be easy to scale if you were to introduce multiple new data types and queries. Another way to accomplish defining your graphql types and schema is to use Nexus and to take a code first approach by giving each type its own file and using the `objectType` function. Inside `api/graphql` create a new file called `company.ts` and add the following:
+This file would then be added to every time you wanted to introduce a new data type or query definition, this works so long as the number of data models is small but is not very modular and wouldn't be easy to scale if you were to introduce multiple new data types and queries. Another way to accomplish defining your graphql types and schema is to use Nexus and to take a code first approach by giving each type its own file and using the `objectType` function.
+
+Inside `api/graphql` create a new file called `company.ts` and add the following:
 
 ```typescript
 import { objectType } from 'nexus';
@@ -226,7 +244,6 @@ export const Company = objectType({
 		t.nonNull.string('bio');
 		t.nonNull.string('email');
 		t.nonNull.string('website');
-		t.int('industryId');
 		t.nonNull.list.nonNull.field('trades', {
 			type: 'Trade',
 			resolve: (parent, _, ctx) => {
@@ -237,11 +254,203 @@ export const Company = objectType({
 					.trades();
 			},
 		});
+		t.nonNull.list.nonNull.field('roles', {
+			type: 'Role',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.roles();
+			},
+		});
 	},
 });
 ```
 
+The `objectType` function is used to fetch the fields from your schema. It's combined with a resolver and describes the schema models in code. The `definition` method allows you to define the fields of your object type as well as the relationships.
+
+> It's worth noting that at the time of writing (02/2021) the `t.model` field type is being phased out and so wont be documented in this article. If you have come across this article via Google then please check out [removing-the-nexus-plugin-prisma](https://nexusjs.org/docs/plugins/prisma/removing-the-nexus-plugin-prisma#relation-fields) article for tips on migrating away from `t.model` towards the vanilla `Nexus` way of working with relations.
+
+Let's dissect the relations field to make sure we understand what is happening here.
+
+```typescript
+t.nonNull.list.nonNull.field('trades', {
+	type: 'Trade',
+	resolve: (parent, _, ctx) => {
+		return ctx.db.company
+			.findUnique({
+				where: { id: parent.id },
+			})
+			.trades();
+	},
+});
+```
+
+The field is not nullable, that is, it can't be null `t.nonNull`, it's an array (a list) of values which can also not be null, `t.nonNull.list.nonNull`. In the field you have given it a name that corresponds to the name used in the schema and set it's model type, `Trade`, you then resolve the relationship. The first argument in the resolver is the parent or root node, this is used to pass information from the parent to the child resolvers. The second is the arguments passed to the resolver and the third the schema context, which we will shortly be covering. The prisma client (via the context) is used to query for the model and find the record where the id matches. So in this case the query will resolve to find zero or one Company that matches the filter.
+
+The full contents of `api/graphql`
+
+```typescript
+// company.ts
+export const Company = objectType({
+	name: 'Company',
+	definition(t) {
+		t.nonNull.int('id');
+		t.nonNull.string('name');
+		t.nonNull.string('contactPerson');
+		t.nonNull.string('bio');
+		t.nonNull.string('email');
+		t.nonNull.string('website');
+		t.nonNull.list.nonNull.field('trades', {
+			type: 'Trade',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.trades();
+			},
+		});
+		t.nonNull.list.nonNull.field('roles', {
+			type: 'Role',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.roles();
+			},
+		});
+	},
+});
+
+// industry.ts
+export const Industry = objectType({
+	name: 'Industry',
+	definition(t) {
+		t.int('id');
+		t.string('name');
+		t.nonNull.list.nonNull.field('companies', {
+			type: 'Company',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.industry
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.companies();
+			},
+		});
+	},
+});
+
+// role.ts
+export const Role = objectType({
+	name: 'Role',
+	definition(t) {
+		t.int('id');
+		t.string('name');
+		t.nonNull.list.nonNull.field('skills', {
+			type: 'Skill',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.role
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.skills();
+			},
+		});
+		t.field('company', {
+			type: 'Company',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.role
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.company();
+			},
+		});
+	},
+});
+
+// skill.ts
+export const Skill = objectType({
+	name: 'Skill',
+	definition(t) {
+		t.int('id');
+		t.string('name');
+		t.field('role', {
+			type: 'Role',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.skill
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.role();
+			},
+		});
+	},
+});
+
+// trade.ts
+export const Trade = objectType({
+	name: 'Trade',
+	definition(t) {
+		t.nonNull.int('id');
+		t.nonNull.string('name');
+		t.field('company', {
+			type: 'Company',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.trade
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.company();
+			},
+		});
+	},
+});
+```
+
+Finally, export the types from the `api/graphql/index.ts` file:
+
+```typescript
+export * from './company';
+export * from './trade';
+export * from './role';
+export * from './skill';
+export * from './industry';
+```
+
 ## Creating the server
+
+Begin by opening `api/schema.ts`. This will be where you make a schema with Nexus. You will pass in the defined types from the `api/graphql/index.ts` file and set the output paths. These paths will be where Nexus writes the generated TypeScript definitions that are derived from the prisma schema. It will also output a GraphQL schema, this file should not be edited directly.
+
+### schema.ts
+
+```typescript
+import { makeSchema } from 'nexus';
+import { join } from 'path';
+//  It is considered best practice to pass your types directly from a "star import" like we've done above. Under the hood, Nexus will unwrap the types. This prevents from constantly having to manually export & import every single type of your API.
+import * as types from './graphql';
+
+export const schema = makeSchema({
+	// GraphQL types that will be used to construct your GraphQL schema.
+	types,
+	outputs: {
+		// Output path to where nexus should write the generated TypeScript definition types derived from your schema. This is mandatory to benefit from Nexus' type-safety.
+		typegen: join(__dirname, '..', 'nexus-typegen.ts'),
+		// Output path to where nexus should write the SDL (schema definition language) version of your GraphQL schema.
+		schema: join(__dirname, '..', 'schema.graphql'),
+	},
+	contextType: {
+		// Path to the module where the context type is exported
+		module: join(__dirname, './context.ts'),
+		// Name of the export in that module
+		export: 'Context',
+	},
+});
+```
 
 Open the `server.ts` file and add the following:
 
@@ -253,9 +462,71 @@ import { context } from './context';
 export const server = new ApolloServer({ schema, context });
 ```
 
-Here you are instantiating the ApolloServer instance and exporting it and passing in the schema and context.
+Here you are instantiating the ApolloServer instance and exporting it while passing in the schema and context. Next you will create the context.
 
-## Understanding the GraphQL context object
+## The GraphQL context
+
+The GraphQL context is an object which is shared across all the resolvers, the GraphQL server creates and destroys a new instance between each request. To create a context open the `api/db.ts` file.
+
+```typescript
+import {PrismaClient} from '@prisma/client';
+
+export const db = new PrismaClient();
+```
+
+Then the `api/context.ts` file
+
+```typescript
+import {db} from './db';
+import {PrismaClient} from '@prisma/client';
+
+export interface Context {
+    db: PrismaClient;
+}
+
+export const context = {
+    db
+}
+```
+
+Now the context has been created and passed to the GraphQL server. The context can be used to store and/or check information too. One such use case might be an authenticated user, are they authorized to do a certain mutation? In any case, your context is a simple object which will suffice for now.
+
+## Writing queries and mutations
+
+The API isn't much good if you can't make any requests against it. Begin by opening back up the `companies.ts` file. Here you will add your first query
+
+```typescript
+export const CompaniesQuery = extendType({
+    type: 'Query',
+    definition(t) {
+        // get all companies
+        t.list.field('companies', {
+            type: 'Company',
+            resolve(_root, _args, ctx) {
+                return ctx.db.company.findMany()
+            }
+        })
+        // get company by id
+        t.list.field('companies', {
+            type: 'Company',
+            args: {
+                id: nonNull(intArg())
+            },
+            resolve(_root, args, ctx) {
+                return ctx.db.company.findMany({
+                    where: {id: args.id}
+                })
+            }
+        })
+        t.list.field('trades', {
+            type: 'Trade',
+            resolve(_root, _args, ctx) {
+                return ctx.db.trade.findMany()
+            }
+        })
+    }
+})
+```
 
 ## Running our queries and mutations in the Playground
 

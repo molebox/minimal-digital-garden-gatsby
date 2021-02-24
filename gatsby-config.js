@@ -18,7 +18,8 @@ module.exports = {
               },
               remarkPlugins: [
                 require('remark-slug')
-              ]
+              ],
+              gatsbyRemarkPlugins: ['gatsby-remark-autolink-headers']
             }
           },
           {

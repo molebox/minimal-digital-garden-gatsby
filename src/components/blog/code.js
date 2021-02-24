@@ -10,8 +10,8 @@ import CopyButton from "./copy-button";
 import HTML from "../../assets/html";
 import CSS from "./../../assets/css";
 import SQL from "./../../assets/sql";
-import JSON from './../../assets/json';
-import Prisma from './../../assets/prisma';
+import JSON from "./../../assets/json";
+import Prisma from "./../../assets/prisma";
 
 const Code = ({ children, className }) => {
   const language = className.replace(/language-/, "");
@@ -35,9 +35,9 @@ const Code = ({ children, className }) => {
       case "sql":
         return <SQL />;
       case "json":
-          return <JSON />;
+        return <JSON />;
       case "prisma":
-          return <Prisma />;
+        return <Prisma />;
       default:
         break;
     }

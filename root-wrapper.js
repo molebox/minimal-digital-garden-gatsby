@@ -1,7 +1,7 @@
 
 import { MDXProvider } from '@mdx-js/react'
 import React from 'react'
-import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link, Flex  } from "@chakra-ui/react";
+import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link, Flex, Divider } from "@chakra-ui/react";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
@@ -16,12 +16,12 @@ const components = {
     </Text>
   ),
   h2: (props) => (
-    <Text fontSize="3xl" my={3} fontFamily="heading">
+    <Text fontSize="3xl" my={3} fontFamily="heading" borderBottom="solid 2px" width="max-content">
       {props.children}
     </Text>
   ),
   h3: (props) => (
-    <Text fontSize="2xl" my={3} fontFamily="heading">
+    <Text fontSize="2xl" my={3} fontFamily="heading" borderBottom="solid 2px" width="max-content">
       {props.children}
     </Text>
   ),
@@ -33,7 +33,7 @@ const components = {
     borderBottom="solid 2px"
     boxShadow="-2px 2px #000"
     p={3}
-    my={2}
+    my={6}
     bgColor="brand.offWhite"
     >
     <Text my={2} fontFamily="body" fontStyle="italic">
@@ -61,7 +61,7 @@ const components = {
       </Layout>
     )
   },
-  bold: (props) => <Text my={2} fontSize="xl" fontFamily="body" fontWeight={300}>{props.children}</Text>,
+  hr: () => <Divider my={6}/>
 }
 
 export const wrapRootElement = ({ element }) => (
