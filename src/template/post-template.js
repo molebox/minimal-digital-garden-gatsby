@@ -31,7 +31,7 @@ const PostTemplate = ({ data, pageContext }) => {
     taglineGravity: "north_west",
     titleFont: "Jost.ttf",
     taglineFont: "Jost.ttf",
-    taglineTopOffset: 489,
+    taglineTopOffset: 482,
     taglineLeftOffset: 130,
     taglineFontSize: 35,
     textColor: "ffffff",
