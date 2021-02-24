@@ -50,7 +50,7 @@ export default ({ data }) => {
     textLeftOffset: 100,
     titleFontSize: 90,
     titleColor: '1f2127',
-    titleExtraConfig: "l_text:Jost_90_bold_line_spacing_-10",
+    titleExtraConfig: "_bold_line_spacing_-10",
     titleBottomOffset: 200,
     titleGravity: "north_east",
     taglineGravity: "north_west",
@@ -58,7 +58,7 @@ export default ({ data }) => {
     taglineFont: "Jost.ttf",
     taglineTopOffset: 547,
     taglineFontSize: 24,
-    taglineExtraConfig: "a_6.14",
+    taglineExtraConfig: "_a_6.14",
     textColor: "ffffff",
     version: "v1605269202",
   });
