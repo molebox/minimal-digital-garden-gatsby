@@ -42,13 +42,13 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   const socialImage = getShareImage({
-    title: "It's a tech blog, yeah! I like to write stuff",
+    title: "I love to create content and fun experiences while exploring new technologies",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 1019,
     textLeftOffset: 130,
-    titleFontSize: 90,
+    titleFontSize: 85,
     titleColor: '1f2127',
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,
