@@ -56,7 +56,7 @@ export default ({ data }) => {
     taglineGravity: "north_west",
     titleFont: "Jost.ttf",
     taglineFont: "Jost.ttf",
-    taglineTopOffset: 498,
+    taglineTopOffset: 495,
     taglineLeftOffset: 130,
     taglineFontSize: 35,
     textColor: "ffffff",
