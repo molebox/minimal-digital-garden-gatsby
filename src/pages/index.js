@@ -42,7 +42,7 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   const socialImage = getShareImage({
-    title: "It's a tech blog, yeah! This og card will never be perfect, but that's cool, let's roll with it",
+    title: "It's a tech blog, yeah! And this is an og card.",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
@@ -56,7 +56,7 @@ export default ({ data }) => {
     taglineGravity: "north_west",
     titleFont: "Jost.ttf",
     taglineFont: "Jost.ttf",
-    taglineTopOffset: 492,
+    taglineTopOffset: 489,
     taglineLeftOffset: 130,
     taglineFontSize: 35,
     textColor: "ffffff",
