@@ -25,7 +25,7 @@ const PostTemplate = ({ data, pageContext }) => {
     textLeftOffset: 100,
     titleFontSize: 90,
     titleColor: '1f2127',
-    titleExtraConfig: "_line_spacing_-10, l_text:Jost_50_bold",
+    titleExtraConfig: "_bold_line_spacing_-10",
     titleBottomOffset: 200,
     titleGravity: "north_east",
     taglineGravity: "north_west",
@@ -33,7 +33,7 @@ const PostTemplate = ({ data, pageContext }) => {
     taglineFont: "Jost.ttf",
     taglineTopOffset: 547,
     taglineFontSize: 24,
-    taglineExtraConfig: "a_6.14",
+    taglineExtraConfig: "_a_6.14",
     textColor: "ffffff",
     version: "v1605269202",
   });
