@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
         m="0 auto"
         bgColor={bg}
         p={3}
-        backgroundImage={backgroundImage}
+        background="transparent"
       >
         {children}
       </Flex>
