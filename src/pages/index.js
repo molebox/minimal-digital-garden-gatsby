@@ -50,7 +50,7 @@ export default ({ data }) => {
     textLeftOffset: 100,
     titleFontSize: 90,
     titleColor: '1f2127',
-    titleExtraConfig: "_line_spacing_-10, l_text:Jost_50_bold",
+    titleExtraConfig: "l_text:Jost_90_bold_line_spacing_-10",
     titleBottomOffset: 200,
     titleGravity: "north_east",
     taglineGravity: "north_west",
