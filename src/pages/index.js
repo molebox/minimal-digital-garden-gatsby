@@ -42,7 +42,7 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   const socialImage = getShareImage({
-    title: "It's a tech blog, yeah! 😃 This og card will never be perfect, but that's cool 😎",
+    title: "It's a tech blog, yeah! This og card will never be perfect, but that's cool, let's roll with it",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
