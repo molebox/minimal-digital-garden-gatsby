@@ -42,7 +42,7 @@ export default ({ data }) => {
   }, [categories, posts]);
 
   const socialImage = getShareImage({
-    title: "This is my blog where I write about stuff im working on, and things i find interesting",
+    title: "This is my blog where I write about stuff im working on and things i find interesting",
     tagline: "My articles, tutorials and thoughts. Under one roof.",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
@@ -58,7 +58,7 @@ export default ({ data }) => {
     taglineFont: "Jost.ttf",
     taglineTopOffset: 482,
     taglineLeftOffset: 130,
-    taglineFontSize: 35,
+    taglineFontSize: 38,
     textColor: "ffffff",
     version: "v1605269202",
   });
