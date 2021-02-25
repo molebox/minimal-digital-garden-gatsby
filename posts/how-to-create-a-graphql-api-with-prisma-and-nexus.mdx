@@ -1,5 +1,5 @@
 ---
-title: Create a GraphQL API with Prisma and Nexus
+title: How to create a GraphQL API with Prisma and Nexus
 category: Tutorial
 description: A tutorial that introduces you to creating a graphql api using modern tooling
 published: true
@@ -7,9 +7,14 @@ published: true
 
 ## What you will build
 
-You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competences within companies within different industries. For example, if you take the IT sector. The database will have information on different companies in an specified area, those companies will have different trades (**Software**, **Hardware**, **Internal Systems**) within the IT sector such as a hardware or software company. Each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
+You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competencies within companies within different industries. For example, if you take the IT sector. The database will have information on different companies in an specified area, those companies will have different trades (**Software**, **Hardware**, **Internal Systems**) within the IT sector such as a hardware or software company. Each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
 
 Once complete you will have learnt how to setup your own graphql api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first graphql schemas.
+
+<Prerequisites
+	audience="This tutorial assumes basic knowledge of databases, APIs and how to setup a project and install packages. "
+	stackKnowledge={['GraphQL', 'TypeScript']}
+/>
 
 ## What is Prisma and Nexus?
 
@@ -469,7 +474,7 @@ Here you are instantiating the ApolloServer instance and exporting it while pass
 The GraphQL context is an object which is shared across all the resolvers, the GraphQL server creates and destroys a new instance between each request. To create a context open the `api/db.ts` file.
 
 ```typescript
-import {PrismaClient} from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 export const db = new PrismaClient();
 ```
@@ -477,16 +482,16 @@ export const db = new PrismaClient();
 Then the `api/context.ts` file
 
 ```typescript
-import {db} from './db';
-import {PrismaClient} from '@prisma/client';
+import { db } from './db';
+import { PrismaClient } from '@prisma/client';
 
 export interface Context {
-    db: PrismaClient;
+	db: PrismaClient;
 }
 
 export const context = {
-    db
-}
+	db,
+};
 ```
 
 Now the context has been created and passed to the GraphQL server. The context can be used to store and/or check information too. One such use case might be an authenticated user, are they authorized to do a certain mutation? In any case, your context is a simple object which will suffice for now.
@@ -497,35 +502,35 @@ The API isn't much good if you can't make any requests against it. Begin by open
 
 ```typescript
 export const CompaniesQuery = extendType({
-    type: 'Query',
-    definition(t) {
-        // get all companies
-        t.list.field('companies', {
-            type: 'Company',
-            resolve(_root, _args, ctx) {
-                return ctx.db.company.findMany()
-            }
-        })
-        // get company by id
-        t.list.field('companies', {
-            type: 'Company',
-            args: {
-                id: nonNull(intArg())
-            },
-            resolve(_root, args, ctx) {
-                return ctx.db.company.findMany({
-                    where: {id: args.id}
-                })
-            }
-        })
-        t.list.field('trades', {
-            type: 'Trade',
-            resolve(_root, _args, ctx) {
-                return ctx.db.trade.findMany()
-            }
-        })
-    }
-})
+	type: 'Query',
+	definition(t) {
+		// get all companies
+		t.list.field('companies', {
+			type: 'Company',
+			resolve(_root, _args, ctx) {
+				return ctx.db.company.findMany();
+			},
+		});
+		// get company by id
+		t.list.field('companies', {
+			type: 'Company',
+			args: {
+				id: nonNull(intArg()),
+			},
+			resolve(_root, args, ctx) {
+				return ctx.db.company.findMany({
+					where: { id: args.id },
+				});
+			},
+		});
+		t.list.field('trades', {
+			type: 'Trade',
+			resolve(_root, _args, ctx) {
+				return ctx.db.trade.findMany();
+			},
+		});
+	},
+});
 ```
 
 // Todo

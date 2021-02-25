@@ -24,7 +24,7 @@ const PostTemplate = ({ data, pageContext }) => {
     textAreaWidth: 1019,
     textLeftOffset: 130,
     titleFontSize: 80,
-    titleColor: '1f2127',
+    titleColor: "1f2127",
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,
     titleGravity: "north_west",

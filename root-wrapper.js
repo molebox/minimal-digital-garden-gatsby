@@ -7,6 +7,7 @@ import Code from './src/components/blog/code';
 import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
+import Prerequisites from './src/components/blog/prerequisites';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -34,7 +35,7 @@ const components = {
     boxShadow="-2px 2px #000"
     p={3}
     my={6}
-    bgColor="brand.offWhite"
+    bgColor="brand.bg"
     >
     <Text my={2} fontFamily="body" fontStyle="italic">
       {props.children}
@@ -61,7 +62,8 @@ const components = {
       </Layout>
     )
   },
-  hr: () => <Divider my={6}/>
+  hr: () => <Divider my={6}/>,
+  Prerequisites
 }
 
 export const wrapRootElement = ({ element }) => (
