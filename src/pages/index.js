@@ -48,7 +48,7 @@ export default ({ data }) => {
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 1019,
     textLeftOffset: 130,
-    titleFontSize: 85,
+    titleFontSize: 80,
     titleColor: '1f2127',
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,

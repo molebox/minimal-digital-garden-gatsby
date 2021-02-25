@@ -23,7 +23,7 @@ const PostTemplate = ({ data, pageContext }) => {
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 1019,
     textLeftOffset: 130,
-    titleFontSize: 90,
+    titleFontSize: 80,
     titleColor: '1f2127',
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,
