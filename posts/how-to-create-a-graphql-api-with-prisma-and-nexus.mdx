@@ -2,7 +2,7 @@
 title: How to create a GraphQL API with Prisma and Nexus
 category: Tutorial
 description: A tutorial that introduces you to creating a graphql api using modern tooling
-published: true
+published: false
 ---
 
 ## What you will build
@@ -123,13 +123,13 @@ Inside `schema.prisma` add the following models below the client generator.
 // company can have many trades
 model Company {
   id            Int      @id @default(autoincrement())
-  name          String
-  contactPerson String
-  bio           String
-  email         String
-  website       String
-  industry      Industry @relation(fields: [industryId], references: [id]) // the relation field used by prisma client, does NOT exist in the db
-  industryId    Int // the foreign key, exists in the db
+  name          String?
+  contactPerson String?
+  bio           String?
+  email         String?
+  website       String?
+  industry      Industry? @relation(fields: [industryId], references: [id])
+  industryId    Int?
   trades        Trade[]
   roles         Role[]
 }
@@ -137,16 +137,16 @@ model Company {
 // 1-n with company - industry can have many companies
 model Industry {
   id        Int       @id @default(autoincrement())
-  name      String
+  name      String?
   companies Company[]
 }
 
 // n-1 with company, a company can have many trades
 model Trade {
   id        Int     @id @default(autoincrement())
-  name      String
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  name      String?
+  company   Company? @relation(fields: [companyId], references: [id]) // not in db, used by prisma to set relation
+  companyId Int? // the foreign key, this is in the db
 }
 
 // 1-n with skill, n-1 with company
@@ -154,24 +154,26 @@ model Trade {
 // a company can have many roles
 model Role {
   id        Int     @id @default(autoincrement())
-  name      String
+  name      String?
   skills    Skill[]
-  company   Company @relation(fields: [companyId], references: [id])
-  companyId Int
+  company   Company? @relation(fields: [companyId], references: [id]) // not in db, used by prisma to set relation
+  companyId Int? // the foreign key, this is in the db
 }
 
 // 1-n with role
 model Skill {
   id     Int    @id @default(autoincrement())
-  name   String
-  role   Role   @relation(fields: [roleId], references: [id])
-  roleId Int
+  name   String?
+  role   Role?   @relation(fields: [roleId], references: [id])
+  roleId Int?
 }
 ```
 
 Let's dive into what all this means. The Prisma data modal is a schema that maps to your database schema. In it you define the shape of your data and any relationships that may exist between tables. If you have never worked with `SQL` databases some of fields may seem confusing. Let's break them down.
 
-In `SQL` land relationships between tables are defined by foreign keys. These are ids that map to other tables. In the example above you can see that the `Trade` model has a field called `companies` which has a type of `Company[]`, indicating that it represents an array, or list, of companies. Checking the `Company` model it has its own `id` field and another id field called `tradeId`. The second id field is a foreign key and indicates to the database a one-to-many relationship between the `Trade` and `Company` tables, where a trade can have many companies but a company will relate to one trade. Lots. Of. Words. And most probably quite confusing still.
+In `SQL` land relationships between tables are defined by foreign keys. These are ids that map to other tables. In the example above you can see that the `Industry` model has a field called `companies` which has a type of `Company[]`, indicating that it represents an array, or list, of companies. Checking the `Company` model it has its own `id` field and another id field called `industryId`. This field is a foreign key and indicates to the database a one-to-many relationship between the `Industry` and `Company` tables, where a industry can have many companies but a company will relate to one industry.
+
+The `?` next to many of the field denotes that they are nullable. This is so that you can run mutations against them and not have to worry about updating all the data of a company, for example if you wanted to change the name of a company and only the name.
 
 A more explicit example of a one-many relationship can be viewed below:
 
@@ -244,11 +246,21 @@ export const Company = objectType({
 	name: 'Company',
 	definition(t) {
 		t.nonNull.int('id');
-		t.nonNull.string('name');
-		t.nonNull.string('contactPerson');
-		t.nonNull.string('bio');
-		t.nonNull.string('email');
-		t.nonNull.string('website');
+		t.string('name');
+		t.string('contactPerson');
+		t.string('bio');
+		t.string('email');
+		t.string('website');
+		t.field('industry', {
+			type: 'Industry',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.industry();
+			},
+		});
 		t.nonNull.list.nonNull.field('trades', {
 			type: 'Trade',
 			resolve: (parent, _, ctx) => {
@@ -302,11 +314,21 @@ export const Company = objectType({
 	name: 'Company',
 	definition(t) {
 		t.nonNull.int('id');
-		t.nonNull.string('name');
-		t.nonNull.string('contactPerson');
-		t.nonNull.string('bio');
-		t.nonNull.string('email');
-		t.nonNull.string('website');
+		t.string('name');
+		t.string('contactPerson');
+		t.string('bio');
+		t.string('email');
+		t.string('website');
+		t.field('industry', {
+			type: 'Industry',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.industry();
+			},
+		});
 		t.nonNull.list.nonNull.field('trades', {
 			type: 'Trade',
 			resolve: (parent, _, ctx) => {
@@ -336,7 +358,7 @@ export const Industry = objectType({
 	definition(t) {
 		t.int('id');
 		t.string('name');
-		t.nonNull.list.nonNull.field('companies', {
+		t.list.field('companies', {
 			type: 'Company',
 			resolve: (parent, _, ctx) => {
 				return ctx.db.industry
@@ -355,16 +377,6 @@ export const Role = objectType({
 	definition(t) {
 		t.int('id');
 		t.string('name');
-		t.nonNull.list.nonNull.field('skills', {
-			type: 'Skill',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.role
-					.findUnique({
-						where: { id: parent.id || undefined },
-					})
-					.skills();
-			},
-		});
 		t.field('company', {
 			type: 'Company',
 			resolve: (parent, _, ctx) => {
@@ -404,6 +416,7 @@ export const Trade = objectType({
 		t.nonNull.int('id');
 		t.nonNull.string('name');
 		t.field('company', {
+			// nullable by default
 			type: 'Company',
 			resolve: (parent, _, ctx) => {
 				return ctx.db.trade
@@ -436,7 +449,7 @@ Begin by opening `api/schema.ts`. This will be where you make a schema with Nexu
 ```typescript
 import { makeSchema } from 'nexus';
 import { join } from 'path';
-//  It is considered best practice to pass your types directly from a "star import" like we've done above. Under the hood, Nexus will unwrap the types. This prevents from constantly having to manually export & import every single type of your API.
+// It is considered best practice to pass your types directly from a "star import" like we've done above. Under the hood, Nexus will unwrap the types. This prevents from constantly having to manually export & import every single type of your API.
 import * as types from './graphql';
 
 export const schema = makeSchema({
@@ -498,10 +511,76 @@ Now the context has been created and passed to the GraphQL server. The context c
 
 ## Writing queries and mutations
 
-The API isn't much good if you can't make any requests against it. Begin by opening back up the `companies.ts` file. Here you will add your first query
+The API isn't much good if you can't make any requests against it. Begin by opening back up the `companies.ts` file. Copy the following into the file, replacing what you had before.
 
 ```typescript
-export const CompaniesQuery = extendType({
+import {
+	arg,
+	extendType,
+	inputObjectType,
+	intArg,
+	list,
+	nonNull,
+	objectType,
+	stringArg,
+} from 'nexus';
+
+export const CompanyInputType = inputObjectType({
+	name: 'CompanyInputType',
+	definition(t) {
+		t.string('name');
+		t.string('contactPerson');
+		t.string('bio');
+		t.string('email');
+		t.string('website');
+		t.list.field('trades', { type: 'TradeInputType' });
+		t.list.field('roles', { type: 'RoleInputType' });
+	},
+});
+
+export const Company = objectType({
+	name: 'Company',
+	definition(t) {
+		t.nonNull.int('id');
+		t.string('name');
+		t.string('contactPerson');
+		t.string('bio');
+		t.string('email');
+		t.string('website');
+		t.field('industry', {
+			type: 'Industry',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.industry();
+			},
+		});
+		t.nonNull.list.nonNull.field('trades', {
+			type: 'Trade',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.trades();
+			},
+		});
+		t.nonNull.list.nonNull.field('roles', {
+			type: 'Role',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.company
+					.findUnique({
+						where: { id: parent.id },
+					})
+					.roles();
+			},
+		});
+	},
+});
+
+export const CompanyQuery = extendType({
 	type: 'Query',
 	definition(t) {
 		// get all companies
@@ -512,13 +591,13 @@ export const CompaniesQuery = extendType({
 			},
 		});
 		// get company by id
-		t.list.field('companies', {
+		t.field('company', {
 			type: 'Company',
 			args: {
 				id: nonNull(intArg()),
 			},
 			resolve(_root, args, ctx) {
-				return ctx.db.company.findMany({
+				return ctx.db.company.findUnique({
 					where: { id: args.id },
 				});
 			},
@@ -529,9 +608,115 @@ export const CompaniesQuery = extendType({
 				return ctx.db.trade.findMany();
 			},
 		});
+		t.list.field('roles', {
+			type: 'Role',
+			resolve(_root, _args, ctx) {
+				return ctx.db.role.findMany();
+			},
+		});
+	},
+});
+
+export const CompanyMutation = extendType({
+	type: 'Mutation',
+	definition(t) {
+		// create a new company
+		t.nonNull.field('createCompany', {
+			type: 'Company',
+			args: {
+				id: intArg(),
+				name: nonNull(stringArg()),
+				contactPerson: nonNull(stringArg()),
+				bio: nonNull(stringArg()),
+				email: nonNull(stringArg()),
+				website: nonNull(stringArg()),
+				tradeId: intArg(),
+				trades: arg({
+					type: list('TradeInputType'),
+				}),
+				roles: arg({
+					type: list('RoleInputType'),
+				}),
+			},
+			resolve(_root, args, ctx) {
+				const newTrade =
+					args.trades?.map((trade) => {
+						return { name: trade?.name };
+					}) || [];
+				const newRole =
+					args.roles?.map((role) => {
+						return { name: role?.name };
+					}) || [];
+				return ctx.db.company.create({
+					data: {
+						name: args.name,
+						contactPerson: args.contactPerson,
+						bio: args.bio,
+						email: args.email,
+						website: args.website,
+						trade: {
+							connectOrCreate: {
+								where: {
+									id: args.tradeId || undefined,
+								},
+								create: newTrade || undefined,
+							},
+						},
+						roles: {
+							connectOrCreate: {
+								where: {
+									id: args.id || undefined,
+								},
+								create: newRole || undefined,
+							},
+						},
+					},
+				});
+			},
+		});
+		// update a company by id
+		t.field('updateCompany', {
+			type: 'Company',
+			args: {
+				id: nonNull(intArg()),
+				name: stringArg(),
+				contactPerson: stringArg(),
+				bio: stringArg(),
+				email: stringArg(),
+				website: stringArg(),
+			},
+			resolve(_root, args, ctx) {
+				return ctx.db.company.update({
+					where: { id: args.id },
+					data: {
+						name: args.name,
+						contactPerson: args.contactPerson,
+						bio: args.bio,
+						email: args.email,
+						website: args.website,
+					},
+				});
+			},
+		});
+		// delete a company by id
+		t.field('deleteCompany', {
+			type: 'Company',
+			args: {
+				id: nonNull(intArg()),
+			},
+			resolve(_root, args, ctx) {
+				return ctx.db.company.delete({
+					where: { id: args.id },
+				});
+			},
+		});
 	},
 });
 ```
+
+Now that's a big old code dump! Let's see if we can dissect it.
+
+At the top of the file you define a `CompanyInputType` which is an `inputObjectType`
 
 // Todo
 
