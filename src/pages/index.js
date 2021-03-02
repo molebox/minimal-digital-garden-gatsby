@@ -73,7 +73,7 @@ export default ({ data }) => {
   const backgroundImage = "/diamonds.png";
 
   const api = "https://i.microlink.io/";
-  const cardUrl = `https://cards.microlink.io/?preset=richhaines&headline=${headline}&caption=${caption}&domain=${domain}&backgroundImage=${backgroundImage}`;
+  const cardUrl = `https://cards.microlink.io/?p=undefined&preset=richhaines&headline=${headline}&caption=${caption}&domain=${domain}&backgroundImage=${backgroundImage}`;
   const image = `${api}${encodeURIComponent(cardUrl)}`;
 
   return (

@@ -42,7 +42,7 @@ const PostTemplate = ({ data, pageContext }) => {
   const backgroundImage = "/diamonds.png";
 
   const api = "https://i.microlink.io/";
-  const cardUrl = `https://cards.microlink.io/?preset=richhaines&headline=${title}&caption=${description}&domain=${domain}&backgroundImage=${backgroundImage}`;
+  const cardUrl = `https://cards.microlink.io/?p=undefined&preset=richhaines&headline=${title}&caption=${description}&domain=${domain}&backgroundImage=${backgroundImage}`;
   const image = `${api}${encodeURIComponent(cardUrl)}`;
 
   return (
