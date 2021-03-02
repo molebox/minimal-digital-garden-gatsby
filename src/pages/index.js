@@ -66,14 +66,18 @@ export default ({ data }) => {
 
   const isDarkMode = colorMode === "dark";
 
+  const api = 'https://i.microlink.io/';
+  const cardUrl = 'https://cards.microlink.io/?p=undefined&preset=richhaines';
+  const image = `${api}${encodeURIComponent(cardUrl)}`;
+
   return (
     <Layout>
       <SEO
-        title="Rich Haines Blog"
+        title="This is my blog where I write about stuff im working on and things i find interesting"
         titleTemplate=""
         titleSeparator=""
         description="My articles, tutorials and thoughts. Under one roof."
-        image={socialImage}
+        image={image}
         pathname={`https://richardhaines.dev`}
         twitterUsername="@studio_hungry"
         author="Rich Haines"
