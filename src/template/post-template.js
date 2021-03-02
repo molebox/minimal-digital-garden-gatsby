@@ -38,6 +38,13 @@ const PostTemplate = ({ data, pageContext }) => {
     version: "v1605269202",
   });
 
+  const domain = "richardhaines.dev";
+  const backgroundImage = "/diamonds.png";
+
+  const api = "https://i.microlink.io/";
+  const cardUrl = `https://cards.microlink.io/?p=undefined&preset=richhaines&headline=${title}&caption=${description}&domain=${domain}&backgroundImage=${backgroundImage}`;
+  const image = `${api}${encodeURIComponent(cardUrl)}`;
+
   return (
     <>
       <Layout>
@@ -46,7 +53,7 @@ const PostTemplate = ({ data, pageContext }) => {
           titleTemplate={slug}
           titleSeparator={`-`}
           description={description}
-          image={socialImage}
+          image={image}
           pathname={canonical ? canonical : `https://richardhaines.dev${slug}`}
           twitterUsername="@studio_hungry"
           author="Rich Haines"

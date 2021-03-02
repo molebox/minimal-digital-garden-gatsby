@@ -66,8 +66,14 @@ export default ({ data }) => {
 
   const isDarkMode = colorMode === "dark";
 
-  const api = 'https://i.microlink.io/';
-  const cardUrl = 'https://cards.microlink.io/?p=undefined&preset=richhaines';
+  const headline =
+    "This is my blog where I write about stuff im working on and things i find interesting";
+  const caption = "My articles, tutorials and thoughts. Under one roof";
+  const domain = "richardhaines.dev";
+  const backgroundImage = "/diamonds.png";
+
+  const api = "https://i.microlink.io/";
+  const cardUrl = `https://cards.microlink.io/?p=undefined&preset=richhaines&headline=${headline}&caption=${caption}&domain=${domain}&backgroundImage=${backgroundImage}`;
   const image = `${api}${encodeURIComponent(cardUrl)}`;
 
   return (
