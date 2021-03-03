@@ -8,7 +8,7 @@ import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import WordCount from "../assets/word-count";
 import ReadingTime from "./../assets/reading-time";
-// import ShareOnTwitter from "../components/blog/share-on-twitter";
+import backgroundImage from "../assets/diamonds.png";
 
 const PostTemplate = ({ data, pageContext }) => {
   const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
@@ -39,7 +39,6 @@ const PostTemplate = ({ data, pageContext }) => {
   });
 
   const domain = "richardhaines.dev";
-  const backgroundImage = "/diamonds.png";
 
   const api = "https://i.microlink.io/";
   const cardUrl = `https://cards.microlink.io/?preset=richhaines&headline=${title}&caption=${description}&domain=${domain}&backgroundImage=${backgroundImage}`;

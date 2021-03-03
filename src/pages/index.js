@@ -11,6 +11,7 @@ import Title from "../components/home/title";
 import Subtitle from "../components/home/subtitle";
 import PostsIndex from "../components/home/posts-index";
 import Categories from "../components/home/categories";
+import backgroundImage from "../assets/diamonds.png";
 
 export default ({ data }) => {
   const { colorMode } = useColorMode();
@@ -70,7 +71,6 @@ export default ({ data }) => {
     "This is my blog where I write about stuff im working on and things i find interesting";
   const caption = "My articles, tutorials and thoughts. Under one roof";
   const domain = "richardhaines.dev";
-  const backgroundImage = "/diamonds.png";
 
   const api = "https://i.microlink.io/";
   const cardUrl = `https://cards.microlink.io/?preset=richhaines&headline=${headline}&caption=${caption}&domain=${domain}&backgroundImage=${backgroundImage}`;
