@@ -8,6 +8,7 @@ import Layout from './src/components/layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
 import Prerequisites from './src/components/blog/prerequisites';
+import { CodeDump } from './src/components/blog/code-dump';
 
 const components = {
   code: (props) => <Code {...props}/>,
@@ -63,7 +64,8 @@ const components = {
     )
   },
   hr: () => <Divider my={6}/>,
-  Prerequisites
+  Prerequisites,
+  CodeDump: (props) => <CodeDump>{props.children}</CodeDump>
 }
 
 export const wrapRootElement = ({ element }) => (

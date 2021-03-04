@@ -338,6 +338,8 @@ We'll pass each conference path down to an event component which in turn will us
 
 ### event.js
 
+<CodeDump>
+
 ```jsx
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
@@ -466,6 +468,7 @@ const GET_CONFERENCE = gql`
   }
 `;
 ```
+</CodeDump>
 
 The query was put together in the gql explorer, the order of the fragments is important as some of them rely on one another and they can't be defined before they are used. The basic logic behind the query is that we pass in a path to a conference from which we want to recieve back the components that make up the data for that shape. The components are split into fragments so that our query doesn't become bloated. Notice the `relations` fragment. It returns the same data as our query plus it's own path and name. Nearly recursive, of course, to understand recursion one must first understand recursion....
 
@@ -526,6 +529,8 @@ It's an elegant way to help display rich text data.
 As mentioned, our `Speaker` and `Schedule` components are much the same. Let's take them both at the same time.
 
 ### speaker.js
+
+<CodeDump>
 
 ```jsx
 import React from "react";
@@ -617,8 +622,11 @@ const GET_SPEAKER = gql`
   }
 `;
 ```
+</CodeDump>
 
 ### schedule.js
+
+<CodeDump>
 
 ```jsx
 import React from "react";
@@ -709,6 +717,7 @@ const GET_SCHEDULE = gql`
   }
 `;
 ```
+</CodeDump>
 
 Our schedule component makes use of the properties table in the Crystallize backend. This is translated to key value pairs which work perfectly when used in an actual `HTML` table.
 
@@ -983,6 +992,8 @@ Cool. Now let's update our previously created components.
 
 ### event.js
 
+<CodeDump>
+
 ```jsx
 import React from "react";
 import { useQuery, gql } from "@apollo/client";
@@ -1087,9 +1098,11 @@ const Event = ({ path }) => {
 
 ...query
 ```
+</CodeDump>
 
 ### schedule.js
 
+<CodeDump>
 ```jsx
 import React from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
@@ -1172,6 +1185,7 @@ const Schedule = ({ path }) => {
   );
 };
 ```
+</CodeDump>
 
 Most Chakra component are based on the `Box` component, which itself is polymorphic and can be changed to represent any semantic html element. So in this case we have used it to re-create the html table. The upside of this is that we are able to use the Chakra props while keeping our code semantically correct.
 
@@ -1314,6 +1328,7 @@ export default Square;
 ```
 
 ### hero.js
+<CodeDump>
 
 ```jsx
 import React from "react";
@@ -1502,6 +1517,7 @@ const Hero = () => {
 
 export default Hero;
 ```
+</CodeDump>
 
 That's quite alot of information to take in, let's step through it.
 

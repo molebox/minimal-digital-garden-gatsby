@@ -163,7 +163,7 @@ async function writeToCsvFile() {
 	// The user can specify how many rows they want to create (yarn seed --rows=20), if they dont specify anything (yarn seed) then defaults to 10
 	let rows = args['rows'] || 10;
 	// Iterate x number of times and write a new line to the csv file using the createTranslation function
-	for (let index = 0; index < rows; index++) {
+	for (let index = 0; index <CodeDump rows; index++) {
 		stream.write(createTranslation(), 'utf-8');
 	}
 	stream.end();
@@ -171,6 +171,8 @@ async function writeToCsvFile() {
 ```
 
 Now that the csv file is created and populated with fake data, you can begin the process of actually seeding that data into the Postgres database. `fast-csv` is a library for parsing and formatting csv files. You'll use it in combination with the `validator` library and `node-postgres`.
+
+<CodeDump>
 
 ```js
 // other imports...
@@ -225,6 +227,8 @@ function insertFromCsv() {
 	);
 }
 ```
+
+</CodeDump>
 
 The function first validates the contents of the row using the contains function from the `validator` library. This is necessary because some countries can have an extra comma in their name. An extra comma in a csv file equates to an extra column and the table created and defined in the `schema.sql` file dictates that only 3 columns will exist. If this check fails `fast-csv `will not accept the row and throw an event, which is used to print a message to the console to inform the user.
 

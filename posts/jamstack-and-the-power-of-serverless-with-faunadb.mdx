@@ -926,6 +926,8 @@ called author-section.js
 
 **author-section.js**
 
+<CodeDump>
+
 ```jsx
 /** @jsx jsx */
 import { jsx } from 'theme-ui';
@@ -1101,6 +1103,7 @@ const AuthorSection = () => {
 };
 export default AuthorSection;
 ```
+</CodeDump>
 
 This component outlines what the project is, displays links to the other pages and the projects repository. You can
 change the text I’ve added, this was just for demo purposes. As you can see, we are again using emotion/styled as we are
@@ -1179,6 +1182,8 @@ going to implement a simple searchbar to allow the user to search the characters
 Inside src/pages create a new file called houses.js and add the following:
 
 **houses.js**
+
+<CodeDump>
 
 ```jsx
 /** @jsx jsx */
@@ -1306,6 +1311,7 @@ const Houses = () => {
 };
 export default Houses;
 ```
+</CodeDump>
 
 We are using @apollo/client from which we import gql to construct our graphql query and the useQuery hook which will
 take care of handling the state of the returned data for us. This handy hook returns three states:
@@ -1495,6 +1501,7 @@ Lets first see how our new component looks and what it does.
 In src/components/site create a new file called house-section.js
 
 **house-section.js**
+<CodeDump>
 
 ```jsx
 /** @jsx jsx */
@@ -1609,6 +1616,7 @@ const HouseSection = ({ getHouse }) => {
 };
 export default HouseSection;
 ```
+</CodeDump>
 
 The purpose of this component is to show the user the four houses of Hogwarts, let them select a house and pass that
 selection back up to the main-section state. The component takes the getHouse function from main-section as a prop. We
@@ -1625,6 +1633,8 @@ spreading all the character data. Lets create that now.
 Inside src/components/site create a new file called card.js
 
 **card.js**
+
+<CodeDump>
 
 ```jsx
 /** @jsx jsx */
@@ -1849,6 +1859,8 @@ const Card = ({
 };
 export default Card;
 ```
+
+</CodeDump>
 
 We are importing all of those cool emojis we added earlier in our helper file. The container and item objects are for
 use in our animations from framer motion. We descructure our props, of which there are many, and return a div which has

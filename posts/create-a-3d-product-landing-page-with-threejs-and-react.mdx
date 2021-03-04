@@ -555,6 +555,8 @@ Sweet! It's almost complete. Subtle animations that aren't obvious to the user s
 
 Inside the components folder create a new file called `glitch-text.js` and add the following.
 
+<CodeDump>
+
 ```jsx
 import React from 'react';
 import styled from '@emotion/styled';
@@ -666,6 +668,7 @@ export default ({ children }) => {
   return <Container data-text={children}>{children}</Container>;
 };
 ```
+</CodeDump>
 
 Our new component uses a styled div component to set its internal css. We state that the following effect shall only run when the element is hovered and then use the pseudo elements to insert some glitchy goodness. The pseudo content is the text passed in as children, we animate some clip paths via some keyframes and give the effect that the text is moving. Add this new component to the components object as `GlitchText` and then wrap the title text in the new component in the MDX markup.
 
