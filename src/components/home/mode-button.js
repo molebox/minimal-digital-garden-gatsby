@@ -16,7 +16,7 @@ const ModeButton = () => {
         transform: "translate(-2px, 2px)",
       }}
       position="relative"
-      gridColumn={["1 / 4", 3]}
+      gridColumn={["1 / 5", 3]}
       gridRow={[2, 1]}
       m={["30px 0 0 100px", "0 40px 0 0"]}
     >

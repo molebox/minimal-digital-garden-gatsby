@@ -24,8 +24,8 @@ const Subtitle = () => {
   return (
     <Grid
       templateColumns={[
-        "max-content repeat(4, 1fr)",
-        "max-content auto 100px 50px 50px 50px",
+        "max-content repeat(5, 1fr)",
+        "max-content auto 100px 50px 50px 50px 150px",
       ]}
       templateRows="auto"
       w="100%"
@@ -58,21 +58,29 @@ const Subtitle = () => {
           </Text>
         </Box>
       </RoughNotation>
-
+      <Box gridColumn={["1 / 7", 7]} gridRow={[4, 1]} mt={[6, 0]}>
+        <iframe
+          src="https://github.com/sponsors/molebox/button"
+          title="Sponsor Rich"
+          height="35"
+          width="115"
+          style={{ border: 0 }}
+        ></iframe>
+      </Box>
       <ModeButton />
       <ExternalLink
         icon={<Github />}
         href="https://github.com/molebox"
-        gridColumn={[3, 4]}
+        gridColumn={4}
         name="Github link"
       />
       <ExternalLink
         icon={<Twitter />}
         href="https://twitter.com/studio_hungry"
-        gridColumn={[4, 5]}
+        gridColumn={5}
         name="Twitter link"
       />
-      <Link as={GatsbyLink} href="/rss.xml" gridColumn={[5, 6]}>
+      <Link as={GatsbyLink} href="/rss.xml" gridColumn={6}>
         <VisuallyHidden>Rich Haines RSS Feed</VisuallyHidden>
         <RSS />
       </Link>
