@@ -1,24 +1,26 @@
 ---
 title: How to create a GraphQL API with Prisma and Nexus
 category: Tutorial
-description: A tutorial that introduces you to creating a graphql api using modern tooling
-published: false
+description: A short tutorial that introduces you (and me) to creating a graphql api using modern tooling
+published: true
 ---
+
+> As part of my learning everything there is to know about Prisma I've decided to write some tutorials for you as much for me. There may be some knowledge gaps and I may not have a great grasp on things so if you find an error or something that I have explained that is fundamentally wrong, feel free to message me on Twitter [@studio_hungry](https://twitter.com/studio_hungry) and we can duke it out!
 
 ## What you will build
 
-You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competencies within companies within different industries. For example, if you take the IT sector. The database will have information on different companies in an specified area, those companies will have different trades (**Software**, **Hardware**, **Internal Systems**) within the IT sector such as a hardware or software company. Each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
+You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competencies within companies. For example, each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
 
 Once complete you will have learnt how to setup your own graphql api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first graphql schemas.
 
 <Prerequisites
-	audience="This tutorial assumes basic knowledge of databases, APIs and how to setup a project and install packages. "
+	audience="This tutorial assumes basic knowledge of databases, APIs and how to setup a project and install packages. The tutorial borrows heavily from the awesome docs for Prisma and Nexus."
 	stackKnowledge={['GraphQL', 'TypeScript']}
 />
 
 ## What is Prisma and Nexus?
 
-[Prisma](https://www.prisma.io/) is an ORM (Object-Relational-Mapping) layer that sits on top of your database. It ships with a query builder which allows you to write type safe queries as JavaScript (or TypeScript) objects. It's built to work with TypeScript, has it's own vscode extension and offers a lovely abstraction over SQL databases. For a full (and in depth) rundown of what Prisma is you can check out their docs page, [Why Prisma?](https://www.prisma.io/docs/concepts/overview/why-prisma/).
+[Prisma](https://www.Prisma.io/) is an ORM (Object-Relational-Mapping) layer that sits on top of your database. It ships with a query builder which allows you to write type safe queries as JavaScript (or TypeScript) objects. It's built to work with TypeScript, has it's own vscode extension and offers a lovely abstraction over SQL databases. For a full (and in depth) rundown of what Prisma is you can check out their docs page, [Why Prisma?](https://www.Prisma.io/docs/concepts/overview/why-Prisma/).
 
 [Nexus](https://nexusjs.org/) is a declarative, code first approach to writing graphql schemas. It's created by a team at Prisma and works seamlessly with it. Nexus allows you to house your schema and resolver logic in one place and write it with one common language such as JavaScript or TypeScript. You'll learn more about this approach during the tutorial. If you wish to read further you can checkout their excellent docs page [Why Nexus?](https://nexusjs.org/docs/getting-started/why-nexus).
 
@@ -120,7 +122,6 @@ Inside `schema.prisma` add the following models below the client generator.
 
 // 1-n with trade and role
 // company can have many roles
-// company can have many trades
 model Company {
   id            Int      @id @default(autoincrement())
   name          String?
@@ -128,25 +129,7 @@ model Company {
   bio           String?
   email         String?
   website       String?
-  industry      Industry? @relation(fields: [industryId], references: [id])
-  industryId    Int?
-  trades        Trade[]
   roles         Role[]
-}
-
-// 1-n with company - industry can have many companies
-model Industry {
-  id        Int       @id @default(autoincrement())
-  name      String?
-  companies Company[]
-}
-
-// n-1 with company, a company can have many trades
-model Trade {
-  id        Int     @id @default(autoincrement())
-  name      String?
-  company   Company? @relation(fields: [companyId], references: [id]) // not in db, used by prisma to set relation
-  companyId Int? // the foreign key, this is in the db
 }
 
 // 1-n with skill, n-1 with company
@@ -156,7 +139,7 @@ model Role {
   id        Int     @id @default(autoincrement())
   name      String?
   skills    Skill[]
-  company   Company? @relation(fields: [companyId], references: [id]) // not in db, used by prisma to set relation
+  company   Company? @relation(fields: [companyId], references: [id]) // not in db, used by Prisma to set relation
   companyId Int? // the foreign key, this is in the db
 }
 
@@ -171,9 +154,7 @@ model Skill {
 
 Let's dive into what all this means. The Prisma data modal is a schema that maps to your database schema. In it you define the shape of your data and any relationships that may exist between tables. If you have never worked with `SQL` databases some of fields may seem confusing. Let's break them down.
 
-In `SQL` land relationships between tables are defined by foreign keys. These are ids that map to other tables. In the example above you can see that the `Industry` model has a field called `companies` which has a type of `Company[]`, indicating that it represents an array, or list, of companies. Checking the `Company` model it has its own `id` field and another id field called `industryId`. This field is a foreign key and indicates to the database a one-to-many relationship between the `Industry` and `Company` tables, where a industry can have many companies but a company will relate to one industry.
-
-The `?` next to many of the field denotes that they are nullable. This is so that you can run mutations against them and not have to worry about updating all the data of a company, for example if you wanted to change the name of a company and only the name.
+In `SQL` land relationships between tables are defined by foreign keys. These are ids that map to other tables. In the example above you can see that the `Role` model has a field called `companyId`, this is a foreign key that will be added to the database and represents the link to the primary key (the id field) in the `Company` model. In the `Company` model you can see an array of roles. This represents a collection or list of roles, the many in the 1-many relationship that the `Company` (1) and `Roles` (many) can have. The `?` next to many of the field denotes that they are nullable.
 
 A more explicit example of a one-many relationship can be viewed below:
 
@@ -186,7 +167,7 @@ model One  {
 
 model Many  {
   id                Int @id @default(autoincrement()) // Primary key
-  oneRelationField  One @relation(field: [foreignKey], references: [id]) // Not in db, used by prisma to describe relation
+  oneRelationField  One @relation(field: [foreignKey], references: [id]) // Not in db, used by Prisma to describe relation
   foreignKey        Int // The foreign key, this is in the db
 }
 
@@ -251,26 +232,7 @@ export const Company = objectType({
 		t.string('bio');
 		t.string('email');
 		t.string('website');
-		t.field('industry', {
-			type: 'Industry',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.industry();
-			},
-		});
-		t.nonNull.list.nonNull.field('trades', {
-			type: 'Trade',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.trades();
-			},
-		});
+		t.int('roleId');
 		t.nonNull.list.nonNull.field('roles', {
 			type: 'Role',
 			resolve: (parent, _, ctx) => {
@@ -292,23 +254,24 @@ The `objectType` function is used to fetch the fields from your schema. It's com
 Let's dissect the relations field to make sure we understand what is happening here.
 
 ```typescript
-t.nonNull.list.nonNull.field('trades', {
-	type: 'Trade',
+t.nonNull.list.nonNull.field('roles', {
+	type: 'Role',
 	resolve: (parent, _, ctx) => {
 		return ctx.db.company
 			.findUnique({
 				where: { id: parent.id },
 			})
-			.trades();
+			.roles();
 	},
 });
 ```
 
-The field is not nullable, that is, it can't be null `t.nonNull`, it's an array (a list) of values which can also not be null, `t.nonNull.list.nonNull`. In the field you have given it a name that corresponds to the name used in the schema and set it's model type, `Trade`, you then resolve the relationship. The first argument in the resolver is the parent or root node, this is used to pass information from the parent to the child resolvers. The second is the arguments passed to the resolver and the third the schema context, which we will shortly be covering. The prisma client (via the context) is used to query for the model and find the record where the id matches. So in this case the query will resolve to find zero or one Company that matches the filter.
+The field is not nullable, that is, it can't be null `t.nonNull`, it's an array (a list) of values which can also not be null, `t.nonNull.list.nonNull`. In the field you have given it a name that corresponds to the name used in the schema and set it's model type, `Role`, you then resolve the relationship. The first argument in the resolver is the parent or root node, this is used to pass information from the parent to the child resolvers. The second is the arguments passed to the resolver and the third the schema context, which we will shortly be covering. The Prisma client (via the context) is used to query for the model and find the record where the id matches. So in this case the query will resolve to find zero or one Company that matches the filter.
 
 The full contents of `api/graphql`
 
 <CodeDump>
+
 
 ```typescript
 // company.ts
@@ -321,26 +284,7 @@ export const Company = objectType({
 		t.string('bio');
 		t.string('email');
 		t.string('website');
-		t.field('industry', {
-			type: 'Industry',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.industry();
-			},
-		});
-		t.nonNull.list.nonNull.field('trades', {
-			type: 'Trade',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.trades();
-			},
-		});
+		t.int('roleId');
 		t.nonNull.list.nonNull.field('roles', {
 			type: 'Role',
 			resolve: (parent, _, ctx) => {
@@ -354,30 +298,11 @@ export const Company = objectType({
 	},
 });
 
-// industry.ts
-export const Industry = objectType({
-	name: 'Industry',
-	definition(t) {
-		t.int('id');
-		t.string('name');
-		t.list.field('companies', {
-			type: 'Company',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.industry
-					.findUnique({
-						where: { id: parent.id || undefined },
-					})
-					.companies();
-			},
-		});
-	},
-});
-
 // role.ts
 export const Role = objectType({
 	name: 'Role',
 	definition(t) {
-		t.int('id');
+		t.nonNull.int('id');
 		t.string('name');
 		t.field('company', {
 			type: 'Company',
@@ -389,6 +314,16 @@ export const Role = objectType({
 					.company();
 			},
 		});
+		t.list.field('skills', {
+			type: 'Skill',
+			resolve: (parent, _, ctx) => {
+				return ctx.db.role
+					.findUnique({
+						where: { id: parent.id || undefined },
+					})
+					.skills();
+			},
+		});
 	},
 });
 
@@ -396,7 +331,7 @@ export const Role = objectType({
 export const Skill = objectType({
 	name: 'Skill',
 	definition(t) {
-		t.int('id');
+		t.nonNull.int('id');
 		t.string('name');
 		t.field('role', {
 			type: 'Role',
@@ -410,42 +345,22 @@ export const Skill = objectType({
 		});
 	},
 });
-
-// trade.ts
-export const Trade = objectType({
-	name: 'Trade',
-	definition(t) {
-		t.nonNull.int('id');
-		t.nonNull.string('name');
-		t.field('company', {
-			// nullable by default
-			type: 'Company',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.trade
-					.findUnique({
-						where: { id: parent.id || undefined },
-					})
-					.company();
-			},
-		});
-	},
-});
 ```
+
 </CodeDump>
+
 
 Finally, export the types from the `api/graphql/index.ts` file:
 
 ```typescript
 export * from './company';
-export * from './trade';
 export * from './role';
 export * from './skill';
-export * from './industry';
 ```
 
 ## Creating the server
 
-Begin by opening `api/schema.ts`. This will be where you make a schema with Nexus. You will pass in the defined types from the `api/graphql/index.ts` file and set the output paths. These paths will be where Nexus writes the generated TypeScript definitions that are derived from the prisma schema. It will also output a GraphQL schema, this file should not be edited directly.
+Begin by opening `api/schema.ts`. This will be where you make a schema with Nexus. You will pass in the defined types from the `api/graphql/index.ts` file and set the output paths. These paths will be where Nexus writes the generated TypeScript definitions that are derived from the Prisma schema. It will also output a GraphQL schema, this file should not be edited directly.
 
 ### schema.ts
 
@@ -514,33 +429,12 @@ Now the context has been created and passed to the GraphQL server. The context c
 
 ## Writing queries and mutations
 
-The API isn't much good if you can't make any requests against it. Begin by opening back up the `companies.ts` file. Copy the following into the file, replacing what you had before.
+The API isn't much good if you can't make any requests against it. Begin by opening back up the `companies.ts` file. Under the `objectType` creation of the `Company` type, add the new `Query` and `Mutation` types.
+
+<CodeDump>
+
 
 ```typescript
-import {
-	arg,
-	extendType,
-	inputObjectType,
-	intArg,
-	list,
-	nonNull,
-	objectType,
-	stringArg,
-} from 'nexus';
-
-export const CompanyInputType = inputObjectType({
-	name: 'CompanyInputType',
-	definition(t) {
-		t.string('name');
-		t.string('contactPerson');
-		t.string('bio');
-		t.string('email');
-		t.string('website');
-		t.list.field('trades', { type: 'TradeInputType' });
-		t.list.field('roles', { type: 'RoleInputType' });
-	},
-});
-
 export const Company = objectType({
 	name: 'Company',
 	definition(t) {
@@ -550,26 +444,7 @@ export const Company = objectType({
 		t.string('bio');
 		t.string('email');
 		t.string('website');
-		t.field('industry', {
-			type: 'Industry',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.industry();
-			},
-		});
-		t.nonNull.list.nonNull.field('trades', {
-			type: 'Trade',
-			resolve: (parent, _, ctx) => {
-				return ctx.db.company
-					.findUnique({
-						where: { id: parent.id },
-					})
-					.trades();
-			},
-		});
+		t.int('roleId');
 		t.nonNull.list.nonNull.field('roles', {
 			type: 'Role',
 			resolve: (parent, _, ctx) => {
@@ -605,12 +480,6 @@ export const CompanyQuery = extendType({
 				});
 			},
 		});
-		t.list.field('trades', {
-			type: 'Trade',
-			resolve(_root, _args, ctx) {
-				return ctx.db.trade.findMany();
-			},
-		});
 		t.list.field('roles', {
 			type: 'Role',
 			resolve(_root, _args, ctx) {
@@ -633,23 +502,12 @@ export const CompanyMutation = extendType({
 				bio: nonNull(stringArg()),
 				email: nonNull(stringArg()),
 				website: nonNull(stringArg()),
-				tradeId: intArg(),
-				trades: arg({
-					type: list('TradeInputType'),
-				}),
+				roleId: intArg(),
 				roles: arg({
 					type: list('RoleInputType'),
 				}),
 			},
 			resolve(_root, args, ctx) {
-				const newTrade =
-					args.trades?.map((trade) => {
-						return { name: trade?.name };
-					}) || [];
-				const newRole =
-					args.roles?.map((role) => {
-						return { name: role?.name };
-					}) || [];
 				return ctx.db.company.create({
 					data: {
 						name: args.name,
@@ -657,21 +515,8 @@ export const CompanyMutation = extendType({
 						bio: args.bio,
 						email: args.email,
 						website: args.website,
-						trade: {
-							connectOrCreate: {
-								where: {
-									id: args.tradeId || undefined,
-								},
-								create: newTrade || undefined,
-							},
-						},
 						roles: {
-							connectOrCreate: {
-								where: {
-									id: args.id || undefined,
-								},
-								create: newRole || undefined,
-							},
+							connect: [{ id: args.roleId || undefined }],
 						},
 					},
 				});
@@ -687,6 +532,10 @@ export const CompanyMutation = extendType({
 				bio: stringArg(),
 				email: stringArg(),
 				website: stringArg(),
+				roleId: intArg(),
+				roles: arg({
+					type: list('RoleInputType'),
+				}),
 			},
 			resolve(_root, args, ctx) {
 				return ctx.db.company.update({
@@ -697,6 +546,9 @@ export const CompanyMutation = extendType({
 						bio: args.bio,
 						email: args.email,
 						website: args.website,
+						roles: {
+							connect: [{ id: args.roleId || undefined }],
+						},
 					},
 				});
 			},
@@ -717,11 +569,57 @@ export const CompanyMutation = extendType({
 });
 ```
 
-Now that's a big old code dump! Let's see if we can dissect it.
+</CodeDump>
 
-At the top of the file you define a `CompanyInputType` which is an `inputObjectType`
 
-// Todo
+Let's dissect that massive block of code. Starting with the `Query` block, the queries available to you in the playground are defined using much of the same syntax as when the object itself was defined with fields and resolvers.
+
+```typescript
+// get all companies
+t.list.field('companies', {
+	type: 'Company',
+	resolve(_root, _args, ctx) {
+		return ctx.db.company.findMany();
+	},
+});
+```
+
+The query to get all of the companies uses the graphql context to run a prisma query and the method `findMany()` to return all of the companies in the database. The `findMany()` method can take optional parameters which are filters on the query, for example to return only the first 10 company in the database you could pass an object with the key `take` and the value `10` like so:
+
+```typescript
+// get all companies
+t.list.field('companies', {
+	type: 'Company',
+	resolve(_root, _args, ctx) {
+		return ctx.db.company.findMany({ take: 10 });
+	},
+});
+```
+
+This value could be passed into the query as an argument too instead of being hardcoded. Let's look at passing arguments to queries.
+
+To get a company by it's `id` you'll make use of the second paramter of the resolver function, `args`.
+
+```typescript
+// get company by id
+t.field('company', {
+	type: 'Company',
+	args: {
+		id: nonNull(intArg()),
+	},
+	resolve(_root, args, ctx) {
+		return ctx.db.company.findUnique({
+			where: { id: args.id },
+		});
+	},
+});
+```
+
+Here a different method is used on the graphql prisma context, `findUnique()`. A filter is passed which asks for only companies `where` it's `id` matches the `id` passed in as a parameter. Above the resolver the args types are defined. Here an `id` is defined as a nonNull integer, that is, a number value that cannot be null. Which makes sense as you wont run this query without actually passing a value to it. If you were to not add the nonNull function the arg would be nullable be default. (Though you can also import nullable from nexus and explicitly state that fact that it is nullable). The roles query works the same way as the get all companies query in that it returns all of the roles related to this company.
+
+Moving onto the mutations and creating a new company in the database.
+
+// WIP
 
 ## Running our queries and mutations in the Playground
 
