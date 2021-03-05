@@ -249,8 +249,6 @@ export const Company = objectType({
 
 The `objectType` function is used to fetch the fields from your schema. It's combined with a resolver and describes the schema models in code. The `definition` method allows you to define the fields of your object type as well as the relationships.
 
-> It's worth noting that at the time of writing (02/2021) the `t.model` field type is being phased out and so wont be documented in this article. If you have come across this article via Google then please check out [removing-the-nexus-plugin-prisma](https://nexusjs.org/docs/plugins/prisma/removing-the-nexus-plugin-prisma#relation-fields) article for tips on migrating away from `t.model` towards the vanilla `Nexus` way of working with relations.
-
 Let's dissect the relations field to make sure we understand what is happening here.
 
 ```typescript

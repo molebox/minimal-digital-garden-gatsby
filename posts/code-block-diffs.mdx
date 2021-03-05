@@ -1,0 +1,29 @@
+---
+title: Code block diffs
+category: Snippets
+description: Add a diff to your code blocks to show a user the changes
+published: true
+---
+
+I recently found myself wanting to show diffs in my code blocks. You know the ones, some `+` and `-` that are colour coded. The use case is that you are writing a tutorial piece and want to explain to the reader some concept then you want to add to that or show an alternative way of doing it. Let's take a look by creating a silly function.
+
+```typescript
+function CreatePerson({name: string, age: number}) {
+    return {
+        name,
+        age
+    }
+}
+```
+
+```diff
+- function CreatePerson({name: string, age: number}) {
++ function CreatePerson({name: string, age: number, favoriteColour: string}) {
+    return {
+        name,
+-       age
++       age,
++       favoriteColour
+    }
+}
+```
