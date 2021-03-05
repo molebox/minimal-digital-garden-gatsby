@@ -13,7 +13,7 @@ import PostsIndex from "../components/home/posts-index";
 import Categories from "../components/home/categories";
 import backgroundImage from "../assets/diamonds.png";
 
-export default ({ data }) => {
+const Index = ({ data }) => {
   const { colorMode } = useColorMode();
   const { posts, handleSearchQuery } = useSearchBar(data);
   const [filteredPosts, setFilteredPosts] = React.useState([]);
@@ -83,7 +83,7 @@ export default ({ data }) => {
         titleTemplate=""
         titleSeparator=""
         description="My articles, tutorials and thoughts. Under one roof."
-        image={image}
+        image={socialImage}
         pathname={`https://richardhaines.dev`}
         twitterUsername="@studio_hungry"
         author="Rich Haines"
@@ -105,6 +105,8 @@ export default ({ data }) => {
     </Layout>
   );
 };
+
+export default Index;
 
 export const query = graphql`
   query BlogIndexQuery {

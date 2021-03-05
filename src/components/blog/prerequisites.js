@@ -1,16 +1,7 @@
-import {
-  Flex,
-  Text,
-  UnorderedList,
-  ListItem,
-  Box,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Flex, Text, UnorderedList, ListItem, Box } from "@chakra-ui/react";
 import React from "react";
-import { RoughNotation } from "react-rough-notation";
 
 const Prerequisites = ({ audience, stackKnowledge }) => {
-  const bg = useColorModeValue("dark.bg", "brand.bg");
   return (
     <Flex
       direction="column"
@@ -19,7 +10,6 @@ const Prerequisites = ({ audience, stackKnowledge }) => {
       borderColor="brand.crayola.500"
       p={4}
       justify="space-evenly"
-      // minH="250px"
       maxW="650px"
       m="2em auto"
       boxShadow="-5px 5px #000"

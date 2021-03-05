@@ -52,7 +52,7 @@ const PostTemplate = ({ data, pageContext }) => {
           titleTemplate={slug}
           titleSeparator={`-`}
           description={description}
-          image={image}
+          image={socialImage}
           pathname={canonical ? canonical : `https://richardhaines.dev${slug}`}
           twitterUsername="@studio_hungry"
           author="Rich Haines"
