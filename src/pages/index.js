@@ -45,15 +45,14 @@ const Index = ({ data }) => {
   const socialImage = getShareImage({
     title:
       "Hey! I'm Rich Haines, a software developer and technical writer. This is my blog",
-    tagline: "",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 920,
     textLeftOffset: 160,
-    titleFontSize: 80,
+    titleFontSize: 70,
     titleColor: "1f2127",
     titleExtraConfig: "_bold",
-    titleBottomOffset: 90,
+    titleBottomOffset: 150,
     titleGravity: "north_west",
     titleFont: "Jost.ttf",
     textColor: "1F2127",
