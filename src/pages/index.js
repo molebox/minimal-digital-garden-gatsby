@@ -45,23 +45,18 @@ const Index = ({ data }) => {
   const socialImage = getShareImage({
     title:
       "This is my blog where I write about stuff im working on and things i find interesting",
-    tagline: "My articles, tutorials and thoughts. Under one roof.",
+    tagline: "",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
-    textAreaWidth: 1019,
-    textLeftOffset: 130,
+    textAreaWidth: 1100,
+    textLeftOffset: 120,
     titleFontSize: 80,
     titleColor: "1f2127",
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,
     titleGravity: "north_west",
-    taglineGravity: "north_west",
     titleFont: "Jost.ttf",
-    taglineFont: "Jost.ttf",
-    taglineTopOffset: 482,
-    taglineLeftOffset: 130,
-    taglineFontSize: 38,
-    textColor: "ffffff",
+    textColor: "1F2127",
     version: "v1605269202",
   });
 

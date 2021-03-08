@@ -18,23 +18,18 @@ const PostTemplate = ({ data, pageContext }) => {
 
   const socialImage = getShareImage({
     title: title,
-    tagline: description,
+    tagline: "",
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
-    textAreaWidth: 1019,
-    textLeftOffset: 130,
+    textAreaWidth: 1100,
+    textLeftOffset: 120,
     titleFontSize: 80,
     titleColor: "1f2127",
     titleExtraConfig: "_bold",
     titleBottomOffset: 110,
     titleGravity: "north_west",
-    taglineGravity: "north_west",
     titleFont: "Jost.ttf",
-    taglineFont: "Jost.ttf",
-    taglineTopOffset: 482,
-    taglineLeftOffset: 130,
-    taglineFontSize: 35,
-    textColor: "ffffff",
+    textColor: "1F2127",
     version: "v1605269202",
   });
 
