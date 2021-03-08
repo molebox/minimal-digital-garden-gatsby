@@ -21,7 +21,7 @@ const PostTemplate = ({ data, pageContext }) => {
     cloudName: "richardhaines",
     imagePublicID: "social-card/social-card-garden",
     textAreaWidth: 920,
-    textLeftOffset: 160,
+    textLeftOffset: 170,
     titleFontSize: 70,
     titleColor: "1f2127",
     titleExtraConfig: "_bold",
