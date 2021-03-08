@@ -1,17 +1,17 @@
 ---
 title: How to create a GraphQL API with Prisma and Nexus
 category: Tutorial
-description: A short tutorial that introduces you (and me) to creating a graphql api using modern tooling
+description: A short tutorial that introduces you (and me) to creating a GraphQL api using modern tooling
 published: true
 ---
 
-> As part of my learning everything there is to know about Prisma I've decided to write some tutorials for you as much for me. There may be some knowledge gaps and I may not have a great grasp on things so if you find an error or something that I have explained that is fundamentally wrong, feel free to message me on Twitter [@studio_hungry](https://twitter.com/studio_hungry) and we can duke it out!
+> As part of my learning everything there is to know about Prisma I've decided to write some tutorials for you as much for me. There may be some knowledge gaps and I may not have a great grasp on some things yet, so if you find an error or something that I have explained that is fundamentally wrong, feel free to message me on Twitter [@studio_hungry](https://twitter.com/studio_hungry) and we can duke it out!
 
 ## What you will build
 
-You are going to build a graphql api backed by a postgres database. This api will hold data for showing different competencies within companies. For example, each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
+You are going to build a GraphQL api backed by a postgres database. This api will hold data for showing different competencies within companies. For example, each company will have roles within their organization (**Software Engineer**, **Cloud Specialist**) which require certain skills (**Scala**, **React**).
 
-Once complete you will have learnt how to setup your own graphql api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first graphql schemas.
+Once complete you will have learnt how to setup your own GraphQL api, how to use Prisma as an ORM layer and how to use Nexus as a means of producing code first GraphQL schemas.
 
 <Prerequisites
 	audience="This tutorial assumes basic knowledge of databases, APIs and how to setup a project and install packages. The tutorial borrows heavily from the awesome docs for Prisma and Nexus."
@@ -22,7 +22,7 @@ Once complete you will have learnt how to setup your own graphql api, how to use
 
 [Prisma](https://www.Prisma.io/) is an ORM (Object-Relational-Mapping) layer that sits on top of your database. It ships with a query builder which allows you to write type safe queries as JavaScript (or TypeScript) objects. It's built to work with TypeScript, has it's own vscode extension and offers a lovely abstraction over SQL databases. For a full (and in depth) rundown of what Prisma is you can check out their docs page, [Why Prisma?](https://www.Prisma.io/docs/concepts/overview/why-Prisma/).
 
-[Nexus](https://nexusjs.org/) is a declarative, code first approach to writing graphql schemas. It's created by a team at Prisma and works seamlessly with it. Nexus allows you to house your schema and resolver logic in one place and write it with one common language such as JavaScript or TypeScript. You'll learn more about this approach during the tutorial. If you wish to read further you can checkout their excellent docs page [Why Nexus?](https://nexusjs.org/docs/getting-started/why-nexus).
+[Nexus](https://nexusjs.org/) is a declarative, code first approach to writing GraphQL schemas. It's created by a team at Prisma and works seamlessly with it. Nexus allows you to house your schema and resolver logic in one place and write it with one common language such as JavaScript or TypeScript. You'll learn more about this approach during the tutorial. If you wish to read further you can checkout their excellent docs page [Why Nexus?](https://nexusjs.org/docs/getting-started/why-nexus).
 
 ## Setup the project
 
@@ -185,7 +185,7 @@ npx prisma migrate dev --name init --preview-feature
 
 ## Using the Nexus objectType
 
-The traditional way to setup a graphql schema is to build a schema using the `GraphQL Schema Language` which is written as a template string. A resolver is also created to resolve the endpoint and return whatever data is requested. In Apollo this is done by creating a `typeDefs` file and declaring the schema types and queries. Inside the `typeDefs` file you would create the the graphql types (which look quite similar to the Prisma Schema Language (PSL)) and queries inside an exported template string on a graphql tag, an example how this might look can be seen below:
+The traditional way to setup a GraphQL schema is to build a schema using the `GraphQL Schema Language` which is written as a template string. A resolver is also created to resolve the endpoint and return whatever data is requested. In Apollo this is done by creating a `typeDefs` file and declaring the schema types and queries. Inside the `typeDefs` file you would create the the GraphQL types (which look quite similar to the Prisma Schema Language (PSL)) and queries inside an exported template string on a GraphQL tag, an example how this might look can be seen below:
 
 ```graphql
 
@@ -216,7 +216,7 @@ type Character {
 `
 ```
 
-This file would then be added to every time you wanted to introduce a new data type or query definition, this works so long as the number of data models is small but is not very modular and wouldn't be easy to scale if you were to introduce multiple new data types and queries. Another way to accomplish defining your graphql types and schema is to use Nexus and to take a code first approach by giving each type its own file and using the `objectType` function.
+This file would then be added to every time you wanted to introduce a new data type or query definition, this works so long as the number of data models is small but is not very modular and wouldn't be easy to scale if you were to introduce multiple new data types and queries. Another way to accomplish defining your GraphQL types and schema is to use Nexus and to take a code first approach by giving each type its own file and using the `objectType` function.
 
 Inside `api/graphql` create a new file called `company.ts` and add the following:
 
@@ -266,7 +266,7 @@ t.nonNull.list.nonNull.field('roles', {
 
 The field is not nullable, that is, it can't be null `t.nonNull`, it's an array (a list) of values which can also not be null, `t.nonNull.list.nonNull`. In the field you have given it a name that corresponds to the name used in the schema and set it's model type, `Role`, you then resolve the relationship. The first argument in the resolver is the parent or root node, this is used to pass information from the parent to the child resolvers. The second is the arguments passed to the resolver and the third the schema context, which we will shortly be covering. The Prisma client (via the context) is used to query for the model and find the record where the id matches. So in this case the query will resolve to find zero or one Company that matches the filter.
 
-The full contents of `api/graphql`
+The full contents of `api/GraphQL`
 
 <CodeDump>
 
@@ -348,7 +348,7 @@ export const Skill = objectType({
 </CodeDump>
 
 
-Finally, export the types from the `api/graphql/index.ts` file:
+Finally, export the types from the `api/GraphQL/index.ts` file:
 
 ```typescript
 export * from './company';
@@ -358,7 +358,7 @@ export * from './skill';
 
 ## Creating the server
 
-Begin by opening `api/schema.ts`. This will be where you make a schema with Nexus. You will pass in the defined types from the `api/graphql/index.ts` file and set the output paths. These paths will be where Nexus writes the generated TypeScript definitions that are derived from the Prisma schema. It will also output a GraphQL schema, this file should not be edited directly.
+Begin by opening `api/schema.ts`. This will be where you make a schema with Nexus. You will pass in the defined types from the `api/GraphQL/index.ts` file and set the output paths. These paths will be where Nexus writes the generated TypeScript definitions that are derived from the Prisma schema. It will also output a GraphQL schema, this file should not be edited directly.
 
 ### schema.ts
 
@@ -375,7 +375,7 @@ export const schema = makeSchema({
 		// Output path to where nexus should write the generated TypeScript definition types derived from your schema. This is mandatory to benefit from Nexus' type-safety.
 		typegen: join(__dirname, '..', 'nexus-typegen.ts'),
 		// Output path to where nexus should write the SDL (schema definition language) version of your GraphQL schema.
-		schema: join(__dirname, '..', 'schema.graphql'),
+		schema: join(__dirname, '..', 'schema.GraphQL'),
 	},
 	contextType: {
 		// Path to the module where the context type is exported
@@ -397,6 +397,16 @@ export const server = new ApolloServer({ schema, context });
 ```
 
 Here you are instantiating the ApolloServer instance and exporting it while passing in the schema and context. Next you will create the context.
+
+Finally open `app.ts` and add the following, which will start the server when the `dev` script is run.
+
+```typescript
+import {server} from './server';
+
+server.listen().then(({url}) => {
+    console.log(`Server ready at ${url}`)
+})
+```
 
 ## The GraphQL context
 
@@ -582,7 +592,7 @@ t.list.field('companies', {
 });
 ```
 
-The query to get all of the companies uses the graphql context to run a prisma query and the method `findMany()` to return all of the companies in the database. The `findMany()` method can take optional parameters which are filters on the query, for example to return only the first 10 company in the database you could pass an object with the key `take` and the value `10` like so:
+The query to get all of the companies uses the GraphQL context to run a prisma query and the method `findMany()` to return all of the companies in the database. The `findMany()` method can take optional parameters which are filters on the query, for example to return only the first 10 company in the database you could pass an object with the key `take` and the value `10` like so:
 
 ```typescript
 // get all companies
@@ -613,16 +623,150 @@ t.field('company', {
 });
 ```
 
-Here a different method is used on the graphql prisma context, `findUnique()`. A filter is passed which asks for only companies `where` it's `id` matches the `id` passed in as a parameter. Above the resolver the args types are defined. Here an `id` is defined as a nonNull integer, that is, a number value that cannot be null. Which makes sense as you wont run this query without actually passing a value to it. If you were to not add the nonNull function the arg would be nullable be default. (Though you can also import nullable from nexus and explicitly state that fact that it is nullable). The roles query works the same way as the get all companies query in that it returns all of the roles related to this company.
+Here a different method is used on the GraphQL Prisma context, `findUnique()`. A filter is passed which asks for only companies `where` it's `id` matches the `id` passed in as a parameter. Above the resolver the args types are defined. Here an `id` is defined as a nonNull integer, that is, a number value that cannot be null. Which makes sense as you wont run this query without actually passing a value to it. If you were to not add the nonNull function the arg would be nullable be default. (Though you can also import nullable from nexus and explicitly state that fact that it is nullable). The roles query works the same way as the get all companies query in that it returns all of the roles related to this company.
 
 Moving onto the mutations and creating a new company in the database.
 
-// WIP
+```typescript
+        // create a new company
+        t.nonNull.field('createCompany', {
+            type: 'Company',
+            args: {
+                id: intArg(),
+                name: nonNull(stringArg()),
+                contactPerson: nonNull(stringArg()),
+                bio: nonNull(stringArg()),
+                email: nonNull(stringArg()),
+                website: nonNull(stringArg()),
+                roleId: intArg(),
+                roles: arg({
+                    type: list('RoleInputType')
+                })
+            },
+            resolve(_root, args, ctx) {
+                return ctx.db.company.create({
+                    data: {
+                        name: args.name,
+                        contactPerson: args.contactPerson,
+                        bio: args.bio,
+                        email: args.email,
+                        website: args.website,
+                        roles: {
+                            connect: [
+                                {id: args.roleId || undefined}, 
+                            ]
+                        }
+                    }
+                })
+            }
+        })
+```
+
+Much of this code will now be familiar, the field type is given a logical name (which will be used to run the mutation) and a bunch of args are defined outlining what the resolver can expect and in what format the variables will be passed as. An interesting point to notice here is the `roleId`, which is the foreign key for the `Role` type, and the `roles` arg which uses a custom input type to tell the resolver what type to expect. As the `Role` isn't a primitive you have to declare a custom type which is used instead. As the plural name suggests, this argument is of type `list`. The `RoleInputType` is defined in the `role.ts` file and defines an `id`. 
+
+The resolver uses the create method on the Prisma context and defines a `data` object which maps the args passed through to the corresponding object keys. The roles arg uses the `connect` method and the foreign key to connect the new company to a previously defined role.
 
 ## Running our queries and mutations in the Playground
 
-// Todo
+In order to actually play about with the queries and mutations run the `dev` script from the projects root (`npm run dev`). This will open up a url at localhost:4000. The server has given you a GraphQL playground from which you can run your queries and mutations against the database in real time. This is an excellent way to check how your data behaves in the real world, outside of those `console.logs`.
+
+Begin by creating a new skill.
+
+```graphql
+mutation CreateSkill {
+  createSkill(name: "GraphQL") {
+    id
+    name
+  }
+}
+```
+
+Here you are running your `createSkill` mutation passing in the name of the skill top be created and returning the newly created skills id and name. Next create a role.
+
+```graphql
+mutation CreateRole {
+  createRole(name: "Backend Developer" skillId: 1) {
+    id
+    name
+  }
+}
+```
+
+The `createRole` mutation accepts a `name` argument and an optional `skillId`, which is the foreign key to the skill you would like to link to the role. In this case you are creating a new `Backend Developer` role and assigning it the skill of `GraphQL` via the skills id. 
+
+Finally you can create a new company. By taking advantage of the foreign key (`roleId`) you can link not only a role but certain skills to the company. In this mutation your new company has a `Backend Developer` role which requires/uses a `GraphQL` skill.
+
+```graphql
+mutation CreateCompany {
+  createCompany(
+    name: "My Super Cool Company"
+    bio: "A super cool company"
+    website: "mycomp.com"
+    contactPerson: "Barry McBarry"
+    email: "barry@mycomp.com"
+    roleId: 1
+  ) {
+    name
+    bio
+    website
+    contactPerson
+    email
+    roles {
+      name
+      skills {
+        name
+      }
+    }
+  }
+}
+```
+
+Now that your database has some data in it you can query it to see how that data looks when returned.
+
+```graphql
+# get all companies and their roles and skills
+query GetCompanies {
+  companies {
+    id
+    name
+    contactPerson
+    bio
+    email
+    website
+    roles {
+      name
+      skills {
+        name
+      }
+    }
+  }
+}
+
+#get all roles and their skills
+query GetRoles {
+  roles {
+    id
+    name
+    skills {
+      name
+    }
+  }
+}
+
+#get all skills
+query GetSkills {
+  skills {
+    id
+    name
+  }
+}
+
+```
 
 ## Conclusion
 
-// Todo
+As a predominantly frontend developer using Prisma and combining it with Nexus for the first time has been a relatively painless experience. Of course much of that is due to the excellent documentation which allows you to get up and running quickly and without fuss. Some areas where I did find myself rather confused was nested mutations and relations in the schema. People learn in different ways, I enjoy quite a lot of visuals with pictures forming a better understanding in my head as opposed to just blocks of text. Perhaps the docs could do with some more video instructions and interactive elements. That being said this was quite a text and code block heavy piece itself! 
+
+This was the first of many pieces about my journey learning Prisma and what it can do. This article only touched on some base concepts but I found it very helpful in getting a grasp of what is possible. My take away from this piece is that I need to dive deeper into relationships and how they are used as this seems to be a focal point of what you can do with Prisma.
+
+Hit me up on Twitter [@studio_hungry](https://twitter.com/studio_hungry) if you fancy a chinwag about any of this.

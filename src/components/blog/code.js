@@ -13,6 +13,7 @@ import SQL from "./../../assets/sql";
 import JSON from "./../../assets/json";
 import Prisma from "./../../assets/prisma";
 import Git from "./../../assets/git";
+import GraphQL from "./../../assets/graphql";
 
 const Code = ({ children, className }) => {
   const language = className.replace(/language-/, "");
@@ -41,6 +42,8 @@ const Code = ({ children, className }) => {
         return <Prisma />;
       case "diff" || "git":
         return <Git />;
+      case "graphql":
+        return <GraphQL />;
       default:
         break;
     }

@@ -73,7 +73,7 @@ const PostTemplate = ({ data, pageContext }) => {
             color="brand.black"
             fontFamily="heading"
             fontWeight={800}
-            lineHeight={1}
+            lineHeight={1.2}
             my={5}
           >
             {title}
