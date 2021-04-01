@@ -81,3 +81,16 @@ git remote add origin <new-repo-url> // add the new repos url to your remote
 git push origin master // push the changes to your remote repo
 git pull upstream master && git push origin master
 ```
+
+## Update local feature branch with remote
+
+If you are working on a feature and need to pull in the latest changes from the remote `main` branch.
+
+```bash
+git checkout main
+git fetch -p origin
+git merge origin/main
+git checkout <feature-branch>
+git merge main
+git push origin <feature-branch>
+```

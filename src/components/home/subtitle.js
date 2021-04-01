@@ -15,6 +15,7 @@ import ExternalLink from "./../external-link";
 import Github from "../../assets/github";
 import Twitter from "../../assets/twitter";
 import RSS from "../../assets/rss";
+import Email from "./email";
 
 const Subtitle = () => {
   const { colorMode } = useColorMode();
@@ -25,7 +26,7 @@ const Subtitle = () => {
     <Grid
       templateColumns={[
         "max-content repeat(5, 1fr)",
-        "max-content auto 100px 50px 50px 50px 150px",
+        "max-content auto 100px 50px 50px 50px 50px",
       ]}
       templateRows="auto"
       w="100%"
@@ -58,7 +59,7 @@ const Subtitle = () => {
           </Text>
         </Box>
       </RoughNotation>
-      <Box gridColumn={["1 / 7", 7]} gridRow={[4, 1]} mt={[6, 0]}>
+      {/* <Box gridColumn={["1 / 7", 7]} gridRow={[4, 1]} mt={[6, 0]}>
         <iframe
           src="https://github.com/sponsors/molebox/button"
           title="Sponsor Rich"
@@ -66,7 +67,7 @@ const Subtitle = () => {
           width="115"
           style={{ border: 0 }}
         ></iframe>
-      </Box>
+      </Box> */}
       <ModeButton />
       <ExternalLink
         icon={<Github />}
