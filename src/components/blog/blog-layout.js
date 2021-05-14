@@ -1,8 +1,8 @@
 import React from "react";
 import { Flex, Box, useColorModeValue } from "@chakra-ui/react";
-import { backgroundImage } from "./utils";
+import { backgroundImage } from "../utils";
 
-const Layout = ({ children }) => {
+const BlogLayout = ({ children }) => {
   const bg = useColorModeValue("brand.bg", "dark.bg");
   return (
     <Box
@@ -27,4 +27,4 @@ const Layout = ({ children }) => {
   );
 };
 
-export default Layout;
+export default BlogLayout;

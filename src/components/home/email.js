@@ -14,7 +14,7 @@ export default function Email({ value }) {
       role="button"
       onClick={onCopy}
     >
-      <Plane/>
+      <Plane />
     </Button>
   );
 }

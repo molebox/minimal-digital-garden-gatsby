@@ -4,7 +4,7 @@ import React from 'react'
 import { ChakraProvider, Text, UnorderedList, ListItem, Image, Link, Flex, Divider } from "@chakra-ui/react";
 import theme from './src/theme';
 import Code from './src/components/blog/code';
-import Layout from './src/components/layout';
+import BlogLayout from './src/components/blog/blog-layout';
 import { RoughNotation } from 'react-rough-notation';
 import { MDXEmbedProvider } from 'mdx-embed';
 import Prerequisites from './src/components/blog/prerequisites';
@@ -58,9 +58,9 @@ const components = {
   ),
   wrapper: ({children}) => {
     return (
-      <Layout>
+      <BlogLayout>
           {children}
-      </Layout>
+      </BlogLayout>
     )
   },
   hr: () => <Divider my={6}/>,

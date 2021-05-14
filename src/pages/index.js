@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { useColorMode } from "@chakra-ui/react";
-import Layout from "./../components/layout";
+import Layout from "./../components/home/layout";
 import SearchBar from "../components/blog/searchbar";
 import { useSearchBar } from "../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
@@ -12,6 +12,7 @@ import Subtitle from "../components/home/subtitle";
 import PostsIndex from "../components/home/posts-index";
 import Categories from "../components/home/categories";
 import backgroundImage from "../assets/diamonds.png";
+import { HotOutTheOven } from "../components/home/hot-out-the-oven";
 
 const Index = ({ data }) => {
   const { colorMode } = useColorMode();
@@ -90,6 +91,15 @@ const Index = ({ data }) => {
         isDarkMode={isDarkMode}
         handleSearchQuery={handleSearchQuery}
       />
+      {/* {filteredPosts.length ? (
+      <HotOutTheOven
+      slug={filteredPosts[0].fields.slug}
+      title={filteredPosts[0].frontmatter.title}
+      description={filteredPosts[0].frontmatter.description}
+      excerpt={filteredPosts[0].excerpt}
+    />
+      ) : null} */}
+
       <Categories
         categoriesList={categoriesList}
         numberOfPosts={filteredPosts.length}

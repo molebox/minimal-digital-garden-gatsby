@@ -1,0 +1,90 @@
+---
+title: Learning new stuff
+category: Whatever
+description: When you start being honest with yourself, you learn more
+published: true
+---
+
+Sometimes I don't know what the hell im doing. This has been a refreshing insight over the last couple of months as i've began to lay my nest at Prisma.
+Starting at a new company is _most of the time_ a little nerve racking and almost _all of the time_ you over think how you are perceived by other people.
+
+Letting go of how you think others percieve you is a liberating experience. When starting at a new company its especially important (In my eyes
+) as it allows you to fully embrace your new surroundings without fear of ridicule (I know we're not at school but shit happens, especially in our heads).
+
+Being able to sit back and embrace the fact that i know fuck all about the product is a welcome resbite from pretending I know everything while writing content. (I see you..)
+
+Im nearly 2 months in as a technical writer on the docs team at Prisma and beside the fact that everyone has been absolutely amazing and welcoming, ive been allowed to learn at my own pace,
+this has allowed me to take my time and learn about of the product, taking on specific features such as testing guides or TypeScript validators and learning how the product works through
+creating those pages.
+
+## Ask questions
+
+Was that clear enough ... hang on ....
+
+```terminal
+caps=on
+bold=on
+italic=on
+```
+
+**_ASK QUESTIONS!_**
+
+This is the most important aspect of starting a new job. Never be afraid to ask questions. Most of the time you're not being hired as the defacto expert, of course you may well be hired as the
+defacto expert, in that case **_CONTUNUE TO ASK QUESTIONS!_**. It doesnt matter what role you are hired to, a company is more than its product. There is so much nuance to be learned about a company
+apart from its product.
+
+And it turns out that people appreciate you asking all these questions, you're not a burden on them, you're not waisting their time or interrupting them. By asking questions you are triggering knowledge sharing
+in others which in turn encourages discussions around topics that may have been put to bed a long time ago.
+
+## Get to the point
+
+Alright, alright! So I havent been their long, 2 months to the day tomorrow (How does that read?) Some items of interest:
+- TypeScript and TypeScript [validators](https://www.prisma.io/docs/concepts/components/prisma-client/advanced-type-safety). Shit got real, real fast. But Prisma is built on TypeScript and this was a journey into how the Prisma Client helps produce type safe code.
+- Testing guides
+    - [Unit testing](https://www.prisma.io/docs/guides/testing/unit-testing)
+    - [Integration testing](https://www.prisma.io/docs/guides/testing/integration-testing)
+
+This was more complicated, and involved my delicate frontend hands grabbing a Docker container and shaking it like those old magic 8 balls until the archetecture sank in. It was however
+a joy to work with and im super excitied to work with Docker again.
+
+### What's a Docker?
+
+The whole concept behind what Docker is and how you can use it is something i'll be studying for a while to come, but in a nutshell, it's a box that you can program to do stuff in isolation from the outside world.
+
+So this box can be started and stopped. You can put things in this box and control how they behave. Some of the things you put into the box are called images, these are like snapshots of outside world programs/databases/programs/OSs/some other super cool thing.
+
+One way to control how the things in the box behave is by using a `docker-compose.yml` file. This file will enable you to specify what should be used in the box.
+
+```bash
+# Set the version of docker compose to use
+version: '3.9'
+
+# The containers that compose the project
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    container_name: integration-tests-prisma
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: tests
+```
+
+This is some high level explanation right now so bear with me. The services are the images or containers that make up the main project. In the above example a `db` container is defined using the `postgres` image,
+that is, a cloud image of a postgres instance which is downloaded to the users (the person that runs this container) machine. The environment variables are how an "outside" application could connect to the database.
+
+### Docker and Prisma....
+
+The Docker container can have a Postgres database which we can connect to from the outside and run tests against. This is good because we don't want to test against our actual database data, by running a migration
+(copying over our database, minus the data, via our schema) and seeding the database in the Docker container we can then test against that database using the seeded data, then once finished DESTROY the whole thing. Beautiful!
+
+## So whats the craic?
+
+All good, the testing docs will need iteration but having something out there for people to refer to and use is super exciting! Next up for me is working on the getting started guide, and seeing how we can imrpove the DX.
+
+Hit me up if you have any suggestions for improving the Prisma docs DX.
+
+This is my first blog post in around 3 months and i feel rusty 😅, go easy fellow humans 🥸

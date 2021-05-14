@@ -2,13 +2,13 @@ import React from "react";
 import { Text, Flex, useColorModeValue } from "@chakra-ui/react";
 import { graphql } from "gatsby";
 import { MDXRenderer } from "gatsby-plugin-mdx";
-import Layout from "./../components/layout";
 import getShareImage from "@jlengstorf/get-share-image";
 import Header from "./../components/blog/header";
 import SEO from "react-seo-component";
 import WordCount from "../assets/word-count";
 import ReadingTime from "./../assets/reading-time";
 import backgroundImage from "../assets/diamonds.png";
+import BlogLayout from "../components/blog/blog-layout";
 
 const PostTemplate = ({ data, pageContext }) => {
   const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
@@ -40,7 +40,7 @@ const PostTemplate = ({ data, pageContext }) => {
 
   return (
     <>
-      <Layout>
+      <BlogLayout>
         <SEO
           title={title}
           titleTemplate={slug}
@@ -86,7 +86,7 @@ const PostTemplate = ({ data, pageContext }) => {
 
         <MDXRenderer>{body}</MDXRenderer>
         {/* <ShareOnTwitter/> */}
-      </Layout>
+      </BlogLayout>
     </>
   );
 };
