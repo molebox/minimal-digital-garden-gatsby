@@ -79,7 +79,7 @@ that is, a cloud image of a postgres instance which is downloaded to the users (
 ### Docker and Prisma....
 
 The Docker container can have a Postgres database which we can connect to from the outside and run tests against. This is good because we don't want to test against our actual database data, by running a migration
-(copying over our database, minus the data, via our schema) and seeding the database in the Docker container we can then test against that database using the seeded data, then once finished DESTROY the whole thing. Beautiful!
+(copying over our database tables, minus the data, via our schema) and seeding the database in the Docker container we can then test against that database using the seeded data, then once finished DESTROY the whole thing. Beautiful!
 
 ## So whats the craic?
 
