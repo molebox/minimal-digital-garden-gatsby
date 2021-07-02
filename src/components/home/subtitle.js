@@ -64,16 +64,16 @@ const Subtitle = () => {
       <ExternalLink
         icon={<Github />}
         href="https://github.com/molebox"
-        gridColumn={4}
+        gridColumn={[3, 4]}
         name="Github link"
       />
       <ExternalLink
         icon={<Twitter />}
         href="https://twitter.com/studio_hungry"
-        gridColumn={5}
+        gridColumn={[4, 5]}
         name="Twitter link"
       />
-      <Link as={GatsbyLink} href="/rss.xml" gridColumn={6}>
+      <Link as={GatsbyLink} href="/rss.xml" gridColumn={[5, 6]}>
         <VisuallyHidden>Rich Haines RSS Feed</VisuallyHidden>
         <RSS />
       </Link>

@@ -16,9 +16,9 @@ const ModeButton = () => {
         transform: "translate(-2px, 2px)",
       }}
       position="relative"
-      gridColumn={["1 / 5", 1]}
+      gridColumn={["2 / 5", 1]}
       gridRow={[2, 1]}
-      m={["30px 0 0 100px", "0 40px 0 0"]}
+      m={["30px 0 0 140px", "0 40px 0 0"]}
     >
       <Button
         bg="brand.bg"

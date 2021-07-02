@@ -7,11 +7,12 @@ const Title = () => {
     <Box bgColor={titleBox} wrap="wrap" maxW={1000} lineHeight={1} my={6} p={4}>
       <Text
         as="h1"
-        fontSize={["3xl", "4xl", "5xl"]}
+        fontSize={["4xl", "4xl", "5xl"]}
         fontWeight={800}
         fontFamily="heading"
         color="brand.black"
         lineHeight={1.2}
+        textAlign={["center", null, null]}
       >
         It's a tech blog!
       </Text>
