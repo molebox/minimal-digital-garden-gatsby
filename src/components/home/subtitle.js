@@ -32,6 +32,7 @@ const Subtitle = () => {
       w="100%"
       placeItems="center"
       my={4}
+      px={2}
     >
       {/* <RoughNotation
         type="underline"

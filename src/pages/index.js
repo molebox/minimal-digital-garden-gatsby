@@ -86,8 +86,6 @@ const Index = ({ data }) => {
 
       <About />
 
-      <Subtitle />
-
       <SearchBar
         isDarkMode={isDarkMode}
         handleSearchQuery={handleSearchQuery}

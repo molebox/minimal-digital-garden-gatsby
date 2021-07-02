@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { StaticImage } from "gatsby-plugin-image";
 import Title from "./title";
+import Subtitle from "./subtitle";
 
 const About = () => {
   const { colorMode } = useColorMode();
@@ -20,7 +21,7 @@ const About = () => {
         src="../../assets/cartoon-me-no-bg.png"
         alt="A cartoon drawing of Rich Haines in an Oasis tee"
         placeholder="blurred"
-        width={800}
+        width={1000}
         loading="lazy"
       />
       <Flex direction="column" justifyContent="space-evenly">
@@ -45,6 +46,7 @@ const About = () => {
             <a href="https://www.prisma.io/">@prisma</a>
           </Text>
         </Box>
+        <Subtitle />
       </Flex>
     </Flex>
   );
