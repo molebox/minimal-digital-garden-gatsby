@@ -30,9 +30,6 @@ const About = () => {
           px={2}
           wrap="wrap"
           maxW="max-content"
-          style={{
-            transform: isDarkMode ? "rotate(-5deg)" : null,
-          }}
           textAlign={isDarkMode ? "center" : null}
         >
           <Text

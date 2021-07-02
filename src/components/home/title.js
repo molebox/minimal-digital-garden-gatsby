@@ -4,7 +4,7 @@ import { Box, Text, useColorModeValue } from "@chakra-ui/react";
 const Title = () => {
   const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
   return (
-    <Box bgColor={titleBox} wrap="wrap" maxW={1000} lineHeight={1} my={6} p={4}>
+    <Box bgColor={titleBox} wrap="wrap" maxW={1000} lineHeight={1} my={6}>
       <Text
         as="h1"
         fontSize={["4xl", "4xl", "5xl"]}
@@ -13,6 +13,7 @@ const Title = () => {
         color="brand.black"
         lineHeight={1.2}
         textAlign={["center", "start", "start"]}
+        p={2}
       >
         It's a tech blog!
       </Text>
