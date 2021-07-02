@@ -1,9 +1,19 @@
 import React from "react";
-import { Box, Text, Flex, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  useColorModeValue,
+  useColorMode,
+} from "@chakra-ui/react";
 import { StaticImage } from "gatsby-plugin-image";
 import Title from "./title";
 
 const About = () => {
+  const { colorMode } = useColorMode();
+  const textBox = useColorModeValue("brand.bg", "dark.black");
+  const text = useColorModeValue("brand.black", "dark.lightGrey");
+  const isDarkMode = colorMode === "dark";
   return (
     <Flex direction={["column", "column", "row"]}>
       <StaticImage
@@ -15,16 +25,29 @@ const About = () => {
       />
       <Flex direction="column" justifyContent="space-evenly">
         <Title />
-        <Text
-          fontSize={["lg", "lg", "xl"]}
-          fontWeight={500}
-          fontFamily="heading"
-          my={5}
+        <Box
+          bgColor={textBox}
+          px={2}
+          wrap="wrap"
+          maxW="max-content"
+          style={{
+            transform: isDarkMode ? "rotate(-5deg)" : null,
+          }}
+          textAlign={isDarkMode ? "center" : null}
         >
-          Hey! I'm Rich Haines, a software developer who specializes in Jamstack
-          development. I'm also a technical content writer and currently work on
-          the docs team over at <a href="https://www.prisma.io/">@prisma</a>
-        </Text>
+          <Text
+            fontSize={["lg", "lg", "xl"]}
+            fontWeight={500}
+            fontFamily="heading"
+            my={5}
+            color={text}
+          >
+            Hey! I'm Rich Haines, a software developer who specializes in
+            Jamstack development. I'm also a technical content writer and
+            currently work on the docs team over at{" "}
+            <a href="https://www.prisma.io/">@prisma</a>
+          </Text>
+        </Box>
       </Flex>
     </Flex>
   );
