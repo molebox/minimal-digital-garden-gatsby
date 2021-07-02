@@ -17,13 +17,16 @@ const About = () => {
   const isDarkMode = colorMode === "dark";
   return (
     <Flex direction={["column", "column", "row"]}>
-      <StaticImage
-        src="../../assets/cartoon-me-no-bg.png"
-        alt="A cartoon drawing of Rich Haines in an Oasis tee"
-        placeholder="blurred"
-        width={1000}
-        loading="lazy"
-      />
+      <Box minW={300}>
+        <StaticImage
+          src="../../assets/cartoon-me-no-bg.png"
+          alt="A cartoon drawing of Rich Haines in an Oasis tee"
+          placeholder="blurred"
+          layout="fixed"
+          width={300}
+          loading="lazy"
+        />
+      </Box>
       <Flex direction="column" justifyContent="space-evenly">
         <Title />
         <Box
@@ -48,7 +51,7 @@ const About = () => {
         </Box>
         <Subtitle />
       </Flex>
-    </Flex>
+    </Flex >
   );
 };
 
