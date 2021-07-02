@@ -16,18 +16,17 @@ const About = () => {
   const text = useColorModeValue("brand.black", "dark.lightGrey");
   const isDarkMode = colorMode === "dark";
   return (
-    <Flex direction={["column", "column", "row"]}>
-      <Box minW={300}>
+    <Flex direction={["column", "column", "row"]} maxW={1000}>
+      <Box>
         <StaticImage
           src="../../assets/cartoon-me-no-bg.png"
           alt="A cartoon drawing of Rich Haines in an Oasis tee"
           placeholder="blurred"
-          layout="fixed"
-          width={300}
+          width={600}
           loading="lazy"
         />
       </Box>
-      <Flex direction="column" justifyContent="space-evenly">
+      <Flex direction="column" justifyContent="space-evenly" w="100%">
         <Title />
         <Box
           bgColor={textBox}
@@ -51,7 +50,7 @@ const About = () => {
         </Box>
         <Subtitle />
       </Flex>
-    </Flex >
+    </Flex>
   );
 };
 
