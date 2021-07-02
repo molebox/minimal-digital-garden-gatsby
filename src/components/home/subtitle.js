@@ -26,14 +26,14 @@ const Subtitle = () => {
     <Grid
       templateColumns={[
         "max-content repeat(5, 1fr)",
-        "max-content auto 100px 50px 50px 50px 50px",
+        "max-content auto 100px 50px 50px 50px",
       ]}
       templateRows="auto"
       w="100%"
       placeItems="center"
       my={4}
     >
-      <RoughNotation
+      {/* <RoughNotation
         type="underline"
         strokeWidth={2}
         color="#000"
@@ -58,16 +58,8 @@ const Subtitle = () => {
             By Rich Haines
           </Text>
         </Box>
-      </RoughNotation>
-      {/* <Box gridColumn={["1 / 7", 7]} gridRow={[4, 1]} mt={[6, 0]}>
-        <iframe
-          src="https://github.com/sponsors/molebox/button"
-          title="Sponsor Rich"
-          height="35"
-          width="115"
-          style={{ border: 0 }}
-        ></iframe>
-      </Box> */}
+      </RoughNotation> */}
+
       <ModeButton />
       <ExternalLink
         icon={<Github />}

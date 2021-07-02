@@ -9,14 +9,14 @@ const ModeButton = () => {
       boxShadow="-5px 5px #000"
       _active={{
         boxShadow: "-2px 2px #000",
-        transform: "translate(-2px, 2px)",
+        transform: "translateY(2px)",
       }}
       _hover={{
         boxShadow: "-2px 2px #000",
         transform: "translate(-2px, 2px)",
       }}
       position="relative"
-      gridColumn={["1 / 5", 3]}
+      gridColumn={["1 / 5", 1]}
       gridRow={[2, 1]}
       m={["30px 0 0 100px", "0 40px 0 0"]}
     >

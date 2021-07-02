@@ -12,7 +12,7 @@ import Subtitle from "../components/home/subtitle";
 import PostsIndex from "../components/home/posts-index";
 import Categories from "../components/home/categories";
 import backgroundImage from "../assets/diamonds.png";
-import { HotOutTheOven } from "../components/home/hot-out-the-oven";
+import About from "../components/home/about";
 
 const Index = ({ data }) => {
   const { colorMode } = useColorMode();
@@ -83,7 +83,8 @@ const Index = ({ data }) => {
         twitterUsername="@studio_hungry"
         author="Rich Haines"
       />
-      <Title />
+
+      <About />
 
       <Subtitle />
 
