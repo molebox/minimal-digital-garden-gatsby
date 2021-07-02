@@ -12,7 +12,7 @@ const Title = () => {
         fontFamily="heading"
         color="brand.black"
         lineHeight={1.2}
-        textAlign={["center", null, null]}
+        textAlign={["center", "start", "start"]}
       >
         It's a tech blog!
       </Text>
