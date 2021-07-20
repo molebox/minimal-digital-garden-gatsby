@@ -11,59 +11,59 @@ import Prerequisites from './src/components/blog/prerequisites';
 import { CodeDump } from './src/components/blog/code-dump';
 
 const components = {
-  code: (props) => <Code {...props}/>,
+  code: (props) => <Code {...props} />,
   h1: (props) => (
-    <Text fontSize="6xl" mb={3} fontFamily="heading">
+    <Text as="h1" fontSize="6xl" mb={3} fontFamily="heading">
       {props.children}
     </Text>
   ),
   h2: (props) => (
-    <Text fontSize={["2xl", "3xl"]} my={3} fontFamily="heading" borderBottom="solid 2px" width="100%">
+    <Text as="h2" fontSize={["2xl", "3xl"]} my={3} fontFamily="heading" borderBottom="solid 2px" width="100%">
       {props.children}
     </Text>
   ),
   h3: (props) => (
-    <Text fontSize={["xl", "2xl"]} my={3} fontFamily="heading" borderBottom="solid 2px" width="100%">
+    <Text as="h3" fontSize={["xl", "2xl"]} my={3} fontFamily="heading" borderBottom="solid 2px" width="100%">
       {props.children}
     </Text>
   ),
   blockquote: (props) => (
     <Flex
-    align="start"
-    justify="center"
-    borderLeft="solid 2px"
-    borderBottom="solid 2px"
-    boxShadow="-2px 2px #000"
-    p={3}
-    my={6}
-    bgColor="brand.bg"
+      align="start"
+      justify="center"
+      borderLeft="solid 2px"
+      borderBottom="solid 2px"
+      boxShadow="-2px 2px #000"
+      p={3}
+      my={6}
+      bgColor="brand.bg"
     >
-    <Text my={2} fontFamily="body" fontStyle="italic">
-      {props.children}
-    </Text>
+      <Text my={2} fontFamily="body" fontStyle="italic">
+        {props.children}
+      </Text>
     </Flex>
   ),
   ul: (props) => <UnorderedList my={2}>{props.children}</UnorderedList>,
   li: (props) => <ListItem fontFamily="body" fontSize="xl">{props.children}</ListItem>,
-  p: (props) => <Text my={2} fontSize="xl" fontFamily="body">{props.children}</Text>,
+  p: (props) => <Text as="p" my={2} fontSize="xl" fontFamily="body">{props.children}</Text>,
   img: (props) => (
     <Image border="solid 2px" m="1em auto" src={props.src} alt={props.alt} boxSize={props.boxSize} />
   ),
   a: (props) => (
-      <RoughNotation multiline type="underline" color="#1f2127" show={true}>
-        <Link style={{textDecoration: 'none'}} isExternal href={props.href}>
+    <RoughNotation multiline type="underline" color="#1f2127" show={true}>
+      <Link style={{ textDecoration: 'none' }} isExternal href={props.href}>
         {props.children}
-        </Link>
-      </RoughNotation>
+      </Link>
+    </RoughNotation>
   ),
-  wrapper: ({children}) => {
+  wrapper: ({ children }) => {
     return (
       <BlogLayout>
-          {children}
+        {children}
       </BlogLayout>
     )
   },
-  hr: () => <Divider my={6}/>,
+  hr: () => <Divider my={6} />,
   Prerequisites,
   CodeDump: (props) => <CodeDump>{props.children}</CodeDump>
 }

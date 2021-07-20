@@ -9,12 +9,16 @@ import WordCount from "../assets/word-count";
 import ReadingTime from "./../assets/reading-time";
 import backgroundImage from "../assets/diamonds.png";
 import BlogLayout from "../components/blog/blog-layout";
+import ToC from "../components/blog/toc";
 
 const PostTemplate = ({ data, pageContext }) => {
-  const { frontmatter, body, slug, timeToRead, wordCount } = data.mdx;
+  const { frontmatter, body, slug, timeToRead, wordCount, tableOfContents } =
+    data.mdx;
   const { title, description, canonical } = frontmatter;
   const { previous, next } = pageContext;
   const titleBox = useColorModeValue("brand.bg", "dark.lightGrey");
+
+  console.log({ tableOfContents });
 
   const socialImage = getShareImage({
     title: title,
@@ -53,25 +57,27 @@ const PostTemplate = ({ data, pageContext }) => {
           article={true}
         />
         <Header previous={previous} next={next} opacity={0.7} />
-
         <Flex
-          bgColor={titleBox}
-          wrap="wrap"
-          maxW={["300px", "600px"]}
-          p={3}
           my={6}
+          direction={["column", "row", "row"]}
+          w="100%"
+          justifyContent="space-between"
+          align="center"
         >
-          <Text
-            as="h1"
-            fontSize={["4xl", "5xl"]}
-            color="brand.black"
-            fontFamily="heading"
-            fontWeight={800}
-            lineHeight={1.2}
-            my={5}
-          >
-            {title}
-          </Text>
+          <Flex bgColor={titleBox} wrap="wrap" p={3}>
+            <Text
+              as="h1"
+              fontSize={["4xl", "5xl"]}
+              color="brand.black"
+              fontFamily="heading"
+              fontWeight={800}
+              lineHeight={1.2}
+              my={5}
+            >
+              {title}
+            </Text>
+          </Flex>
+          <ToC items={tableOfContents.items} />
         </Flex>
         <Flex>
           <Flex p={3} align="center">
@@ -106,6 +112,7 @@ export const query = graphql`
       body
       excerpt
       timeToRead
+      tableOfContents
       wordCount {
         words
       }

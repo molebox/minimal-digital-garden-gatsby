@@ -7,8 +7,6 @@ import { useSearchBar } from "../components/blog/useSearchbar";
 import { useCategory } from "./../components/blog/useCategory";
 import SEO from "react-seo-component";
 import getShareImage from "@jlengstorf/get-share-image";
-import Title from "../components/home/title";
-import Subtitle from "../components/home/subtitle";
 import PostsIndex from "../components/home/posts-index";
 import Categories from "../components/home/categories";
 import backgroundImage from "../assets/diamonds.png";

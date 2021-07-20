@@ -4,6 +4,13 @@ import defaultTheme from "@chakra-ui/theme";
 
 const theme = {
   ...defaultTheme,
+  styles: {
+    global: {
+      "html, body": {
+        scrollBehavior: "smooth",
+      },
+    },
+  },
   fonts: {
     heading: "Open Sans",
     body: "Jost",

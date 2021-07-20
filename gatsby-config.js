@@ -15,6 +15,7 @@ module.exports = {
     `gatsby-transformer-sharp`,
     {
       resolve: 'gatsby-plugin-mdx',
+      extensions: [`.mdx`, `.md`],
       options: {
         defaultLayouts: {
           default: require.resolve('./src/template/post-template.js')
@@ -22,8 +23,28 @@ module.exports = {
         remarkPlugins: [
           require('remark-slug')
         ],
-        gatsbyRemarkPlugins: ['gatsby-remark-autolink-headers']
+        gatsbyRemarkPlugins: [
+          // {
+          //   resolve: `gatsby-remark-autolink-headers`,
+          //   options: {
+          //     className: `header-link-icon`
+          //   }
+          // },
+        ]
       }
+    },
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-autolink-headers`,
+            options: {
+              className: `header-link-icon`
+            }
+          },
+        ],
+      },
     },
     {
       resolve: 'gatsby-source-filesystem',
