@@ -1,6 +1,6 @@
-# My blog
+# My blog (archived sept 2021)
 
-Live 👉 [richardhaines.dev](https://richardhaines.dev)
+Live 👉 [https://minimal-digital-garden.netlify.app/](https://minimal-digital-garden.netlify.app/)
 
 - 📋 Single page index which has links to all posts. 
 - 🔍 Index page has a search bar to filter posts by keyword and category tags.
